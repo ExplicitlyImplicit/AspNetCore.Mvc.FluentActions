@@ -44,17 +44,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         private static TypeInfo DefineControllerTypeForHandler(EndpointHandlerDefinition handler, EndpointDefinition endpointDefinition)
         {
-            // TODO handle parameter usings
-            // TODO handle model usings
-            // TODO handle multiple usings
-            // TODO handle controller usings
-
             var moduleBuilder = DefineModule();
             var typeBuilder = DefineType(moduleBuilder);
-            var serviceFields = DefineServiceFields(typeBuilder, handler);
 
-            DefineConstructor(typeBuilder, handler, serviceFields);
-            DefineActionMethod(typeBuilder, handler, endpointDefinition, serviceFields);
+            DefineActionMethod(typeBuilder, handler, endpointDefinition);
 
             return typeBuilder.CreateTypeInfo();
         }
@@ -72,50 +65,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             var guid = Guid.NewGuid().ToString().Replace("-", "");
             var name = $"FluentEndpoint{guid}Controller";
 
-            return moduleBuilder.DefineType(
+            var typeBuilder = moduleBuilder.DefineType(
                     name + "Controller",
                     TypeAttributes.Class | TypeAttributes.Public,
-                    typeof(Controller)); ;
-        }
+                    typeof(Controller));
 
-        private static FieldBuilder[] DefineServiceFields(TypeBuilder typeBuilder, EndpointHandlerDefinition handler)
-        {
-            var serviceTypes = handler.Usings
-                .OfType<EndpointHandlerServiceDefinition>()
-                .Select(@using => @using.Type)
-                .ToArray(); ;
+            typeBuilder.DefineDefaultConstructor(MethodAttributes.Public);
 
-            var definedServiceFields = new FieldBuilder[serviceTypes.Length];
-            for(var index=0; index<serviceTypes.Length; index++)
-            {
-                var serviceType = serviceTypes[index];
-                var fieldName = $"Parameter{index}{serviceType.Name}";
-                definedServiceFields[index] = typeBuilder.DefineField(fieldName, serviceType, FieldAttributes.Public);
-            }
-
-            return definedServiceFields;
-        }
-
-        private static void DefineConstructor(TypeBuilder typeBuilder, EndpointHandlerDefinition handler, FieldBuilder[] fields)
-        {
-            var serviceTypes = handler.Usings
-                .OfType<EndpointHandlerServiceDefinition>()
-                .Select(@using => @using.Type)
-                .ToArray(); ;
-
-            var constructor = typeBuilder.DefineConstructor(
-                MethodAttributes.Public, CallingConventions.Standard, serviceTypes);
-
-            var constructorIL = constructor.GetILGenerator();
-
-            for (var index = 0; index < serviceTypes.Length; index++)
-            {
-                constructorIL.Emit(OpCodes.Ldarg_0);
-                constructorIL.Emit(OpCodes.Ldarg_1);
-                constructorIL.Emit(OpCodes.Stfld, fields[index]);
-            }
-
-            constructorIL.Emit(OpCodes.Ret);
+            return typeBuilder;
         }
 
         private static Type MakeGenericFuncType(EndpointHandlerDefinition handler)
@@ -141,7 +98,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 case 6: return typeof(Func<,,,,,>);
                 case 7: return typeof(Func<,,,,,,>);
                 case 8: return typeof(Func<,,,,,,,>);
-                default: throw new Exception("GetGenericFuncType only supports 1-8 arguments");
+                default: throw new Exception("GetGenericFuncType only supports up to 8 arguments.");
             }
         }
 
@@ -158,15 +115,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             throw new Exception($"Could not get corresponding attribute of HttpMethod {httpMethod}.");
         }
 
-        private static void DefineActionMethod(TypeBuilder typeBuilder, EndpointHandlerDefinition handler, EndpointDefinition endpointDefinition, FieldBuilder[] fields)
+        private static void DefineActionMethod(TypeBuilder typeBuilder, EndpointHandlerDefinition handler, EndpointDefinition endpointDefinition)
         {
-            var serviceTypes = handler.Usings
-                .OfType<EndpointHandlerServiceDefinition>()
-                .Select(@using => @using.Type)
-                .ToArray();
-
             var parameterTypes = handler.Usings
-                .OfType<EndpointHandlerParameterDefinition>()
                 .Select(@using => @using.Type)
                 .ToArray();
 
@@ -181,12 +132,23 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             var il = methodBuilder.GetILGenerator();
 
             var parameterIndex = 1;
-            foreach (var parameter in handler.Usings.OfType<EndpointHandlerParameterDefinition>())
+            foreach (var usingDefinition in handler.Usings)
             {
-                methodBuilder.DefineParameter(parameterIndex, ParameterAttributes.None, parameter.Name ?? $"parameter{parameterIndex}");
+                var parameterBuilder = methodBuilder.DefineParameter(parameterIndex, ParameterAttributes.None, $"parameter{parameterIndex}");
+
+                if (usingDefinition is EndpointHandlerBodyParameterDefinition)
+                {
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute).GetConstructor(new Type[0]), new Type[0]);
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                } else if (usingDefinition is EndpointHandlerServiceDefinition)
+                {
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute).GetConstructor(new Type[0]), new Type[0]);
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                }
+
                 parameterIndex++;
             }
-            //var funcType = typeof(Func<,>).MakeGenericType(serviceTypes[0], returnType);
+
             var funcType = MakeGenericFuncType(handler);
 
             var funcKey = EndpointControllerDefinitionHandlerFuncs.Add(func.Compile());
@@ -199,21 +161,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             il.Emit(OpCodes.Ldstr, funcKey);
             il.Emit(OpCodes.Callvirt, dictMethod);
 
-            var serviceFieldIndex = 0;
-            var parameterUsingIndex = 1;
+            var usingIndex = 1;
             foreach (var handlerUsing in handler.Usings)
             {
-                if (handlerUsing is EndpointHandlerServiceDefinition)
-                {
-                    il.Emit(OpCodes.Ldarg_0);
-                    il.Emit(OpCodes.Ldfld, fields[serviceFieldIndex++]);
-                } else if (handlerUsing is EndpointHandlerParameterDefinition)
-                {
-                    il.Emit(OpCodes.Ldarg, parameterUsingIndex++);
-                } else
-                {
-                    throw new Exception("Using type not yet supported");
-                }
+                il.Emit(OpCodes.Ldarg, usingIndex++);
             }
 
             il.Emit(OpCodes.Callvirt, funcType.GetMethod("Invoke"));

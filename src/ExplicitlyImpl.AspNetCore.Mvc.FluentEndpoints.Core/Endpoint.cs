@@ -66,7 +66,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
     {
     }
 
-    public class EndpointHandlerParameterDefinition : EndpointHandlerUsingDefinition
+    public class EndpointHandlerRouteParameterDefinition : EndpointHandlerUsingDefinition
+    {
+        public string Name { get; set; }
+    }
+
+    public class EndpointHandlerBodyParameterDefinition : EndpointHandlerUsingDefinition
     {
         public string Name { get; set; }
     }
@@ -249,7 +254,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         public virtual EndpointWithUsing<TU1> UsingParameter<TU1>(string name = null)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointHandlerParameterDefinition
+            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointHandlerRouteParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
@@ -279,17 +284,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentOrNewHandler.Usings.Add(serviceDefinition);
         }
 
-        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerParameterDefinition parameterDefinition) : base(endpointDefinition)
+        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerRouteParameterDefinition parameterDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentOrNewHandler.Usings.Add(parameterDefinition);
         }
 
-        public EndpointWithUsing<TU1, TU2> UsingRouteParameter<TU2>(string name = null)
+        public EndpointWithUsing<TU1, TU2> UsingRouteParameter<TU2>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointHandlerParameterDefinition
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointHandlerRouteParameterDefinition
             {
                 Type = typeof(TU2),
                 Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2> UsingBodyParameter<TU2>()
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointHandlerBodyParameterDefinition
+            {
+                Type = typeof(TU2)
             });
         }
 
@@ -309,19 +322,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
     public class EndpointWithUsing<TU1, TU2> : EndpointBase
     {
-        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerServiceDefinition serviceDefinition) : base(endpointDefinition)
+        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerUsingDefinition usingDefinition) : base(endpointDefinition)
         {
-            EndpointDefinition.CurrentOrNewHandler.Usings.Add(serviceDefinition);
+            EndpointDefinition.CurrentOrNewHandler.Usings.Add(usingDefinition);
         }
 
-        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerParameterDefinition parameterDefinition) : base(endpointDefinition)
-        {
-            EndpointDefinition.CurrentOrNewHandler.Usings.Add(parameterDefinition);
-        }
 
         public EndpointWithUsing<TU1, TU2, TU3> UsingBodyParameter<TU3>(string name = null)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointHandlerParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointHandlerRouteParameterDefinition
             {
                 Type = typeof(TU3),
                 Name = name
@@ -341,7 +350,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentOrNewHandler.Usings.Add(serviceDefinition);
         }
 
-        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerParameterDefinition parameterDefinition) : base(endpointDefinition)
+        public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointHandlerRouteParameterDefinition parameterDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentOrNewHandler.Usings.Add(parameterDefinition);
         }

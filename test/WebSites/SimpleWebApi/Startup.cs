@@ -50,7 +50,7 @@ namespace SimpleWebApi
                 endpoints
                     .Add("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
-                    .UsingRouteParameter<UserItem>("user")
+                    .UsingBodyParameter<UserItem>()
                     .HandledBy((userService, user) => userService.Add(user));
 
                 endpoints
