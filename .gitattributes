@@ -1,0 +1,18 @@
+*.cs text=auto diff=csharp 
+*.vb text=auto
+*.resx text=auto
+*.html text=auto
+*.htm text=auto
+*.css text=auto
+*.js text=auto
+*.sql text=auto
+
+*.csproj text=auto
+*.vbproj text=auto
+*.fsproj text=auto
+*.dbproj text=auto
+*.xproj text=auto
+
+*.sln text=auto eol=crlf
+
+*.sh eol=lf
