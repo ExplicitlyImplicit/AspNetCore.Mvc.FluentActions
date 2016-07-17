@@ -136,11 +136,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 var parameterBuilder = methodBuilder.DefineParameter(parameterIndex, ParameterAttributes.None, $"parameter{parameterIndex}");
 
-                if (usingDefinition is EndpointHandlerBodyParameterDefinition)
+                if (usingDefinition is EndpointUsingModelFromBodyDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute).GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                } else if (usingDefinition is EndpointHandlerServiceDefinition)
+                } else if (usingDefinition is EndpointUsingServiceDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute).GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
