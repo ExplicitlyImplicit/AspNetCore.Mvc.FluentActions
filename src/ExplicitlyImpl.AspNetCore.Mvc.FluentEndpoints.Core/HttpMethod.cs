@@ -3,10 +3,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 {
     public enum HttpMethod
     {
+        Delete,
         Get,
-        Post,
-        Put,
+        Head,
+        Options,
         Patch,
-        Delete
+        Post,
+        Put
     }
 }

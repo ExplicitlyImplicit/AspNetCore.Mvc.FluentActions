@@ -106,10 +106,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         {
             switch (httpMethod)
             {
+                case HttpMethod.Delete: return typeof(HttpDeleteAttribute);
                 case HttpMethod.Get: return typeof(HttpGetAttribute);
+                case HttpMethod.Head: return typeof(HttpHeadAttribute);
+                case HttpMethod.Options: return typeof(HttpOptionsAttribute);
+                case HttpMethod.Patch: return typeof(HttpPatchAttribute);
                 case HttpMethod.Post: return typeof(HttpPostAttribute);
                 case HttpMethod.Put: return typeof(HttpPutAttribute);
-                case HttpMethod.Delete: return typeof(HttpDeleteAttribute);
             }
 
             throw new Exception($"Could not get corresponding attribute of HttpMethod {httpMethod}.");
