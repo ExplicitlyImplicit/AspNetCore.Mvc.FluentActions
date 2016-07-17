@@ -50,26 +50,26 @@ namespace SimpleWebApi
                 endpoints
                     .Add("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
-                    .UsingBodyParameter<UserItem>()
+                    .UsingModelFromBody<UserItem>()
                     .HandledBy((userService, user) => userService.Add(user));
 
                 endpoints
                     .Add("/api/users/{userId}", HttpMethod.Get)
                     .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
+                    .UsingUrlParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Get(userId));
 
                 endpoints
                     .Add("/api/users/{userId}", HttpMethod.Put)
                     .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .UsingBodyParameter<UserItem>()
+                    .UsingUrlParameter<int>("userId")
+                    .UsingModelFromBody<UserItem>()
                     .HandledBy((userService, userId, user) => userService.Update(userId, user));
 
                 endpoints
                     .Add("/api/users/{userId}", HttpMethod.Delete)
                     .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
+                    .UsingUrlParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Remove(userId));
 
                 //endpoints

@@ -289,7 +289,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentOrNewHandler.Usings.Add(parameterDefinition);
         }
 
-        public EndpointWithUsing<TU1, TU2> UsingRouteParameter<TU2>(string name)
+        public EndpointWithUsing<TU1, TU2> UsingUrlParameter<TU2>(string name)
         {
             return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointHandlerRouteParameterDefinition
             {
@@ -298,7 +298,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2> UsingBodyParameter<TU2>()
+        public EndpointWithUsing<TU1, TU2> UsingModelFromBody<TU2>()
         {
             return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointHandlerBodyParameterDefinition
             {
@@ -327,8 +327,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentOrNewHandler.Usings.Add(usingDefinition);
         }
 
-
-        public EndpointWithUsing<TU1, TU2, TU3> UsingBodyParameter<TU3>(string name = null)
+        public EndpointWithUsing<TU1, TU2, TU3> UsingModelFromBody<TU3>(string name = null)
         {
             return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointHandlerRouteParameterDefinition
             {
