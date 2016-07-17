@@ -42,7 +42,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             };
         }
 
-        private static TypeInfo DefineControllerTypeForHandler(EndpointHandlerDefinition handler, EndpointDefinition endpointDefinition)
+        private static TypeInfo DefineControllerTypeForHandler(
+            EndpointHandlerDefinition handler, 
+            EndpointDefinition endpointDefinition)
         {
             var moduleBuilder = DefineModule();
             var typeBuilder = DefineType(moduleBuilder);
@@ -55,7 +57,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         private static ModuleBuilder DefineModule()
         {
             var assemblyName = new AssemblyName("FluentEndpointAssembly");
-            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
+                assemblyName, 
+                AssemblyBuilderAccess.Run);
 
             return assemblyBuilder.DefineDynamicModule("FluentEndpointModule");
         }
@@ -81,9 +85,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             argumentTypes.Add(handler.ReturnType);
 
             var unspecifiedGenericFuncType = GetUnspecifiedGenericFuncType(argumentTypes.Count);
-            var genericFuncType = unspecifiedGenericFuncType.MakeGenericType(argumentTypes.ToArray());
+            var specifiedGenericFuncType = unspecifiedGenericFuncType.MakeGenericType(argumentTypes.ToArray());
 
-            return genericFuncType;
+            return specifiedGenericFuncType;
         }
 
         private static Type GetUnspecifiedGenericFuncType(int arguments)
@@ -98,80 +102,90 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 case 6: return typeof(Func<,,,,,>);
                 case 7: return typeof(Func<,,,,,,>);
                 case 8: return typeof(Func<,,,,,,,>);
-                default: throw new Exception("GetGenericFuncType only supports up to 8 arguments.");
             }
+
+            throw new Exception($"{nameof(GetUnspecifiedGenericFuncType)} only supports up to eight arguments.");
         }
 
         private static Type GetHttpMethodAttribute(HttpMethod httpMethod)
         {
             switch (httpMethod)
             {
-                case HttpMethod.Delete: return typeof(HttpDeleteAttribute);
-                case HttpMethod.Get: return typeof(HttpGetAttribute);
-                case HttpMethod.Head: return typeof(HttpHeadAttribute);
-                case HttpMethod.Options: return typeof(HttpOptionsAttribute);
-                case HttpMethod.Patch: return typeof(HttpPatchAttribute);
-                case HttpMethod.Post: return typeof(HttpPostAttribute);
-                case HttpMethod.Put: return typeof(HttpPutAttribute);
+                case HttpMethod.Delete:     return typeof(HttpDeleteAttribute);
+                case HttpMethod.Get:        return typeof(HttpGetAttribute);
+                case HttpMethod.Head:       return typeof(HttpHeadAttribute);
+                case HttpMethod.Options:    return typeof(HttpOptionsAttribute);
+                case HttpMethod.Patch:      return typeof(HttpPatchAttribute);
+                case HttpMethod.Post:       return typeof(HttpPostAttribute);
+                case HttpMethod.Put:        return typeof(HttpPutAttribute);
             }
 
-            throw new Exception($"Could not get corresponding attribute of HttpMethod {httpMethod}.");
+            throw new Exception($"Could not get corresponding attribute of {nameof(HttpMethod)} {httpMethod}.");
         }
 
-        private static void DefineActionMethod(TypeBuilder typeBuilder, EndpointHandlerDefinition handler, EndpointDefinition endpointDefinition)
+        private static void DefineActionMethod(
+            TypeBuilder typeBuilder, 
+            EndpointHandlerDefinition handler, 
+            EndpointDefinition endpointDefinition)
         {
             var parameterTypes = handler.Usings
                 .Select(@using => @using.Type)
                 .ToArray();
 
             var returnType = handler.ReturnType;
-            var func = handler.Func;
             var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, parameterTypes);
 
-            var attributeConstructorInfo = GetHttpMethodAttribute(endpointDefinition.HttpMethod).GetConstructor(new Type[0]);
+            var attributeConstructorInfo = GetHttpMethodAttribute(endpointDefinition.HttpMethod)
+                .GetConstructor(new Type[0]);
             var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new Type[0]);
             methodBuilder.SetCustomAttribute(attributeBuilder);
 
-            var il = methodBuilder.GetILGenerator();
+            var ilGenerator = methodBuilder.GetILGenerator();
 
             var parameterIndex = 1;
             foreach (var usingDefinition in handler.Usings)
             {
-                var parameterBuilder = methodBuilder.DefineParameter(parameterIndex, ParameterAttributes.None, $"parameter{parameterIndex}");
+                var parameterBuilder = methodBuilder.DefineParameter(
+                    parameterIndex, 
+                    ParameterAttributes.None, 
+                    $"parameter{parameterIndex}");
 
                 if (usingDefinition is EndpointUsingModelFromBodyDefinition)
                 {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute).GetConstructor(new Type[0]), new Type[0]);
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)
+                        .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                } else if (usingDefinition is EndpointUsingServiceDefinition)
+                } 
+                else if (usingDefinition is EndpointUsingServiceDefinition)
                 {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute).GetConstructor(new Type[0]), new Type[0]);
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute)
+                        .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
 
                 parameterIndex++;
             }
 
-            var funcType = MakeGenericFuncType(handler);
+            var customFuncType = MakeGenericFuncType(handler);
+            var customFuncKey = EndpointControllerDefinitionHandlerFuncs.Add(handler.Func.Compile());
 
-            var funcKey = EndpointControllerDefinitionHandlerFuncs.Add(func.Compile());
+            var dictionaryField = typeof(EndpointControllerDefinitionHandlerFuncs)
+                .GetField("All");
+            var dictionaryGetMethod = typeof(Dictionary<,>)
+                .MakeGenericType(typeof(string), typeof(Delegate))
+                .GetMethod("get_Item");
 
-            var fi = typeof(EndpointControllerDefinitionHandlerFuncs).GetField("All");
+            ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
+            ilGenerator.Emit(OpCodes.Ldstr, customFuncKey);
+            ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
 
-            var dictMethod = typeof(Dictionary<,>).MakeGenericType(typeof(string), typeof(Delegate)).GetMethod("get_Item");
-
-            il.Emit(OpCodes.Ldsfld, fi);
-            il.Emit(OpCodes.Ldstr, funcKey);
-            il.Emit(OpCodes.Callvirt, dictMethod);
-
-            var usingIndex = 1;
-            foreach (var handlerUsing in handler.Usings)
+            for (var usingIndex = 1; usingIndex <= handler.Usings.Count; usingIndex++)
             {
-                il.Emit(OpCodes.Ldarg, usingIndex++);
+                ilGenerator.Emit(OpCodes.Ldarg, usingIndex++);
             }
 
-            il.Emit(OpCodes.Callvirt, funcType.GetMethod("Invoke"));
-            il.Emit(OpCodes.Ret);
+            ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
+            ilGenerator.Emit(OpCodes.Ret);
         }
     }
 

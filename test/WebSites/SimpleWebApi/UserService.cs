@@ -118,20 +118,6 @@ namespace SimpleWebApi
             await Task.Delay(200);
             return Remove(userId);
         }
-
-        private MethodInfo lol(Type targetType, MethodInfo interfaceMethod)
-        {
-            var interfaceMapping = typeof(UserService).GetTypeInfo().GetRuntimeInterfaceMap(targetType);
-
-            var index = Array.IndexOf(interfaceMapping.InterfaceMethods, interfaceMethod);
-
-            if (index == -1)
-            {
-                //something's wrong;
-            }
-
-            return interfaceMapping.TargetMethods[index];
-        }
     }
 
     public class EntityAddResultItem

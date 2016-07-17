@@ -16,7 +16,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             if (originalValue.EndsWith(trailingValue, stringComparison))
             {
                 return originalValue.Substring(0, originalValue.Length - trailingValue.Length);
-            } else
+            } 
+            else
             {
                 return originalValue;
             }
@@ -34,7 +35,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             if (originalValue.StartsWith(leadingValue, stringComparison))
             {
                 return originalValue.Substring(leadingValue.Length, originalValue.Length - leadingValue.Length);
-            } else
+            } 
+            else
             {
                 return originalValue;
             }
