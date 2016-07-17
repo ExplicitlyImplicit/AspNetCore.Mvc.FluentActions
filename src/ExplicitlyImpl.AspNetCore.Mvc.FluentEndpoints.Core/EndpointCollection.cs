@@ -14,6 +14,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             Endpoints = new List<Endpoint>();
         }
 
+        public EndpointCollection(IEnumerable<IEnumerable<Endpoint>> endpointCollections) : this()
+        {
+            foreach(var endpointCollection in endpointCollections)
+            {
+                Endpoints.AddRange(endpointCollection);
+            }
+        }
+
         public Endpoint Add(HttpMethod httpMethod, string url, string description = null)
         {
             var endpoint = new Endpoint(httpMethod, url, description);
