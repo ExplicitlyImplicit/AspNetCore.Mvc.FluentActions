@@ -150,15 +150,21 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                     ParameterAttributes.None, 
                     $"parameter{parameterIndex}");
 
-                if (usingDefinition is EndpointUsingModelFromBodyDefinition)
+                if (usingDefinition is EndpointUsingServiceDefinition)
+                {
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute)
+                        .GetConstructor(new Type[0]), new Type[0]);
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                } 
+                else if (usingDefinition is EndpointUsingModelFromBodyDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
-                else if (usingDefinition is EndpointUsingServiceDefinition)
+                else if (usingDefinition is EndpointUsingModelFromFormDefinition)
                 {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute)
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
@@ -181,7 +187,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
             for (var usingIndex = 1; usingIndex <= handler.Usings.Count; usingIndex++)
             {
-                ilGenerator.Emit(OpCodes.Ldarg, usingIndex++);
+                ilGenerator.Emit(OpCodes.Ldarg, usingIndex);
             }
 
             ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));

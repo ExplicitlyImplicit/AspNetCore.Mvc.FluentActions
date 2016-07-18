@@ -25,6 +25,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
     {
     }
 
+    public class EndpointUsingModelFromFormDefinition : EndpointUsingDefinition
+    {
+    }
+
     public class EndpointHandlerDefinition
     {
         public IList<EndpointUsingDefinition> Usings { get; set; }
@@ -137,6 +141,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public virtual EndpointWithUsing<TU1> UsingModelFromBody<TU1>()
         {
             return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            {
+                Type = typeof(TU1)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1> UsingModelFromForm<TU1>()
+        {
+            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
             {
                 Type = typeof(TU1)
             });

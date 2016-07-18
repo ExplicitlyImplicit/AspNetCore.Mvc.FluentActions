@@ -37,6 +37,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2> UsingModelFromForm<TU2>()
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            {
+                Type = typeof(TU2)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -70,6 +78,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithUsing<TU1, TU2, TU3> UsingModelFromBody<TU3>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            {
+                Type = typeof(TU3)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingModelFromForm<TU3>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
             {
                 Type = typeof(TU3)
             });
@@ -113,6 +129,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingModelFromForm<TU4>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            {
+                Type = typeof(TU4)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TU2, TU3, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -146,6 +170,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingModelFromBody<TU5>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            {
+                Type = typeof(TU5)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingModelFromForm<TU5>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
             {
                 Type = typeof(TU5)
             });
@@ -189,6 +221,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingModelFromForm<TU6>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            {
+                Type = typeof(TU6)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -227,6 +267,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelFromForm<TU7>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            {
+                Type = typeof(TU7)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TU6, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -260,6 +308,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelFromBody<TU8>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            {
+                Type = typeof(TU8)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelFromForm<TU8>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
             {
                 Type = typeof(TU8)
             });
