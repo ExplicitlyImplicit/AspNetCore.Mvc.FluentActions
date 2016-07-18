@@ -34,9 +34,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
     {
     }
 
-    public class EndpointUsingFormParameterDefinition : EndpointUsingDefinition
+    public class EndpointUsingFormValueDefinition : EndpointUsingDefinition
     {
-        public string Name { get; set; }
+        public string Key { get; set; }
     }
 
     public class EndpointHandlerDefinition
@@ -173,12 +173,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingFormParameter<TU1>(string name)
+        public virtual EndpointWithUsing<TU1> UsingFormValue<TU1>(string key)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingFormValueDefinition
             {
                 Type = typeof(TU1),
-                Name = name
+                Key = key
             });
         }
 

@@ -180,7 +180,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-                else if (usingDefinition is EndpointUsingFormParameterDefinition)
+                else if (usingDefinition is EndpointUsingFormValueDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
