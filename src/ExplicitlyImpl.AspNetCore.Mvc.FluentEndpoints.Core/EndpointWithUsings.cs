@@ -20,28 +20,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2> UsingUrlParameter<TU2>(string name)
+        public EndpointWithUsing<TU1, TU2> UsingRouteParameter<TU2>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU2),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2> UsingModelFromBody<TU2>()
+        public virtual EndpointWithUsing<TU1, TU2> UsingQueryStringParameter<TU2>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU2),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2> UsingBody<TU2>()
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU2)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2> UsingModelFromForm<TU2>()
+        public virtual EndpointWithUsing<TU1, TU2> UsingForm<TU2>()
         {
-            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU2)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2> UsingFormParameter<TU2>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU2),
+                Name = name
             });
         }
 
@@ -66,28 +84,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3> UsingUrlParameter<TU3>(string name)
+        public EndpointWithUsing<TU1, TU2, TU3> UsingRouteParameter<TU3>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU3),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3> UsingModelFromBody<TU3>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingQueryStringParameter<TU3>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU3),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2, TU3> UsingBody<TU3>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU3)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingModelFromForm<TU3>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingForm<TU3>()
         {
-            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU3)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingFormParameter<TU3>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU3),
+                Name = name
             });
         }
 
@@ -112,28 +148,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4> UsingUrlParameter<TU4>(string name)
+        public EndpointWithUsing<TU1, TU2, TU3, TU4> UsingRouteParameter<TU4>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU4),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4> UsingModelFromBody<TU4>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingQueryStringParameter<TU4>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU4),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2, TU3, TU4> UsingBody<TU4>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU4)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingModelFromForm<TU4>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingForm<TU4>()
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU4)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingFormParameter<TU4>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU4),
+                Name = name
             });
         }
 
@@ -158,28 +212,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingUrlParameter<TU5>(string name)
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingRouteParameter<TU5>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU5),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingModelFromBody<TU5>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingQueryStringParameter<TU5>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU5),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingBody<TU5>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU5)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingModelFromForm<TU5>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingForm<TU5>()
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU5)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingFormParameter<TU5>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU5),
+                Name = name
             });
         }
 
@@ -204,28 +276,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingUrlParameter<TU6>(string name)
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingRouteParameter<TU6>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU6),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingModelFromBody<TU6>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingQueryStringParameter<TU6>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU6),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingBody<TU6>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU6)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingModelFromForm<TU6>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingForm<TU6>()
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU6)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingFormParameter<TU6>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU6),
+                Name = name
             });
         }
 
@@ -250,28 +340,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingUrlParameter<TU7>(string name)
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingRouteParameter<TU7>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU7),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelFromBody<TU7>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingQueryStringParameter<TU7>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU7),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingBody<TU7>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU7)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelFromForm<TU7>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingForm<TU7>()
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU7)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingFormParameter<TU7>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU7),
+                Name = name
             });
         }
 
@@ -296,28 +404,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingUrlParameter<TU8>(string name)
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingRouteParameter<TU8>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingUrlParameterDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU8),
                 Name = name
             });
         }
 
-        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelFromBody<TU8>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingQueryStringParameter<TU8>(string name)
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingModelFromBodyDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU8),
+                Name = name
+            });
+        }
+
+        public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingBody<TU8>()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU8)
             });
         }
 
-        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelFromForm<TU8>()
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingForm<TU8>()
         {
-            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingModelFromFormDefinition
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU8)
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingFormParameter<TU8>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingFormParameterDefinition
+            {
+                Type = typeof(TU8),
+                Name = name
             });
         }
 

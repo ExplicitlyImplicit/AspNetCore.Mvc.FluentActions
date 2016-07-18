@@ -156,13 +156,31 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
-                else if (usingDefinition is EndpointUsingModelFromBodyDefinition)
+                else if (usingDefinition is EndpointUsingRouteParameterDefinition)
+                {
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromRouteAttribute)
+                        .GetConstructor(new Type[0]), new Type[0]);
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                }
+                else if (usingDefinition is EndpointUsingQueryStringParameterDefinition)
+                {
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromQueryAttribute)
+                        .GetConstructor(new Type[0]), new Type[0]);
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                }
+                else if (usingDefinition is EndpointUsingBodyDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
-                else if (usingDefinition is EndpointUsingModelFromFormDefinition)
+                else if (usingDefinition is EndpointUsingFormDefinition)
+                {
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
+                        .GetConstructor(new Type[0]), new Type[0]);
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                }
+                else if (usingDefinition is EndpointUsingFormParameterDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
