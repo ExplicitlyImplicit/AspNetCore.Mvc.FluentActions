@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 
@@ -13,7 +12,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         public Type ReturnType { get; set; }
 
-        public LambdaExpression Func { get; set; }
+        public Delegate Delegate { get; set; }
 
         public EndpointHandlerDefinition()
         {
@@ -168,7 +167,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TR>> handlerFuncAsync)
+        public EndpointWithResult<TR> HandledBy<TR>(Func<TR> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
         }

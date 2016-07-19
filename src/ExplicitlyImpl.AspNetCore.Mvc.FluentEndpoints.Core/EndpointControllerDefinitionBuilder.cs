@@ -243,7 +243,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             }
 
             var customFuncType = MakeGenericFuncType(handler);
-            var customFuncKey = EndpointControllerDefinitionHandlerFuncs.Add(handler.Func.Compile());
+            var customFuncKey = EndpointControllerDefinitionHandlerFuncs.Add(handler.Delegate);
 
             var dictionaryField = typeof(EndpointControllerDefinitionHandlerFuncs)
                 .GetField("All");
