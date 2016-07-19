@@ -187,6 +187,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
+                else if (usingDefinition is EndpointUsingHeaderParameterDefinition)
+                {
+                    var attributeType = typeof(FromHeaderAttribute);
+                    var name = ((EndpointUsingHeaderParameterDefinition)usingDefinition).Name;
+
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(
+                        attributeType.GetConstructor(new Type[0]),
+                        new Type[0],
+                        new[] { attributeType.GetProperty("Name") },
+                        new object[] { name });
+
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                }
                 else if (usingDefinition is EndpointUsingBodyDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)

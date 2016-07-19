@@ -26,6 +26,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public string Name { get; set; }
     }
 
+    public class EndpointUsingHeaderParameterDefinition : EndpointUsingDefinition
+    {
+        public string Name { get; set; }
+    }
+
     public class EndpointUsingBodyDefinition : EndpointUsingDefinition
     {
     }
@@ -151,6 +156,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public virtual EndpointWithUsing<TU1> UsingQueryStringParameter<TU1>(string name)
         {
             return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU1),
+                Name = name
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1> UsingHeader<TU1>(string name)
+        {
+            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name

@@ -38,6 +38,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2> UsingHeader<TU2>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
+            {
+                Type = typeof(TU2),
+                Name = name
+            });
+        }
+
         public EndpointWithUsing<TU1, TU2> UsingBody<TU2>()
         {
             return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingBodyDefinition
@@ -96,6 +105,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public virtual EndpointWithUsing<TU1, TU2, TU3> UsingQueryStringParameter<TU3>(string name)
         {
             return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU3),
+                Name = name
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingHeader<TU3>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
             {
                 Type = typeof(TU3),
                 Name = name
@@ -166,6 +184,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingHeader<TU4>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
+            {
+                Type = typeof(TU4),
+                Name = name
+            });
+        }
+
         public EndpointWithUsing<TU1, TU2, TU3, TU4> UsingBody<TU4>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingBodyDefinition
@@ -224,6 +251,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingQueryStringParameter<TU5>(string name)
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU5),
+                Name = name
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingHeader<TU5>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
             {
                 Type = typeof(TU5),
                 Name = name
@@ -294,6 +330,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingHeader<TU6>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
+            {
+                Type = typeof(TU6),
+                Name = name
+            });
+        }
+
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingBody<TU6>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingBodyDefinition
@@ -358,6 +403,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingHeader<TU7>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
+            {
+                Type = typeof(TU7),
+                Name = name
+            });
+        }
+
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingBody<TU7>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingBodyDefinition
@@ -416,6 +470,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingQueryStringParameter<TU8>(string name)
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU8),
+                Name = name
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingHeader<TU8>(string name)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
             {
                 Type = typeof(TU8),
                 Name = name
