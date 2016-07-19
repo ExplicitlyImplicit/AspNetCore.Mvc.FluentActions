@@ -12,23 +12,23 @@ namespace SimpleWebApi
 
             new Endpoint("/api/notes", HttpMethod.Post)
                 .UsingService<INoteService>()
-                .UsingModelFromBody<NoteItem>()
+                .UsingBody<NoteItem>()
                 .HandledBy((noteService, note) => noteService.Add(note)),
 
             new Endpoint("/api/notes/{noteId}", HttpMethod.Get)
                 .UsingService<INoteService>()
-                .UsingUrlParameter<int>("noteId")
+                .UsingRouteParameter<int>("noteId")
                 .HandledBy((noteService, noteId) => noteService.Get(noteId)),
 
             new Endpoint("/api/notes/{noteId}", HttpMethod.Put)
                 .UsingService<INoteService>()
-                .UsingUrlParameter<int>("noteId")
-                .UsingModelFromBody<NoteItem>()
+                .UsingRouteParameter<int>("noteId")
+                .UsingBody<NoteItem>()
                 .HandledBy((noteService, noteId, note) => noteService.Update(noteId, note)),
 
             new Endpoint("/api/notes/{noteId}", HttpMethod.Delete)
                 .UsingService<INoteService>()
-                .UsingUrlParameter<int>("noteId")
+                .UsingRouteParameter<int>("noteId")
                 .HandledBy((noteService, noteId) => noteService.Remove(noteId)),
         };
     }
