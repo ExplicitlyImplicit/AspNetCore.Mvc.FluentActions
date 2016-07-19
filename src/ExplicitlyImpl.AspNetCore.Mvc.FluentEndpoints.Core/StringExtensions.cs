@@ -41,5 +41,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 return originalValue;
             }
         }
+
+        public static bool Contains(this string originalValue, string valueToCheck, StringComparison comparison)
+        {
+            return originalValue.IndexOf(valueToCheck, comparison) >= 0;
+        }
     }
 }

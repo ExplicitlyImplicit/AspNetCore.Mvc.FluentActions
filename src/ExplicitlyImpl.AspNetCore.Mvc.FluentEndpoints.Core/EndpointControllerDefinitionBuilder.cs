@@ -158,14 +158,33 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 } 
                 else if (usingDefinition is EndpointUsingRouteParameterDefinition)
                 {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromRouteAttribute)
-                        .GetConstructor(new Type[0]), new Type[0]);
+                    var attributeType = typeof(FromRouteAttribute);
+                    var name = ((EndpointUsingRouteParameterDefinition)usingDefinition).Name;
+
+                    if (!endpointDefinition.Url.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        throw new Exception($"Route parameter {name} does not exist in url {endpointDefinition.Url}.");
+                    }
+
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(
+                        attributeType.GetConstructor(new Type[0]), 
+                        new Type[0],
+                        new[] { attributeType.GetProperty("Name") },
+                        new object[] { name });
+
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingQueryStringParameterDefinition)
                 {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromQueryAttribute)
-                        .GetConstructor(new Type[0]), new Type[0]);
+                    var attributeType = typeof(FromQueryAttribute);
+                    var name = ((EndpointUsingQueryStringParameterDefinition)usingDefinition).Name;
+
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(
+                        attributeType.GetConstructor(new Type[0]),
+                        new Type[0],
+                        new[] { attributeType.GetProperty("Name") },
+                        new object[] { name });
+
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingBodyDefinition)
@@ -182,8 +201,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 }
                 else if (usingDefinition is EndpointUsingFormValueDefinition)
                 {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
-                        .GetConstructor(new Type[0]), new Type[0]);
+                    var attributeType = typeof(FromFormAttribute);
+                    var key = ((EndpointUsingFormValueDefinition)usingDefinition).Key;
+
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(
+                        attributeType.GetConstructor(new Type[0]),
+                        new Type[0],
+                        new[] { attributeType.GetProperty("Name") },
+                        new object[] { key });
+
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
 
