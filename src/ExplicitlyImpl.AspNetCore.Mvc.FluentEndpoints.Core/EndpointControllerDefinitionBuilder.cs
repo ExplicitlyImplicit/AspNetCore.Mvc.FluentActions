@@ -225,6 +225,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
                     parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
+                else if (usingDefinition is EndpointUsingModelBinderDefinition)
+                {
+                    var attributeType = typeof(ModelBinderAttribute);
+                    var modelBinderType = ((EndpointUsingModelBinderDefinition)usingDefinition).ModelBinderType;
+
+                    var parameterAttributeBuilder = new CustomAttributeBuilder(
+                        attributeType.GetConstructor(new Type[0]),
+                        new Type[0],
+                        new[] { attributeType.GetProperty("BinderType") },
+                        new object[] { modelBinderType });
+
+                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                }
 
                 parameterIndex++;
             }

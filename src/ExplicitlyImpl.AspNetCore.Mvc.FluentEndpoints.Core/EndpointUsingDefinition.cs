@@ -43,4 +43,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
     {
         public string Key { get; set; }
     }
+
+    public class EndpointUsingModelBinderDefinition : EndpointUsingDefinition
+    {
+        public Type ModelBinderType { get; set; }
+    }
 }

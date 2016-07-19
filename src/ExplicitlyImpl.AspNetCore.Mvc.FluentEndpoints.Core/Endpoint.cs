@@ -159,6 +159,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU1),
+                ModelBinderType = modelBinderType
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);

@@ -72,6 +72,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2> UsingModelBinder<TU2>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU2),
+                ModelBinderType = modelBinderType
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -142,6 +151,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU3),
                 Key = key
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3> UsingModelBinder<TU3>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU3),
+                ModelBinderType = modelBinderType
             });
         }
 
@@ -218,6 +236,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> UsingModelBinder<TU4>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU4),
+                ModelBinderType = modelBinderType
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TU2, TU3, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -288,6 +315,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU5),
                 Key = key
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingModelBinder<TU5>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU5),
+                ModelBinderType = modelBinderType
             });
         }
 
@@ -364,6 +400,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingModelBinder<TU6>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU6),
+                ModelBinderType = modelBinderType
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -437,6 +482,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelBinder<TU7>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU7),
+                ModelBinderType = modelBinderType
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TU6, TR>> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -507,6 +561,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU8),
                 Key = key
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelBinder<TU8>(Type modelBinderType)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            {
+                Type = typeof(TU8),
+                ModelBinderType = modelBinderType
             });
         }
 
