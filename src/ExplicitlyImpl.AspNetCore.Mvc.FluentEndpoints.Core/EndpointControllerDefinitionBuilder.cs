@@ -23,14 +23,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 throw new ArgumentException($"Missing handler for endpoint {endpoint}.");
             }
 
-            if (endpoint.EndpointDefinition.Handlers.Count() > 1)
-            {
-                throw new ArgumentException($"More than one handler is not currently supported (seen in endpoint {endpoint}).");
-            }
-
-            var handler = endpoint.EndpointDefinition.Handlers.First();
-
-            var controllerTypeInfo = DefineControllerTypeForHandler(handler, endpoint.EndpointDefinition);
+            var controllerTypeInfo = DefineControllerType(endpoint.EndpointDefinition);
 
             return new EndpointControllerDefinition()
             {
@@ -42,14 +35,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             };
         }
 
-        private static TypeInfo DefineControllerTypeForHandler(
-            EndpointHandlerDefinition handler, 
+        private static TypeInfo DefineControllerType(
             EndpointDefinition endpointDefinition)
         {
             var moduleBuilder = DefineModule();
             var typeBuilder = DefineType(moduleBuilder);
 
-            DefineActionMethod(typeBuilder, handler, endpointDefinition);
+            DefineActionMethod(typeBuilder, endpointDefinition);
 
             return typeBuilder.CreateTypeInfo();
         }
@@ -125,15 +117,27 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         private static void DefineActionMethod(
             TypeBuilder typeBuilder, 
-            EndpointHandlerDefinition handler, 
             EndpointDefinition endpointDefinition)
         {
-            var parameterTypes = handler.Usings
+            var usingsForMethodParameters = endpointDefinition.Handlers
+                .SelectMany(handler => handler.Usings)
+                .Where(@using => @using.IsMethodParameter)
+                .Distinct()
+                .ToArray();
+
+            var methodParameterIndicesForUsings = usingsForMethodParameters
+                .Select((@using, index) => new { Using = @using, Index = index })
+                .ToDictionary(
+                    indexedUsing => indexedUsing.Using.GetHashCode(),
+                    indexedUsing => indexedUsing.Index + 1 // 1-based index
+                );
+
+            var methodParameterTypes = usingsForMethodParameters
                 .Select(@using => @using.Type)
                 .ToArray();
 
-            var returnType = handler.ReturnType;
-            var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, parameterTypes);
+            var returnType = endpointDefinition.Handlers.Last().ReturnType;
+            var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, methodParameterTypes);
 
             var attributeConstructorInfo = GetHttpMethodAttribute(endpointDefinition.HttpMethod)
                 .GetConstructor(new Type[0]);
@@ -142,19 +146,20 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
             var ilGenerator = methodBuilder.GetILGenerator();
 
-            var parameterIndex = 1;
-            foreach (var usingDefinition in handler.Usings)
+            foreach (var usingDefinition in usingsForMethodParameters)
             {
-                var parameterBuilder = methodBuilder.DefineParameter(
-                    parameterIndex, 
+                var methodParameterIndex = methodParameterIndicesForUsings[usingDefinition.GetHashCode()];
+
+                var methodParameterBuilder = methodBuilder.DefineParameter(
+                    methodParameterIndex, 
                     ParameterAttributes.None, 
-                    $"parameter{parameterIndex}");
+                    $"parameter{methodParameterIndex}");
 
                 if (usingDefinition is EndpointUsingServiceDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
                 else if (usingDefinition is EndpointUsingRouteParameterDefinition)
                 {
@@ -172,7 +177,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         new[] { attributeType.GetProperty("Name") },
                         new object[] { name });
 
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingQueryStringParameterDefinition)
                 {
@@ -185,7 +190,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         new[] { attributeType.GetProperty("Name") },
                         new object[] { name });
 
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingHeaderParameterDefinition)
                 {
@@ -198,19 +203,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         new[] { attributeType.GetProperty("Name") },
                         new object[] { name });
 
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingBodyDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
                 else if (usingDefinition is EndpointUsingFormDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingFormValueDefinition)
                 {
@@ -223,7 +228,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         new[] { attributeType.GetProperty("Name") },
                         new object[] { key });
 
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
                 else if (usingDefinition is EndpointUsingModelBinderDefinition)
                 {
@@ -236,14 +241,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                         new[] { attributeType.GetProperty("BinderType") },
                         new object[] { modelBinderType });
 
-                    parameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
+                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-
-                parameterIndex++;
             }
-
-            var customFuncType = MakeGenericFuncType(handler);
-            var customFuncKey = EndpointControllerDefinitionHandlerFuncs.Add(handler.Delegate);
 
             var dictionaryField = typeof(EndpointControllerDefinitionHandlerFuncs)
                 .GetField("All");
@@ -251,16 +251,40 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 .MakeGenericType(typeof(string), typeof(Delegate))
                 .GetMethod("get_Item");
 
-            ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
-            ilGenerator.Emit(OpCodes.Ldstr, customFuncKey);
-            ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
+            LocalBuilder localVariableForPreviousReturnValue = null;
 
-            for (var usingIndex = 1; usingIndex <= handler.Usings.Count; usingIndex++)
+            foreach (var handler in endpointDefinition.Handlers)
             {
-                ilGenerator.Emit(OpCodes.Ldarg, usingIndex);
+                var customFuncType = MakeGenericFuncType(handler);
+                var customFuncKey = EndpointControllerDefinitionHandlerFuncs.Add(handler.Delegate);
+                var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
+
+                // Push Func
+                ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
+                ilGenerator.Emit(OpCodes.Ldstr, customFuncKey);
+                ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
+
+                // Push arguments for Func
+                foreach (var handlerUsing in handler.Usings)
+                {
+                    if (handlerUsing.IsMethodParameter)
+                    {
+                        ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
+                    }
+                }
+
+                // Push Func.Invoke
+                ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
+
+                // Push storing result in local variable
+                ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
+
+                // Make sure next handler has access to previous handler's return value
+                localVariableForPreviousReturnValue = localVariableForReturnValue;
             }
 
-            ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
+            // Return last return value
+            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
             ilGenerator.Emit(OpCodes.Ret);
         }
     }
