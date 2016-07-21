@@ -95,4 +95,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             return Tuple.Create(GetType(), Type, ModelBinderType).GetHashCode();
         }
     }
+
+
+    public class EndpointUsingResultFromHandlerDefinition : EndpointUsingDefinition
+    {
+        public override bool IsMethodParameter => false;
+    }
 }

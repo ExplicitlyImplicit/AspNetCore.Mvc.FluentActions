@@ -270,6 +270,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                     if (handlerUsing.IsMethodParameter)
                     {
                         ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
+                    } else if (handlerUsing is EndpointUsingResultFromHandlerDefinition)
+                    {
+                        ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
                     }
                 }
 
