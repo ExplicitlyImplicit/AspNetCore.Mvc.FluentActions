@@ -12,6 +12,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithUsing<TU1, TU2> Using<TU2>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, usingDefinition);
+        }
+
         public EndpointWithUsing<TU1, TU2> UsingService<TU2>()
         {
             return new EndpointWithUsing<TU1, TU2>(EndpointDefinition, new EndpointUsingServiceDefinition
@@ -92,6 +97,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointUsingDefinition usingDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3> Using<TU3>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3>(EndpointDefinition, usingDefinition);
         }
 
         public EndpointWithUsing<TU1, TU2, TU3> UsingService<TU3>()
@@ -176,6 +186,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4> Using<TU4>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, usingDefinition);
+        }
+
         public EndpointWithUsing<TU1, TU2, TU3, TU4> UsingService<TU4>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4>(EndpointDefinition, new EndpointUsingServiceDefinition
@@ -256,6 +271,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointUsingDefinition usingDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> Using<TU5>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, usingDefinition);
         }
 
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5> UsingService<TU5>()
@@ -340,6 +360,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> Using<TU6>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, usingDefinition);
+        }
+
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> UsingService<TU6>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, new EndpointUsingServiceDefinition
@@ -422,6 +447,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> Using<TU7>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, usingDefinition);
+        }
+
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingService<TU7>()
         {
             return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, new EndpointUsingServiceDefinition
@@ -502,6 +532,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithUsing(EndpointDefinition endpointDefinition, EndpointUsingDefinition usingDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> Using<TU8>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, usingDefinition);
         }
 
         public EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingService<TU8>()

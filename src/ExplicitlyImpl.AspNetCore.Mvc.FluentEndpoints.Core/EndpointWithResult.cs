@@ -14,6 +14,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.ReturnType = returnType.IsAnonymous() ? typeof(object) : returnType;
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1> Using<TU1>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1>(EndpointDefinition, usingDefinition);
+        }
+
         public virtual EndpointWithResultAndUsing<TR, TR> UsingResultFromHandler()
         {
             return new EndpointWithResultAndUsing<TR, TR>(EndpointDefinition, new EndpointUsingResultFromHandlerDefinition
@@ -103,6 +108,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         {
             EndpointDefinition.Handlers.Add(new EndpointHandlerDefinition());
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2> Using<TU2>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2>(EndpointDefinition, usingDefinition);
         }
 
         public virtual EndpointWithResultAndUsing<TR, TU1, TR> UsingResultFromHandler()
@@ -195,6 +205,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3> Using<TU3>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3>(EndpointDefinition, usingDefinition);
+        }
+
         public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TR> UsingResultFromHandler()
         {
             return new EndpointWithResultAndUsing<TR, TU1, TU2, TR>(EndpointDefinition, new EndpointUsingResultFromHandlerDefinition
@@ -283,6 +298,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithResultAndUsing(EndpointDefinition endpointDefinition, EndpointUsingDefinition usingDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4> Using<TU4>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4>(EndpointDefinition, usingDefinition);
         }
 
         public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TR> UsingResultFromHandler()
@@ -375,6 +395,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5> Using<TU5>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5>(EndpointDefinition, usingDefinition);
+        }
+
         public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR> UsingResultFromHandler()
         {
             return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR>(EndpointDefinition, new EndpointUsingResultFromHandlerDefinition
@@ -463,6 +488,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithResultAndUsing(EndpointDefinition endpointDefinition, EndpointUsingDefinition usingDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> Using<TU6>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6>(EndpointDefinition, usingDefinition);
         }
 
         public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TR> UsingResultFromHandler()
@@ -555,6 +585,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> Using<TU7>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7>(EndpointDefinition, usingDefinition);
+        }
+
         public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR> UsingResultFromHandler()
         {
             return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR>(EndpointDefinition, new EndpointUsingResultFromHandlerDefinition
@@ -643,6 +678,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public EndpointWithResultAndUsing(EndpointDefinition endpointDefinition, EndpointUsingDefinition usingDefinition) : base(endpointDefinition)
         {
             EndpointDefinition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> Using<TU8>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(EndpointDefinition, usingDefinition);
         }
 
         public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR> UsingResultFromHandler()

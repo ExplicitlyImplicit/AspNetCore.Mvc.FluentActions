@@ -98,6 +98,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         public Endpoint(EndpointDefinition endpointDefinition)
             : base(endpointDefinition) { }
 
+        public virtual EndpointWithUsing<TU1> Using<TU1>(EndpointUsingDefinition usingDefinition)
+        {
+            return new EndpointWithUsing<TU1>(EndpointDefinition, usingDefinition);
+        }
+
         public virtual EndpointWithUsing<TU1> UsingService<TU1>()
         {
             return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingServiceDefinition
