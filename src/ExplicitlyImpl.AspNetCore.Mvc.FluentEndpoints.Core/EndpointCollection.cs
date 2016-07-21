@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 {
-    public class EndpointCollection : IEnumerable<Endpoint>
+    public class EndpointCollection : IEnumerable<EndpointBase>
     {
-        public List<Endpoint> Endpoints { get; internal set; }
+        public List<EndpointBase> Endpoints { get; internal set; }
 
         public EndpointCollection()
         {
-            Endpoints = new List<Endpoint>();
+            Endpoints = new List<EndpointBase>();
         }
 
-        public EndpointCollection(IEnumerable<IEnumerable<Endpoint>> endpointCollections) : this()
+        public EndpointCollection(IEnumerable<IEnumerable<EndpointBase>> endpointCollections) : this()
         {
             foreach(var endpointCollection in endpointCollections)
             {
@@ -36,17 +36,17 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             return endpoint;
         }
 
-        public void Add(Endpoint endpoint)
+        public void Add(EndpointBase endpoint)
         {
             Endpoints.Add(endpoint);
         }
 
-        public void Add(IEnumerable<Endpoint> endpoints)
+        public void Add(IEnumerable<EndpointBase> endpoints)
         {
             Endpoints.AddRange(endpoints);
         }
 
-        public IEnumerator<Endpoint> GetEnumerator()
+        public IEnumerator<EndpointBase> GetEnumerator()
         {
             return Endpoints.GetEnumerator();
         }

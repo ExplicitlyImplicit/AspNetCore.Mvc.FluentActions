@@ -4,7 +4,7 @@
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 {
-    public class EndpointWithResult<TR> : Endpoint
+    public class EndpointWithResult<TR> : EndpointBase
     {
         public EndpointWithResult(EndpointDefinition endpointDefinition, Delegate handlerFunc) : base(endpointDefinition)
         {

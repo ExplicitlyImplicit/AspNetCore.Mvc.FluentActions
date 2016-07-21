@@ -11,7 +11,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
     {
         private const string ActionName = "HandlerAction";
 
-        public EndpointControllerDefinition Create(Endpoint endpoint)
+        public EndpointControllerDefinition Create(EndpointBase endpoint)
         {
             if (endpoint == null)
             {
