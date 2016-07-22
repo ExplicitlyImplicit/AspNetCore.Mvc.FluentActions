@@ -27,7 +27,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         public readonly HttpMethod HttpMethod;
 
-        public readonly string Description;
+        public readonly string Title;
 
         public IList<EndpointHandlerDefinition> Handlers { get; set; }
 
@@ -44,11 +44,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             }
         }
 
-        public EndpointDefinition(string url, HttpMethod httpMethod, string description = null)
+        public EndpointDefinition(string url, HttpMethod httpMethod, string title = null)
         {
             Url = url.TrimStart('/');
             HttpMethod = httpMethod;
-            Description = description;
+            Title = title;
 
             Handlers = new List<EndpointHandlerDefinition>();
         }
@@ -67,15 +67,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         public HttpMethod HttpMethod => EndpointDefinition.HttpMethod;
 
-        public string Description => EndpointDefinition.Description;
+        public string Title => EndpointDefinition.Title;
 
-        public EndpointBase(HttpMethod httpMethod, string url, string description = null)
+        public EndpointBase(HttpMethod httpMethod, string url, string title = null)
         {
-            EndpointDefinition = new EndpointDefinition(url, httpMethod, description);
+            EndpointDefinition = new EndpointDefinition(url, httpMethod, title);
         }
 
-        public EndpointBase(string url, HttpMethod httpMethod, string description = null)
-            : this(httpMethod, url, description) { }
+        public EndpointBase(string url, HttpMethod httpMethod, string title = null)
+            : this(httpMethod, url, title) { }
 
         public EndpointBase(EndpointDefinition endpointDefinition)
         {
@@ -90,11 +90,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
     public class Endpoint : EndpointBase
     {
-        public Endpoint(HttpMethod httpMethod, string url, string description = null)
-            : base(httpMethod, url, description) { }
+        public Endpoint(HttpMethod httpMethod, string url, string title = null)
+            : base(httpMethod, url, title) { }
 
-        public Endpoint(string url, HttpMethod httpMethod, string description = null)
-            : base(httpMethod, url, description) { }
+        public Endpoint(string url, HttpMethod httpMethod, string title = null)
+            : base(httpMethod, url, title) { }
 
         public Endpoint(EndpointDefinition endpointDefinition)
             : base(endpointDefinition) { }

@@ -22,16 +22,16 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             }
         }
 
-        public Endpoint Add(HttpMethod httpMethod, string url, string description = null)
+        public Endpoint Add(HttpMethod httpMethod, string url, string title = null)
         {
-            var endpoint = new Endpoint(httpMethod, url, description);
+            var endpoint = new Endpoint(httpMethod, url, title);
             Endpoints.Add(endpoint);
             return endpoint;
         }
 
-        public Endpoint Add(string url, HttpMethod httpMethod, string description = null)
+        public Endpoint Add(string url, HttpMethod httpMethod, string title = null)
         {
-            var endpoint = new Endpoint(httpMethod, url, description);
+            var endpoint = new Endpoint(httpMethod, url, title);
             Endpoints.Add(endpoint);
             return endpoint;
         }
