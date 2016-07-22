@@ -172,9 +172,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
-        public EndpointWithResult<TR> HandledBy<TR>(Func<TR> handlerFuncAsync)
+        public EndpointWithResult<TR> HandledBy<TR>(Func<TR> handlerFunc)
         {
-            return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
+            return new EndpointWithResult<TR>(EndpointDefinition, handlerFunc);
         }
     }
 }
