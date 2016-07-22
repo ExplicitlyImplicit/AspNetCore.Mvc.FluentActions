@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 // ReSharper disable InconsistentNaming
 
@@ -93,6 +94,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 
@@ -192,6 +201,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR2> HandledBy<TR2>(Func<TU1, TR2> handlerFuncAsync)
         {
             return new EndpointWithResult<TR2>(EndpointDefinition, handlerFuncAsync);
@@ -284,6 +301,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU3),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 
@@ -382,6 +407,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TR2> handlerFuncAsync)
         {
             return new EndpointWithResult<TR2>(EndpointDefinition, handlerFuncAsync);
@@ -474,6 +507,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU5),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 
@@ -572,6 +613,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TR2> handlerFuncAsync)
         {
             return new EndpointWithResult<TR2>(EndpointDefinition, handlerFuncAsync);
@@ -667,6 +716,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR2> handlerFuncAsync)
         {
             return new EndpointWithResult<TR2>(EndpointDefinition, handlerFuncAsync);
@@ -759,6 +816,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU8),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 

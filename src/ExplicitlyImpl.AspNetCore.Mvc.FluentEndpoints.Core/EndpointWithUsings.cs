@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
@@ -83,6 +84,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU2),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 
@@ -173,6 +182,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, TU2, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Func<TU1, TU2, TR> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -257,6 +274,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU4),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 
@@ -347,6 +372,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Func<TU1, TU2, TU3, TU4, TR> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -431,6 +464,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU6),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 
@@ -521,6 +562,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             });
         }
 
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
+            });
+        }
+
         public EndpointWithResult<TR> HandledBy<TR>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR> handlerFuncAsync)
         {
             return new EndpointWithResult<TR>(EndpointDefinition, handlerFuncAsync);
@@ -605,6 +654,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU8),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 

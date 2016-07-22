@@ -251,6 +251,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 .MakeGenericType(typeof(string), typeof(Delegate))
                 .GetMethod("get_Item");
 
+            var httpContextControllerProperty = typeof(Controller).GetProperty("HttpContext");
+
             LocalBuilder localVariableForPreviousReturnValue = null;
 
             foreach (var handler in endpointDefinition.Handlers)
@@ -273,6 +275,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                     } else if (handlerUsing is EndpointUsingResultFromHandlerDefinition)
                     {
                         ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+                    } else if (handlerUsing is EndpointUsingHttpContextDefinition)
+                    {
+                        ilGenerator.Emit(OpCodes.Ldarg_0);
+                        ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
                     }
                 }
 

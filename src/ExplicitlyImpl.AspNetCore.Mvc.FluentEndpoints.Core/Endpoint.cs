@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -169,6 +170,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual EndpointWithUsing<HttpContext> UsingHttpContext()
+        {
+            return new EndpointWithUsing<HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            {
+                Type = typeof(HttpContext)
             });
         }
 

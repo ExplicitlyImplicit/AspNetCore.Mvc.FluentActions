@@ -96,8 +96,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         }
     }
 
-
     public class EndpointUsingResultFromHandlerDefinition : EndpointUsingDefinition
+    {
+        public override bool IsMethodParameter => false;
+    }
+
+    public class EndpointUsingHttpContextDefinition : EndpointUsingDefinition
     {
         public override bool IsMethodParameter => false;
     }
