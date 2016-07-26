@@ -109,6 +109,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
         {
             return new EndpointWithResult<TR2>(EndpointDefinition, handlerFuncAsync);
         }
+
+        public EndpointWithView RenderedBy(string pathToView)
+        {
+            return new EndpointWithView(EndpointDefinition, pathToView);
+        }
     }
 
     public class EndpointWithResultAndUsing<TR, TU1> : EndpointBase

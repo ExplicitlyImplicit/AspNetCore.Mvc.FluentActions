@@ -31,6 +31,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
 
         public IList<EndpointHandlerDefinition> Handlers { get; set; }
 
+        public string PathToView { get; set; }
+
         internal EndpointHandlerDefinition CurrentHandler
         {
             get

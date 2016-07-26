@@ -297,8 +297,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
                 localVariableForPreviousReturnValue = localVariableForReturnValue;
             }
 
-            // Return last return value
-            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+            if (endpointDefinition.PathToView != null)
+            {
+                // Call Controller.View(string pathName, object model) and return the results
+
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldstr, endpointDefinition.PathToView);
+                ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+
+                var viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
+                ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
+            } else
+            {
+                // Return last handlers return value
+                ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+            }
+
             ilGenerator.Emit(OpCodes.Ret);
         }
     }
