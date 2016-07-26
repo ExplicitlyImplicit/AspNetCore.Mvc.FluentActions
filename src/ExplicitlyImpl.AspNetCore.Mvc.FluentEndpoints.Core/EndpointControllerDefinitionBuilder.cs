@@ -35,9 +35,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
             };
         }
 
-        private static TypeInfo DefineControllerType(
+        public static TypeInfo DefineControllerType(
             EndpointDefinition endpointDefinition)
         {
+            if (endpointDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(endpointDefinition));
+            }
+
             var moduleBuilder = DefineModule();
             var typeBuilder = DefineType(moduleBuilder);
 
