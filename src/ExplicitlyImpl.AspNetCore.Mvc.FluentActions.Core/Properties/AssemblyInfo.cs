@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints.Core")]
+[assembly: AssemblyProduct("ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Linq;
 
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public static class ApplicationBuilderExtensions
     {

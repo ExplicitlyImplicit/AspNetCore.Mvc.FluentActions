@@ -1,4 +1,4 @@
-﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints;
+﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 
 namespace SimpleWebApi
 {

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class EndpointControllerDefinition
     {

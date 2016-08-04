@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Collections.Generic;
 
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class EndpointControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
     {

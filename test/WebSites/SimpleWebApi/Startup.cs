@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints;
+using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 
 namespace SimpleWebApi
 {

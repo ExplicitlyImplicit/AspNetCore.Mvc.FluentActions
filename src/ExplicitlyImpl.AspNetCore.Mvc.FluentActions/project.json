@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints.Core": "1.0.0-*",
+    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Mvc.Core": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Routing": "1.0.0-rc2-final"

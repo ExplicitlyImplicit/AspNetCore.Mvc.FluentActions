@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 // ReSharper disable InconsistentNaming
 
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class EndpointCollection : IEnumerable<EndpointBase>
     {

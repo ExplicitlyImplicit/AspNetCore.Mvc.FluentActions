@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using SimpleMvcWithViews.Data;
 using SimpleMvcWithViews.Models;
 using SimpleMvcWithViews.Services;
-using ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints;
+using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 
 namespace SimpleMvcWithViews
 {

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class EndpointWithUsing<TU1> : EndpointBase
     {

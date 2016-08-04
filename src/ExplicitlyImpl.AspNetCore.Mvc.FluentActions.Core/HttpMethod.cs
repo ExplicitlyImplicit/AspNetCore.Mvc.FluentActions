@@ -1,5 +1,5 @@
 ﻿
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public enum HttpMethod
     {

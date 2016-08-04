@@ -5,7 +5,7 @@ using System.Linq;
 
 // ReSharper disable InconsistentNaming
 
-namespace ExplicitlyImpl.AspNetCore.Mvc.FluentEndpoints
+namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class EndpointHandlerDefinition
     {
