@@ -80,43 +80,43 @@ namespace SimpleMvcWithViews
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-            app.UseMvcWithFluentActions(endpoints =>
+            app.UseMvcWithFluentActions(actions =>
             {
-                endpoints
+                actions
                     .Add("/helloWorld", HttpMethod.Get)
                     .HandledBy(() => "Hello World!");
 
-                endpoints
+                actions
                     .Add("/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .HandledBy(userService => userService.List())
                     .RenderedBy("~/views/users/list.cshtml");
 
-                endpoints
+                actions
                     .Add("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .HandledBy(userService => userService.List());
 
-                endpoints
+                actions
                     .Add("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
                     .UsingBody<UserItem>()
                     .HandledBy((userService, user) => userService.Add(user));
 
-                endpoints
+                actions
                     .Add("/api/users/{userId}", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Get(userId));
 
-                endpoints
+                actions
                     .Add("/api/users/{userId}", HttpMethod.Put)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .UsingBody<UserItem>()
                     .HandledBy((userService, userId, user) => userService.Update(userId, user));
 
-                endpoints
+                actions
                     .Add("/api/users/{userId}", HttpMethod.Delete)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")

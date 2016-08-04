@@ -41,42 +41,42 @@ namespace SimpleWebApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            //app.UseMvcWithFluentEndpoints(Endpoints.AllExternal);
+            //app.UseMvcWithFluentActions(FluentActions.AllExternal);
 
-            app.UseMvcWithFluentActions(endpoints =>
+            app.UseMvcWithFluentActions(actions =>
             {
-                endpoints
+                actions
                     .Add("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .HandledBy(userService => userService.List())
                     .RenderedBy("users/list.cshtml");
 
-                endpoints
+                actions
                     .Add("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
                     .UsingBody<UserItem>()
                     .HandledBy((userService, user) => userService.Add(user));
 
-                endpoints
+                actions
                     .Add("/api/users/{userId}", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Get(userId));
 
-                endpoints
+                actions
                     .Add("/api/users/{userId}", HttpMethod.Put)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .UsingBody<UserItem>()
                     .HandledBy((userService, userId, user) => userService.Update(userId, user));
 
-                endpoints
+                actions
                     .Add("/api/users/{userId}", HttpMethod.Delete)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Remove(userId));
 
-                //endpoints
+                //actions
                 //    .Add("/api/users/{userId}", HttpMethod.Put)
                 //    .UsingService<IUserService>()
                 //    .UsingDataModel<UserItem>(model =>  
@@ -85,17 +85,17 @@ namespace SimpleWebApi
                 //    )  
                 //    .HandledBy((userService, user) => userService.Update(user));
 
-                //endpoints
+                //actions
                 //    .Add("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingController<UserController>()
                 //    .UsingParameter<int>("userId")
                 //    .HandledBy((userController, userId) => userController.Edit(userId));
 
-                //endpoints
+                //actions
                 //    .Add("/api/users/{userId}", HttpMethod.Get)
                 //    .HandledByController<UserController>("Get");
 
-                //endpoints
+                //actions
                 //    .Add("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingService<IUserService>()
                 //    .UsingParameter<int>("userId")
@@ -103,7 +103,7 @@ namespace SimpleWebApi
                 //    .UsingService<IJsonUtilsService>()
                 //    .HandledBy((result, jsonUtilsService) => jsonUtilsService.Encode(result));
 
-                //endpoints
+                //actions
                 //    .Add("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingService<IUserService>()
                 //    .UsingParameter<int>("userId")
