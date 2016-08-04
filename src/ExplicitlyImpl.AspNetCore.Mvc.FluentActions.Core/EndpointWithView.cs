@@ -4,11 +4,11 @@
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public class EndpointWithView : EndpointBase
+    public class EndpointWithView : FluentActionBase
     {
-        public EndpointWithView(EndpointDefinition endpointDefinition, string pathToView) : base(endpointDefinition)
+        public EndpointWithView(FluentActionDefinition endpointDefinition, string pathToView) : base(endpointDefinition)
         {
-            EndpointDefinition.PathToView = pathToView;
+            Definition.PathToView = pathToView;
         }
     }
 }

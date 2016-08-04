@@ -11,19 +11,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         private const string ActionName = "HandlerAction";
 
-        public EndpointControllerDefinition Create(EndpointBase endpoint)
+        public EndpointControllerDefinition Create(FluentActionBase endpoint)
         {
             if (endpoint == null)
             {
                 throw new ArgumentNullException(nameof(endpoint));
             }
 
-            if (!endpoint.EndpointDefinition.Handlers.Any())
+            if (!endpoint.Definition.Handlers.Any())
             {
                 throw new ArgumentException($"Missing handler for endpoint {endpoint}.");
             }
 
-            var controllerTypeInfo = DefineControllerType(endpoint.EndpointDefinition);
+            var controllerTypeInfo = DefineControllerType(endpoint.Definition);
 
             return new EndpointControllerDefinition()
             {
@@ -36,7 +36,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
 
         public static TypeInfo DefineControllerType(
-            EndpointDefinition endpointDefinition)
+            FluentActionDefinition endpointDefinition)
         {
             if (endpointDefinition == null)
             {
@@ -76,7 +76,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return typeBuilder;
         }
 
-        private static Type MakeGenericFuncType(EndpointHandlerDefinition handler)
+        private static Type MakeGenericFuncType(FluentActionHandlerDefinition handler)
         {
             var argumentTypes = handler.Usings.Select(@using => @using.Type).ToList();
             argumentTypes.Add(handler.ReturnType);
@@ -122,7 +122,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         private static void DefineActionMethod(
             TypeBuilder typeBuilder, 
-            EndpointDefinition endpointDefinition)
+            FluentActionDefinition endpointDefinition)
         {
             var usingsForMethodParameters = endpointDefinition.Handlers
                 .SelectMany(handler => handler.Usings)

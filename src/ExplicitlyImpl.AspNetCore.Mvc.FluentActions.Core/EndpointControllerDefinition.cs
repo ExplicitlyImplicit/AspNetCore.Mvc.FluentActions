@@ -14,6 +14,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string Url => Endpoint.Url;
 
-        public EndpointBase Endpoint { get; set; }
+        public FluentActionBase Endpoint { get; set; }
     }
 }

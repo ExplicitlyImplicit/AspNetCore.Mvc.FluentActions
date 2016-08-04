@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public class EndpointHandlerDefinition
+    public class FluentActionHandlerDefinition
     {
         public IList<EndpointUsingDefinition> Usings { get; set; }
 
@@ -15,13 +15,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public Delegate Delegate { get; set; }
 
-        public EndpointHandlerDefinition()
+        public FluentActionHandlerDefinition()
         {
             Usings = new List<EndpointUsingDefinition>();
         }
     }
 
-    public class EndpointDefinition
+    public class FluentActionDefinition
     {
         public readonly string Url;
 
@@ -29,30 +29,30 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public readonly string Title;
 
-        public IList<EndpointHandlerDefinition> Handlers { get; set; }
+        public IList<FluentActionHandlerDefinition> Handlers { get; set; }
 
         public string PathToView { get; set; }
 
-        internal EndpointHandlerDefinition CurrentHandler
+        internal FluentActionHandlerDefinition CurrentHandler
         {
             get
             {
                 if (!Handlers.Any())
                 {
-                    Handlers.Add(new EndpointHandlerDefinition());
+                    Handlers.Add(new FluentActionHandlerDefinition());
                 }
 
                 return Handlers.Last();
             }
         }
 
-        public EndpointDefinition(string url, HttpMethod httpMethod, string title = null)
+        public FluentActionDefinition(string url, HttpMethod httpMethod, string title = null)
         {
             Url = url.TrimStart('/');
             HttpMethod = httpMethod;
             Title = title;
 
-            Handlers = new List<EndpointHandlerDefinition>();
+            Handlers = new List<FluentActionHandlerDefinition>();
         }
 
         public override string ToString()
@@ -61,54 +61,54 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointBase
+    public class FluentActionBase
     {
-        public readonly EndpointDefinition EndpointDefinition;
+        public readonly FluentActionDefinition Definition;
 
-        public string Url => EndpointDefinition.Url;
+        public string Url => Definition.Url;
 
-        public HttpMethod HttpMethod => EndpointDefinition.HttpMethod;
+        public HttpMethod HttpMethod => Definition.HttpMethod;
 
-        public string Title => EndpointDefinition.Title;
+        public string Title => Definition.Title;
 
-        public EndpointBase(HttpMethod httpMethod, string url, string title = null)
+        public FluentActionBase(HttpMethod httpMethod, string url, string title = null)
         {
-            EndpointDefinition = new EndpointDefinition(url, httpMethod, title);
+            Definition = new FluentActionDefinition(url, httpMethod, title);
         }
 
-        public EndpointBase(string url, HttpMethod httpMethod, string title = null)
+        public FluentActionBase(string url, HttpMethod httpMethod, string title = null)
             : this(httpMethod, url, title) { }
 
-        public EndpointBase(EndpointDefinition endpointDefinition)
+        public FluentActionBase(FluentActionDefinition actionDefinition)
         {
-            EndpointDefinition = endpointDefinition;
+            Definition = actionDefinition;
         }
 
         public override string ToString()
         {
-            return EndpointDefinition.ToString();
+            return Definition.ToString();
         }
     }
 
-    public class Endpoint : EndpointBase
+    public class FluentAction : FluentActionBase
     {
-        public Endpoint(HttpMethod httpMethod, string url, string title = null)
+        public FluentAction(HttpMethod httpMethod, string url, string title = null)
             : base(httpMethod, url, title) { }
 
-        public Endpoint(string url, HttpMethod httpMethod, string title = null)
+        public FluentAction(string url, HttpMethod httpMethod, string title = null)
             : base(httpMethod, url, title) { }
 
-        public Endpoint(EndpointDefinition endpointDefinition)
-            : base(endpointDefinition) { }
+        public FluentAction(FluentActionDefinition fluentActionDefinition)
+            : base(fluentActionDefinition) { }
 
         public virtual EndpointWithUsing<TU1> Using<TU1>(EndpointUsingDefinition usingDefinition)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, usingDefinition);
+            return new EndpointWithUsing<TU1>(Definition, usingDefinition);
         }
 
         public virtual EndpointWithUsing<TU1> UsingService<TU1>()
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingServiceDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingServiceDefinition
             {
                 Type = typeof(TU1)
             });
@@ -116,7 +116,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingRouteParameter<TU1>(string name)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingRouteParameterDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingRouteParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
@@ -125,7 +125,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingQueryStringParameter<TU1>(string name)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingQueryStringParameterDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingQueryStringParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
@@ -134,7 +134,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingHeader<TU1>(string name)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingHeaderParameterDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingHeaderParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
@@ -143,7 +143,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingBody<TU1>()
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingBodyDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingBodyDefinition
             {
                 Type = typeof(TU1)
             });
@@ -151,7 +151,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingForm<TU1>()
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingFormDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingFormDefinition
             {
                 Type = typeof(TU1)
             });
@@ -159,7 +159,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingFormValue<TU1>(string key)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingFormValueDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingFormValueDefinition
             {
                 Type = typeof(TU1),
                 Key = key
@@ -168,7 +168,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType)
         {
-            return new EndpointWithUsing<TU1>(EndpointDefinition, new EndpointUsingModelBinderDefinition
+            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType
@@ -177,7 +177,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual EndpointWithUsing<HttpContext> UsingHttpContext()
         {
-            return new EndpointWithUsing<HttpContext>(EndpointDefinition, new EndpointUsingHttpContextDefinition
+            return new EndpointWithUsing<HttpContext>(Definition, new EndpointUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
             });
@@ -185,7 +185,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public EndpointWithResult<TR> HandledBy<TR>(Func<TR> handlerFunc)
         {
-            return new EndpointWithResult<TR>(EndpointDefinition, handlerFunc);
+            return new EndpointWithResult<TR>(Definition, handlerFunc);
         }
     }
 }
