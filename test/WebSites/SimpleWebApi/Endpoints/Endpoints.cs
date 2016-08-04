@@ -2,15 +2,15 @@
 
 namespace SimpleWebApi
 {
-    public static class Endpoints
+    public static class FluentActions
     {
-        public static EndpointCollection AllExternal => new EndpointCollection(new[] 
+        public static FluentActionCollection AllExternal => new FluentActionCollection(new[] 
         {
-            UserEndpoints.AllInline,
-            NoteEndpoints.AllInline
+            FluentUserActions.AllInline,
+            FluentNoteActions.AllInline
         });
 
-        public static EndpointCollection AllInline => new EndpointCollection
+        public static FluentActionCollection AllInline => new FluentActionCollection
         {
             new FluentAction("/api/users", HttpMethod.Get)
                 .UsingService<IUserService>()

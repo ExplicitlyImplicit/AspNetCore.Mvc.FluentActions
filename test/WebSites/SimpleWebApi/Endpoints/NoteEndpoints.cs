@@ -2,9 +2,9 @@
 
 namespace SimpleWebApi
 {
-    public static class NoteEndpoints
+    public static class FluentNoteActions
     {
-        public static EndpointCollection AllInline => new EndpointCollection
+        public static FluentActionCollection AllInline => new FluentActionCollection
         {
             new FluentAction("/api/notes", HttpMethod.Get)
                 .UsingService<INoteService>()

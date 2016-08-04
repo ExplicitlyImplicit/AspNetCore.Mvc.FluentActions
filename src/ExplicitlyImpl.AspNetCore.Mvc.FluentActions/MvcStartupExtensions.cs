@@ -12,10 +12,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public static IApplicationBuilder UseMvcWithFluentEndpoints(
             this IApplicationBuilder app,
-            Action<EndpointCollection> configureEndpoints,
+            Action<FluentActionCollection> configureEndpoints,
             Action<IRouteBuilder> configureRoutes = null)
         {
-            var endpoints = new EndpointCollection();
+            var endpoints = new FluentActionCollection();
 
             configureEndpoints(endpoints);
 
@@ -24,7 +24,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public static IApplicationBuilder UseMvcWithFluentEndpoints(
             this IApplicationBuilder app,
-            EndpointCollection endpoints,
+            FluentActionCollection endpoints,
             Action<IRouteBuilder> configureRoutes = null)
         {
             var controllerDefinitionBuilder = new EndpointControllerDefinitionBuilder();
