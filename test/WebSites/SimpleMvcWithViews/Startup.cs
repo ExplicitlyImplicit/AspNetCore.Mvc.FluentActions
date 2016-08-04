@@ -83,6 +83,10 @@ namespace SimpleMvcWithViews
             app.UseMvcWithFluentEndpoints(endpoints =>
             {
                 endpoints
+                    .Add("/helloWorld", HttpMethod.Get)
+                    .HandledBy(() => "Hello World!");
+
+                endpoints
                     .Add("/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .HandledBy(userService => userService.List())

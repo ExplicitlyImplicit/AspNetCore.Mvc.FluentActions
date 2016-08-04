@@ -46,9 +46,10 @@ namespace SimpleWebApi
             app.UseMvcWithFluentEndpoints(endpoints =>
             {
                 endpoints
-                    .Add("/api/users", HttpMethod.Get)
+                    .Add("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
-                    .HandledBy(userService => userService.List());
+                    .HandledBy(userService => userService.List())
+                    .RenderedBy("users/list.cshtml");
 
                 endpoints
                     .Add("/api/users", HttpMethod.Post)
@@ -89,6 +90,10 @@ namespace SimpleWebApi
                 //    .UsingController<UserController>()
                 //    .UsingParameter<int>("userId")
                 //    .HandledBy((userController, userId) => userController.Edit(userId));
+
+                //endpoints
+                //    .Add("/api/users/{userId}", HttpMethod.Get)
+                //    .HandledByController<UserController>("Get");
 
                 //endpoints
                 //    .Add("/api/users/{userId}", HttpMethod.Get)
