@@ -4,7 +4,7 @@
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public abstract class EndpointUsingDefinition
+    public abstract class FluentActionUsingDefinition
     {
         public Type Type { get; set; }
 
@@ -12,7 +12,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public override bool Equals(object other)
         {
-            return other is EndpointUsingDefinition && other.GetHashCode() == GetHashCode();
+            return other is FluentActionUsingDefinition && other.GetHashCode() == GetHashCode();
         }
 
         public override int GetHashCode()
@@ -21,24 +21,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointUsingServiceDefinition : EndpointUsingDefinition
+    public class FluentActionUsingServiceDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => true;
     }
 
-    public class EndpointUsingRouteParameterDefinition : EndpointUsingDefinition
-    {
-        public string Name { get; set; }
-
-        public override bool IsMethodParameter => true;
-
-        public override int GetHashCode()
-        {
-            return Tuple.Create(GetType(), Type, Name.ToLowerInvariant()).GetHashCode();
-        }
-    }
-
-    public class EndpointUsingQueryStringParameterDefinition : EndpointUsingDefinition
+    public class FluentActionUsingRouteParameterDefinition : FluentActionUsingDefinition
     {
         public string Name { get; set; }
 
@@ -50,7 +38,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointUsingHeaderParameterDefinition : EndpointUsingDefinition
+    public class FluentActionUsingQueryStringParameterDefinition : FluentActionUsingDefinition
     {
         public string Name { get; set; }
 
@@ -62,17 +50,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointUsingBodyDefinition : EndpointUsingDefinition
+    public class FluentActionUsingHeaderParameterDefinition : FluentActionUsingDefinition
+    {
+        public string Name { get; set; }
+
+        public override bool IsMethodParameter => true;
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(GetType(), Type, Name.ToLowerInvariant()).GetHashCode();
+        }
+    }
+
+    public class FluentActionUsingBodyDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => true;
     }
 
-    public class EndpointUsingFormDefinition : EndpointUsingDefinition
+    public class FluentActionUsingFormDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => true;
     }
 
-    public class EndpointUsingFormValueDefinition : EndpointUsingDefinition
+    public class FluentActionUsingFormValueDefinition : FluentActionUsingDefinition
     {
         public string Key { get; set; }
 
@@ -84,7 +84,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointUsingModelBinderDefinition : EndpointUsingDefinition
+    public class FluentActionUsingModelBinderDefinition : FluentActionUsingDefinition
     {
         public Type ModelBinderType { get; set; }
 
@@ -96,12 +96,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointUsingResultFromHandlerDefinition : EndpointUsingDefinition
+    public class FluentActionUsingResultFromHandlerDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
     }
 
-    public class EndpointUsingHttpContextDefinition : EndpointUsingDefinition
+    public class FluentActionUsingHttpContextDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
     }

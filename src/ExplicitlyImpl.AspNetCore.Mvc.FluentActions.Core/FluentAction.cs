@@ -9,7 +9,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionHandlerDefinition
     {
-        public IList<EndpointUsingDefinition> Usings { get; set; }
+        public IList<FluentActionUsingDefinition> Usings { get; set; }
 
         public Type ReturnType { get; set; }
 
@@ -17,7 +17,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentActionHandlerDefinition()
         {
-            Usings = new List<EndpointUsingDefinition>();
+            Usings = new List<FluentActionUsingDefinition>();
         }
     }
 
@@ -101,91 +101,91 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentAction(FluentActionDefinition fluentActionDefinition)
             : base(fluentActionDefinition) { }
 
-        public virtual EndpointWithUsing<TU1> Using<TU1>(EndpointUsingDefinition usingDefinition)
+        public virtual FluentActionWithUsing<TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
         {
-            return new EndpointWithUsing<TU1>(Definition, usingDefinition);
+            return new FluentActionWithUsing<TU1>(Definition, usingDefinition);
         }
 
-        public virtual EndpointWithUsing<TU1> UsingService<TU1>()
+        public virtual FluentActionWithUsing<TU1> UsingService<TU1>()
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingServiceDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingServiceDefinition
             {
                 Type = typeof(TU1)
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingRouteParameter<TU1>(string name)
+        public virtual FluentActionWithUsing<TU1> UsingRouteParameter<TU1>(string name)
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingRouteParameterDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingRouteParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingQueryStringParameter<TU1>(string name)
+        public virtual FluentActionWithUsing<TU1> UsingQueryStringParameter<TU1>(string name)
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingQueryStringParameterDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingQueryStringParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingHeader<TU1>(string name)
+        public virtual FluentActionWithUsing<TU1> UsingHeader<TU1>(string name)
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingHeaderParameterDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingHeaderParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingBody<TU1>()
+        public virtual FluentActionWithUsing<TU1> UsingBody<TU1>()
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingBodyDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingBodyDefinition
             {
                 Type = typeof(TU1)
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingForm<TU1>()
+        public virtual FluentActionWithUsing<TU1> UsingForm<TU1>()
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingFormDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingFormDefinition
             {
                 Type = typeof(TU1)
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingFormValue<TU1>(string key)
+        public virtual FluentActionWithUsing<TU1> UsingFormValue<TU1>(string key)
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingFormValueDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingFormValueDefinition
             {
                 Type = typeof(TU1),
                 Key = key
             });
         }
 
-        public virtual EndpointWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType)
+        public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType)
         {
-            return new EndpointWithUsing<TU1>(Definition, new EndpointUsingModelBinderDefinition
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType
             });
         }
 
-        public virtual EndpointWithUsing<HttpContext> UsingHttpContext()
+        public virtual FluentActionWithUsing<HttpContext> UsingHttpContext()
         {
-            return new EndpointWithUsing<HttpContext>(Definition, new EndpointUsingHttpContextDefinition
+            return new FluentActionWithUsing<HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
             });
         }
 
-        public EndpointWithResult<TR> HandledBy<TR>(Func<TR> handlerFunc)
+        public FluentActionWithResult<TR> HandledBy<TR>(Func<TR> handlerFunc)
         {
-            return new EndpointWithResult<TR>(Definition, handlerFunc);
+            return new FluentActionWithResult<TR>(Definition, handlerFunc);
         }
     }
 }

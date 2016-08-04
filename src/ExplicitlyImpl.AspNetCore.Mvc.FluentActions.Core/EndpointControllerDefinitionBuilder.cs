@@ -160,16 +160,16 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     ParameterAttributes.None, 
                     $"parameter{methodParameterIndex}");
 
-                if (usingDefinition is EndpointUsingServiceDefinition)
+                if (usingDefinition is FluentActionUsingServiceDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
-                else if (usingDefinition is EndpointUsingRouteParameterDefinition)
+                else if (usingDefinition is FluentActionUsingRouteParameterDefinition)
                 {
                     var attributeType = typeof(FromRouteAttribute);
-                    var name = ((EndpointUsingRouteParameterDefinition)usingDefinition).Name;
+                    var name = ((FluentActionUsingRouteParameterDefinition)usingDefinition).Name;
 
                     if (!endpointDefinition.Url.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
                     {
@@ -184,10 +184,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-                else if (usingDefinition is EndpointUsingQueryStringParameterDefinition)
+                else if (usingDefinition is FluentActionUsingQueryStringParameterDefinition)
                 {
                     var attributeType = typeof(FromQueryAttribute);
-                    var name = ((EndpointUsingQueryStringParameterDefinition)usingDefinition).Name;
+                    var name = ((FluentActionUsingQueryStringParameterDefinition)usingDefinition).Name;
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
                         attributeType.GetConstructor(new Type[0]),
@@ -197,10 +197,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-                else if (usingDefinition is EndpointUsingHeaderParameterDefinition)
+                else if (usingDefinition is FluentActionUsingHeaderParameterDefinition)
                 {
                     var attributeType = typeof(FromHeaderAttribute);
-                    var name = ((EndpointUsingHeaderParameterDefinition)usingDefinition).Name;
+                    var name = ((FluentActionUsingHeaderParameterDefinition)usingDefinition).Name;
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
                         attributeType.GetConstructor(new Type[0]),
@@ -210,22 +210,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-                else if (usingDefinition is EndpointUsingBodyDefinition)
+                else if (usingDefinition is FluentActionUsingBodyDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 } 
-                else if (usingDefinition is EndpointUsingFormDefinition)
+                else if (usingDefinition is FluentActionUsingFormDefinition)
                 {
                     var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
                         .GetConstructor(new Type[0]), new Type[0]);
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-                else if (usingDefinition is EndpointUsingFormValueDefinition)
+                else if (usingDefinition is FluentActionUsingFormValueDefinition)
                 {
                     var attributeType = typeof(FromFormAttribute);
-                    var key = ((EndpointUsingFormValueDefinition)usingDefinition).Key;
+                    var key = ((FluentActionUsingFormValueDefinition)usingDefinition).Key;
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
                         attributeType.GetConstructor(new Type[0]),
@@ -235,10 +235,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }
-                else if (usingDefinition is EndpointUsingModelBinderDefinition)
+                else if (usingDefinition is FluentActionUsingModelBinderDefinition)
                 {
                     var attributeType = typeof(ModelBinderAttribute);
-                    var modelBinderType = ((EndpointUsingModelBinderDefinition)usingDefinition).ModelBinderType;
+                    var modelBinderType = ((FluentActionUsingModelBinderDefinition)usingDefinition).ModelBinderType;
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
                         attributeType.GetConstructor(new Type[0]),
@@ -277,10 +277,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     if (handlerUsing.IsMethodParameter)
                     {
                         ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
-                    } else if (handlerUsing is EndpointUsingResultFromHandlerDefinition)
+                    } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
                     {
                         ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                    } else if (handlerUsing is EndpointUsingHttpContextDefinition)
+                    } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
                     {
                         ilGenerator.Emit(OpCodes.Ldarg_0);
                         ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
