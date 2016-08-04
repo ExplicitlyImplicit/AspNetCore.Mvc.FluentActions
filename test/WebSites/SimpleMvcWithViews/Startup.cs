@@ -49,7 +49,7 @@ namespace SimpleMvcWithViews
                 .AddDefaultTokenProviders();
 
             // Add framework services.
-            services.AddMvcWithFluentEndpoints();
+            services.AddMvcWithFluentActions();
 
             // Add application services.
             services.AddTransient<IUserService, UserService>();
@@ -80,7 +80,7 @@ namespace SimpleMvcWithViews
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-            app.UseMvcWithFluentEndpoints(endpoints =>
+            app.UseMvcWithFluentActions(endpoints =>
             {
                 endpoints
                     .Add("/helloWorld", HttpMethod.Get)

@@ -10,27 +10,27 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseMvcWithFluentEndpoints(
+        public static IApplicationBuilder UseMvcWithFluentActions(
             this IApplicationBuilder app,
-            Action<FluentActionCollection> configureEndpoints,
+            Action<FluentActionCollection> configureFluentActions,
             Action<IRouteBuilder> configureRoutes = null)
         {
-            var endpoints = new FluentActionCollection();
+            var fluentActions = new FluentActionCollection();
 
-            configureEndpoints(endpoints);
+            configureFluentActions(fluentActions);
 
-            return app.UseMvcWithFluentEndpoints(endpoints, configureRoutes);
+            return app.UseMvcWithFluentActions(fluentActions, configureRoutes);
         }
 
-        public static IApplicationBuilder UseMvcWithFluentEndpoints(
+        public static IApplicationBuilder UseMvcWithFluentActions(
             this IApplicationBuilder app,
-            FluentActionCollection endpoints,
+            FluentActionCollection fluentActions,
             Action<IRouteBuilder> configureRoutes = null)
         {
             var controllerDefinitionBuilder = new FluentActionControllerDefinitionBuilder();
 
-            var controllerDefinitions = endpoints
-                .Select(endpoint => controllerDefinitionBuilder.Create(endpoint))
+            var controllerDefinitions = fluentActions
+                .Select(fluentAction => controllerDefinitionBuilder.Create(fluentAction))
                 .ToList();
 
             var context = (FluentActionControllerFeatureProviderContext)app
@@ -60,7 +60,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public static class ApplicationServiceCollectionExtensions
     {
-        public static IMvcBuilder AddMvcWithFluentEndpoints(this IServiceCollection services)
+        public static IMvcBuilder AddMvcWithFluentActions(this IServiceCollection services)
         {
             if (services == null)
             {
@@ -70,17 +70,17 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var context = new FluentActionControllerFeatureProviderContext();
             services.TryAddSingleton(context);
 
-            var endpointControllerFeatureProvider = new FluentActionControllerFeatureProvider(context);
+            var fluentActionControllerFeatureProvider = new FluentActionControllerFeatureProvider(context);
 
             return services
                 .AddMvc()
                 .ConfigureApplicationPartManager(manager =>
                 {
-                    manager.FeatureProviders.Add(endpointControllerFeatureProvider);
+                    manager.FeatureProviders.Add(fluentActionControllerFeatureProvider);
                 });
         }
 
-        public static IMvcBuilder AddMvcWithFluentEndpoints(this IServiceCollection services, Action<MvcOptions> setupAction)
+        public static IMvcBuilder AddMvcWithFluentActions(this IServiceCollection services, Action<MvcOptions> setupAction)
         {
             if (services == null)
             {

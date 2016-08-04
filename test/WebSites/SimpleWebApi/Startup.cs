@@ -29,7 +29,7 @@ namespace SimpleWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvcWithFluentEndpoints();
+            services.AddMvcWithFluentActions();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
@@ -43,7 +43,7 @@ namespace SimpleWebApi
 
             //app.UseMvcWithFluentEndpoints(Endpoints.AllExternal);
 
-            app.UseMvcWithFluentEndpoints(endpoints =>
+            app.UseMvcWithFluentActions(endpoints =>
             {
                 endpoints
                     .Add("/api/users", HttpMethod.Get, "List users.")
