@@ -27,15 +27,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             FluentActionCollection endpoints,
             Action<IRouteBuilder> configureRoutes = null)
         {
-            var controllerDefinitionBuilder = new EndpointControllerDefinitionBuilder();
+            var controllerDefinitionBuilder = new FluentActionControllerDefinitionBuilder();
 
             var controllerDefinitions = endpoints
                 .Select(endpoint => controllerDefinitionBuilder.Create(endpoint))
                 .ToList();
 
-            var context = (EndpointControllerFeatureProviderContext)app
+            var context = (FluentActionControllerFeatureProviderContext)app
                 .ApplicationServices
-                .GetService(typeof(EndpointControllerFeatureProviderContext));
+                .GetService(typeof(FluentActionControllerFeatureProviderContext));
 
             context.ControllerDefinitions = controllerDefinitions;
 
@@ -67,10 +67,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            var context = new EndpointControllerFeatureProviderContext();
+            var context = new FluentActionControllerFeatureProviderContext();
             services.TryAddSingleton(context);
 
-            var endpointControllerFeatureProvider = new EndpointControllerFeatureProvider(context);
+            var endpointControllerFeatureProvider = new FluentActionControllerFeatureProvider(context);
 
             return services
                 .AddMvc()

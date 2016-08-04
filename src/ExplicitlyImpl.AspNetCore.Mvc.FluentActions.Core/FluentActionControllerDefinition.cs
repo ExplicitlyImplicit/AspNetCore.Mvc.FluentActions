@@ -2,7 +2,7 @@
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public class EndpointControllerDefinition
+    public class FluentActionControllerDefinition
     {
         public string Id { get; set; }
 
@@ -12,8 +12,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public TypeInfo TypeInfo { get; set; }
 
-        public string Url => Endpoint.Url;
+        public string Url => FluentAction.Url;
 
-        public FluentActionBase Endpoint { get; set; }
+        public FluentActionBase FluentAction { get; set; }
     }
 }

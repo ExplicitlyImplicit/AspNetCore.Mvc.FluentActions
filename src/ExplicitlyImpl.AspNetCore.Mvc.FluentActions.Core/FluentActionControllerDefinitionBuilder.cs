@@ -7,64 +7,64 @@ using System.Reflection.Emit;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public class EndpointControllerDefinitionBuilder
+    public class FluentActionControllerDefinitionBuilder
     {
         private const string ActionName = "HandlerAction";
 
-        public EndpointControllerDefinition Create(FluentActionBase endpoint)
+        public FluentActionControllerDefinition Create(FluentActionBase fluentAction)
         {
-            if (endpoint == null)
+            if (fluentAction == null)
             {
-                throw new ArgumentNullException(nameof(endpoint));
+                throw new ArgumentNullException(nameof(fluentAction));
             }
 
-            if (!endpoint.Definition.Handlers.Any())
+            if (!fluentAction.Definition.Handlers.Any())
             {
-                throw new ArgumentException($"Missing handler for endpoint {endpoint}.");
+                throw new ArgumentException($"Missing handler for action {fluentAction}.");
             }
 
-            var controllerTypeInfo = DefineControllerType(endpoint.Definition);
+            var controllerTypeInfo = DefineControllerType(fluentAction.Definition);
 
-            return new EndpointControllerDefinition()
+            return new FluentActionControllerDefinition()
             {
                 Id = controllerTypeInfo.Name,
                 Name = controllerTypeInfo.Name,
                 ActionName = ActionName,
-                Endpoint = endpoint,
+                FluentAction = fluentAction,
                 TypeInfo = controllerTypeInfo
             };
         }
 
         public static TypeInfo DefineControllerType(
-            FluentActionDefinition endpointDefinition)
+            FluentActionDefinition fluentActionDefinition)
         {
-            if (endpointDefinition == null)
+            if (fluentActionDefinition == null)
             {
-                throw new ArgumentNullException(nameof(endpointDefinition));
+                throw new ArgumentNullException(nameof(fluentActionDefinition));
             }
 
             var moduleBuilder = DefineModule();
             var typeBuilder = DefineType(moduleBuilder);
 
-            DefineActionMethod(typeBuilder, endpointDefinition);
+            DefineActionMethod(typeBuilder, fluentActionDefinition);
 
             return typeBuilder.CreateTypeInfo();
         }
 
         private static ModuleBuilder DefineModule()
         {
-            var assemblyName = new AssemblyName("FluentEndpointAssembly");
+            var assemblyName = new AssemblyName("FluentActionAssembly");
             var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
                 assemblyName, 
                 AssemblyBuilderAccess.Run);
 
-            return assemblyBuilder.DefineDynamicModule("FluentEndpointModule");
+            return assemblyBuilder.DefineDynamicModule("FluentActionModule");
         }
 
         private static TypeBuilder DefineType(ModuleBuilder moduleBuilder)
         {
             var guid = Guid.NewGuid().ToString().Replace("-", "");
-            var name = $"FluentEndpoint{guid}Controller";
+            var name = $"FluentAction{guid}Controller";
 
             var typeBuilder = moduleBuilder.DefineType(
                     name + "Controller",
@@ -122,9 +122,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         private static void DefineActionMethod(
             TypeBuilder typeBuilder, 
-            FluentActionDefinition endpointDefinition)
+            FluentActionDefinition fluentActionDefinition)
         {
-            var usingsForMethodParameters = endpointDefinition.Handlers
+            var usingsForMethodParameters = fluentActionDefinition.Handlers
                 .SelectMany(handler => handler.Usings)
                 .Where(@using => @using.IsMethodParameter)
                 .Distinct()
@@ -141,10 +141,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .Select(@using => @using.Type)
                 .ToArray();
 
-            var returnType = endpointDefinition.Handlers.Last().ReturnType;
+            var returnType = fluentActionDefinition.Handlers.Last().ReturnType;
             var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, methodParameterTypes);
 
-            var attributeConstructorInfo = GetHttpMethodAttribute(endpointDefinition.HttpMethod)
+            var attributeConstructorInfo = GetHttpMethodAttribute(fluentActionDefinition.HttpMethod)
                 .GetConstructor(new Type[0]);
             var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new Type[0]);
             methodBuilder.SetCustomAttribute(attributeBuilder);
@@ -171,9 +171,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     var attributeType = typeof(FromRouteAttribute);
                     var name = ((FluentActionUsingRouteParameterDefinition)usingDefinition).Name;
 
-                    if (!endpointDefinition.Url.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
+                    if (!fluentActionDefinition.Url.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        throw new Exception($"Route parameter {name} does not exist in url {endpointDefinition.Url}.");
+                        throw new Exception($"Route parameter {name} does not exist in url {fluentActionDefinition.Url}.");
                     }
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
@@ -250,7 +250,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 }
             }
 
-            var dictionaryField = typeof(EndpointControllerDefinitionHandlerFuncs)
+            var dictionaryField = typeof(FluentActionControllerDefinitionHandlerFuncs)
                 .GetField("All");
             var dictionaryGetMethod = typeof(Dictionary<,>)
                 .MakeGenericType(typeof(string), typeof(Delegate))
@@ -260,10 +260,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             LocalBuilder localVariableForPreviousReturnValue = null;
 
-            foreach (var handler in endpointDefinition.Handlers)
+            foreach (var handler in fluentActionDefinition.Handlers)
             {
                 var customFuncType = MakeGenericFuncType(handler);
-                var customFuncKey = EndpointControllerDefinitionHandlerFuncs.Add(handler.Delegate);
+                var customFuncKey = FluentActionControllerDefinitionHandlerFuncs.Add(handler.Delegate);
                 var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
 
                 // Push Func
@@ -297,12 +297,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 localVariableForPreviousReturnValue = localVariableForReturnValue;
             }
 
-            if (endpointDefinition.PathToView != null)
+            if (fluentActionDefinition.PathToView != null)
             {
                 // Call Controller.View(string pathName, object model) and return the results
 
                 ilGenerator.Emit(OpCodes.Ldarg_0);
-                ilGenerator.Emit(OpCodes.Ldstr, endpointDefinition.PathToView);
+                ilGenerator.Emit(OpCodes.Ldstr, fluentActionDefinition.PathToView);
                 ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
 
                 var viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
@@ -317,7 +317,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public static class EndpointControllerDefinitionHandlerFuncs
+    public static class FluentActionControllerDefinitionHandlerFuncs
     {
         public static Dictionary<string, Delegate> All = new Dictionary<string, Delegate>();
 

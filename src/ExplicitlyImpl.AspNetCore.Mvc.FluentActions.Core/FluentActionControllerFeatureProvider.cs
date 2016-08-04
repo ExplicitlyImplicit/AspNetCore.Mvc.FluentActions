@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public class EndpointControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
+    public class FluentActionControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
     {
-        public EndpointControllerFeatureProviderContext Context { get; set; }
+        public FluentActionControllerFeatureProviderContext Context { get; set; }
 
-        public EndpointControllerFeatureProvider(EndpointControllerFeatureProviderContext context)
+        public FluentActionControllerFeatureProvider(FluentActionControllerFeatureProviderContext context)
         {
             Context = context;
         }
@@ -22,8 +22,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class EndpointControllerFeatureProviderContext
+    public class FluentActionControllerFeatureProviderContext
     {
-        public IEnumerable<EndpointControllerDefinition> ControllerDefinitions { get; set; }
+        public IEnumerable<FluentActionControllerDefinition> ControllerDefinitions { get; set; }
     }
 }
