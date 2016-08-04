@@ -7,7 +7,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionWithUsing<TU1> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -102,7 +102,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -197,7 +197,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2, TU3> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -292,7 +292,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2, TU3, TU4> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -387,7 +387,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -482,7 +482,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -577,7 +577,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7> : FluentActionBase
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
@@ -672,7 +672,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> : FluentAction
     {
-        public FluentActionWithUsing(FluentActionDefinition endpointDefinition, FluentActionUsingDefinition usingDefinition) : base(endpointDefinition)
+        public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
