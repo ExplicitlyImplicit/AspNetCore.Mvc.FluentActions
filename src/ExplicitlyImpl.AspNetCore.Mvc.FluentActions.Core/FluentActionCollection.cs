@@ -29,7 +29,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return fluentAction;
         }
 
-        public FluentAction Add(string url, HttpMethod httpMethod, string title = null)
+        public FluentAction Route(string url, HttpMethod httpMethod, string title = null)
         {
             var fluentAction = new FluentAction(httpMethod, url, title);
             FluentActions.Add(fluentAction);

@@ -83,41 +83,41 @@ namespace SimpleMvcWithViews
             app.UseMvcWithFluentActions(actions =>
             {
                 actions
-                    .Add("/helloWorld", HttpMethod.Get)
+                    .Route("/helloWorld", HttpMethod.Get)
                     .HandledBy(() => "Hello World!");
 
                 actions
-                    .Add("/users", HttpMethod.Get, "List users.")
+                    .Route("/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .HandledBy(userService => userService.List())
                     .RenderedBy("~/views/users/list.cshtml");
 
                 actions
-                    .Add("/api/users", HttpMethod.Get, "List users.")
+                    .Route("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .HandledBy(userService => userService.List());
 
                 actions
-                    .Add("/api/users", HttpMethod.Post)
+                    .Route("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
                     .UsingBody<UserItem>()
                     .HandledBy((userService, user) => userService.Add(user));
 
                 actions
-                    .Add("/api/users/{userId}", HttpMethod.Get)
+                    .Route("/api/users/{userId}", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Get(userId));
 
                 actions
-                    .Add("/api/users/{userId}", HttpMethod.Put)
+                    .Route("/api/users/{userId}", HttpMethod.Put)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .UsingBody<UserItem>()
                     .HandledBy((userService, userId, user) => userService.Update(userId, user));
 
                 actions
-                    .Add("/api/users/{userId}", HttpMethod.Delete)
+                    .Route("/api/users/{userId}", HttpMethod.Delete)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .HandledBy((userService, userId) => userService.Remove(userId));
