@@ -48,33 +48,33 @@ namespace SimpleWebApi
                 actions
                     .Route("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
-                    .HandledBy(userService => userService.List())
+                    .To(userService => userService.List())
                     .RenderedBy("users/list.cshtml");
 
                 actions
                     .Route("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
                     .UsingBody<UserItem>()
-                    .HandledBy((userService, user) => userService.Add(user));
+                    .To((userService, user) => userService.Add(user));
 
                 actions
                     .Route("/api/users/{userId}", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
-                    .HandledBy((userService, userId) => userService.Get(userId));
+                    .To((userService, userId) => userService.Get(userId));
 
                 actions
                     .Route("/api/users/{userId}", HttpMethod.Put)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .UsingBody<UserItem>()
-                    .HandledBy((userService, userId, user) => userService.Update(userId, user));
+                    .To((userService, userId, user) => userService.Update(userId, user));
 
                 actions
                     .Route("/api/users/{userId}", HttpMethod.Delete)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
-                    .HandledBy((userService, userId) => userService.Remove(userId));
+                    .To((userService, userId) => userService.Remove(userId));
 
                 //actions
                 //    .Route("/api/users/{userId}", HttpMethod.Put)
@@ -83,31 +83,31 @@ namespace SimpleWebApi
                 //        model.InitiallyBoundFromBody();  
                 //        model.BindUrlParameter<int>("userId", user => user.Id); 
                 //    )  
-                //    .HandledBy((userService, user) => userService.Update(user));
+                //    .To((userService, user) => userService.Update(user));
 
                 //actions
                 //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingController<UserController>()
                 //    .UsingParameter<int>("userId")
-                //    .HandledBy((userController, userId) => userController.Edit(userId));
+                //    .To((userController, userId) => userController.Edit(userId));
 
                 //actions
                 //    .Route("/api/users/{userId}", HttpMethod.Get)
-                //    .HandledByController<UserController>("Get");
+                //    .ToController<UserController>("Get");
 
                 //actions
                 //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingService<IUserService>()
                 //    .UsingParameter<int>("userId")
-                //    .HandledBy((userService, userId) => userService.Get(userId))
+                //    .To((userService, userId) => userService.Get(userId))
                 //    .UsingService<IJsonUtilsService>()
-                //    .HandledBy((result, jsonUtilsService) => jsonUtilsService.Encode(result));
+                //    .To((result, jsonUtilsService) => jsonUtilsService.Encode(result));
 
                 //actions
                 //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingService<IUserService>()
                 //    .UsingParameter<int>("userId")
-                //    .HandledBy((userService, userId) => userService.Get(userId))
+                //    .To((userService, userId) => userService.Get(userId))
                 //    .ToJson()
             });
         }

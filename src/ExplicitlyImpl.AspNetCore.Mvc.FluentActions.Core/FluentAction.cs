@@ -183,7 +183,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR> HandledBy<TR>(Func<TR> handlerFunc)
+        public FluentActionWithResult<TR> To<TR>(Func<TR> handlerFunc)
         {
             return new FluentActionWithResult<TR>(Definition, handlerFunc);
         }

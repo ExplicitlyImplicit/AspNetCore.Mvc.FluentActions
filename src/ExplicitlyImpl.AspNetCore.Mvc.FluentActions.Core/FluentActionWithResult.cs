@@ -105,7 +105,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -214,7 +214,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -317,7 +317,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -420,7 +420,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -523,7 +523,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -626,7 +626,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -729,7 +729,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -832,7 +832,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
@@ -845,7 +845,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Definition.CurrentHandler.Usings.Add(usingDefinition);
         }
 
-        public FluentActionWithResult<TR2> HandledBy<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR2> handlerFuncAsync)
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
