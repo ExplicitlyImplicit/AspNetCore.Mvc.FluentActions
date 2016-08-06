@@ -49,7 +49,7 @@ namespace SimpleWebApi
                     .AddRoute("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .To(userService => userService.List())
-                    .RenderedByView("users/list.cshtml");
+                    .ToView("users/list.cshtml");
 
                 actions
                     .AddRoute("/api/users", HttpMethod.Post)

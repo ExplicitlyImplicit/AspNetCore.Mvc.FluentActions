@@ -90,7 +90,7 @@ namespace SimpleMvcWithViews
                     .AddRoute("/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .To(userService => userService.List())
-                    .RenderedByView("~/views/users/list.cshtml");
+                    .ToView("~/views/users/list.cshtml");
 
                 actions
                     .AddRoute("/api/users", HttpMethod.Get, "List users.")
