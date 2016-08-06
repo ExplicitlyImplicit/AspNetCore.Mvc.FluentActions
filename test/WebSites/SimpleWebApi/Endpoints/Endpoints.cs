@@ -1,41 +1,47 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using System;
 
 namespace SimpleWebApi
 {
     public static class FluentActions
     {
-        public static FluentActionCollection AllExternal => new FluentActionCollection(new[] 
+        public static Action<FluentActionCollection> AllExternal => actions =>
         {
-            FluentUserActions.AllInline,
-            FluentNoteActions.AllInline
-        });
+            FluentUserActions.All(actions);
+            FluentNoteActions.All(actions);
+        };
 
-        public static FluentActionCollection AllInline => new FluentActionCollection
+        public static Action<FluentActionCollection> All => actions =>
         {
-            new FluentAction("/api/users", HttpMethod.Get)
+            actions
+                .AddRoute("/api/users", HttpMethod.Get)
                 .UsingService<IUserService>()
-                .To(userService => userService.List()),
+                .To(userService => userService.List());
 
-            new FluentAction("/api/users", HttpMethod.Post)
+            actions
+                .AddRoute("/api/users", HttpMethod.Post)
                 .UsingService<IUserService>()
                 .UsingBody<UserItem>()
-                .To((userService, user) => userService.Add(user)),
+                .To((userService, user) => userService.Add(user));
 
-            new FluentAction("/api/users/{userId}", HttpMethod.Get)
+            actions
+                .AddRoute("/api/users/{userId}", HttpMethod.Get)
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
-                .To((userService, userId) => userService.Get(userId)),
+                .To((userService, userId) => userService.Get(userId));
 
-            new FluentAction("/api/users/{userId}", HttpMethod.Put)
+            actions
+                .AddRoute("/api/users/{userId}", HttpMethod.Put)
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
                 .UsingBody<UserItem>()
-                .To((userService, userId, user) => userService.Update(userId, user)),
+                .To((userService, userId, user) => userService.Update(userId, user));
 
-            new FluentAction("/api/users/{userId}", HttpMethod.Delete)
+            actions
+                .AddRoute("/api/users/{userId}", HttpMethod.Delete)
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
-                .To((userService, userId) => userService.Remove(userId)),
+                .To((userService, userId) => userService.Remove(userId));
         };
     }
 }

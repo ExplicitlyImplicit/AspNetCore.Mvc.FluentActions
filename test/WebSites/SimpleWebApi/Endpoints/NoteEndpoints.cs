@@ -1,35 +1,41 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using System;
 
 namespace SimpleWebApi
 {
     public static class FluentNoteActions
     {
-        public static FluentActionCollection AllInline => new FluentActionCollection
+        public static Action<FluentActionCollection> All => actions =>
         {
-            new FluentAction("/api/notes", HttpMethod.Get)
+            actions
+                .AddRoute("/api/notes", HttpMethod.Get)
                 .UsingService<INoteService>()
-                .To(noteService => noteService.List()),
+                .To(noteService => noteService.List());
 
-            new FluentAction("/api/notes", HttpMethod.Post)
+            actions
+                .AddRoute("/api/notes", HttpMethod.Post)
                 .UsingService<INoteService>()
                 .UsingBody<NoteItem>()
-                .To((noteService, note) => noteService.Add(note)),
+                .To((noteService, note) => noteService.Add(note));
 
-            new FluentAction("/api/notes/{noteId}", HttpMethod.Get)
+            actions
+                .AddRoute("/api/notes/{noteId}", HttpMethod.Get)
                 .UsingService<INoteService>()
                 .UsingRouteParameter<int>("noteId")
-                .To((noteService, noteId) => noteService.Get(noteId)),
+                .To((noteService, noteId) => noteService.Get(noteId));
 
-            new FluentAction("/api/notes/{noteId}", HttpMethod.Put)
+            actions
+                .AddRoute("/api/notes/{noteId}", HttpMethod.Put)
                 .UsingService<INoteService>()
                 .UsingRouteParameter<int>("noteId")
                 .UsingBody<NoteItem>()
-                .To((noteService, noteId, note) => noteService.Update(noteId, note)),
+                .To((noteService, noteId, note) => noteService.Update(noteId, note));
 
-            new FluentAction("/api/notes/{noteId}", HttpMethod.Delete)
+            actions
+                .AddRoute("/api/notes/{noteId}", HttpMethod.Delete)
                 .UsingService<INoteService>()
                 .UsingRouteParameter<int>("noteId")
-                .To((noteService, noteId) => noteService.Remove(noteId)),
+                .To((noteService, noteId) => noteService.Remove(noteId));
         };
     }
 }
