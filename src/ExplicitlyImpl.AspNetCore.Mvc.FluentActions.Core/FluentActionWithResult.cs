@@ -11,6 +11,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             var returnType = typeof(TR);
 
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Func;
             Definition.CurrentHandler.Delegate = handlerFunc;
             Definition.CurrentHandler.ReturnType = returnType.IsAnonymous() ? typeof(object) : returnType;
         }
@@ -112,6 +113,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentActionWithView ToView(string pathToView)
         {
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
             return new FluentActionWithView(Definition, pathToView);
         }
     }

@@ -262,33 +262,54 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             foreach (var handler in fluentActionDefinition.Handlers)
             {
-                var customFuncType = MakeGenericFuncType(handler);
-                var customFuncKey = FluentActionControllerDefinitionHandlerFuncs.Add(handler.Delegate);
                 var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
 
-                // Push Func
-                ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
-                ilGenerator.Emit(OpCodes.Ldstr, customFuncKey);
-                ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
-
-                // Push arguments for Func
-                foreach (var handlerUsing in handler.Usings)
+                if (handler.Type == FluentActionHandlerType.Func)
                 {
-                    if (handlerUsing.IsMethodParameter)
-                    {
-                        ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
-                    } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
-                    {
-                        ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                    } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
-                    {
-                        ilGenerator.Emit(OpCodes.Ldarg_0);
-                        ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
-                    }
-                }
 
-                // Push Func.Invoke
-                ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
+                    var customFuncType = MakeGenericFuncType(handler);
+                    var customFuncKey = FluentActionControllerDefinitionHandlerFuncs.Add(handler.Delegate);
+
+                    // Push Func
+                    ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
+                    ilGenerator.Emit(OpCodes.Ldstr, customFuncKey);
+                    ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
+
+                    // Push arguments for Func
+                    foreach (var handlerUsing in handler.Usings)
+                    {
+                        if (handlerUsing.IsMethodParameter)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
+                        } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+                        } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
+                        }
+                    }
+
+                    // Push Func.Invoke
+                    ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
+                } 
+                else if (handler.Type == FluentActionHandlerType.View)
+                {
+                    if (handler.PathToView == null)
+                    {
+                        throw new Exception("Must specify a path to a view.");
+                    }
+
+                    // Call Controller.View(string pathName, object model) and return the results
+
+                    ilGenerator.Emit(OpCodes.Ldarg_0);
+                    ilGenerator.Emit(OpCodes.Ldstr, handler.PathToView);
+                    ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+
+                    var viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
+                    ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
+                }
 
                 // Push storing result in local variable
                 ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
@@ -296,23 +317,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 // Make sure next handler has access to previous handler's return value
                 localVariableForPreviousReturnValue = localVariableForReturnValue;
             }
-
-            if (fluentActionDefinition.PathToView != null)
-            {
-                // Call Controller.View(string pathName, object model) and return the results
-
-                ilGenerator.Emit(OpCodes.Ldarg_0);
-                ilGenerator.Emit(OpCodes.Ldstr, fluentActionDefinition.PathToView);
-                ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-
-                var viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
-                ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
-            } else
-            {
-                // Return last handlers return value
-                ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-            }
-
+             
+            // Return last handlers return value
+            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
             ilGenerator.Emit(OpCodes.Ret);
         }
     }

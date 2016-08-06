@@ -7,16 +7,28 @@ using System.Linq;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
+    public enum FluentActionHandlerType
+    {
+        Unknown,
+        Func,
+        View
+    }
+
     public class FluentActionHandlerDefinition
     {
+        public FluentActionHandlerType Type { get; set; }
+
         public IList<FluentActionUsingDefinition> Usings { get; set; }
 
         public Type ReturnType { get; set; }
 
         public Delegate Delegate { get; set; }
 
+        public string PathToView { get; set; }
+
         public FluentActionHandlerDefinition()
         {
+            Type = FluentActionHandlerType.Unknown;
             Usings = new List<FluentActionUsingDefinition>();
         }
     }
@@ -30,8 +42,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public readonly string Title;
 
         public IList<FluentActionHandlerDefinition> Handlers { get; set; }
-
-        public string PathToView { get; set; }
 
         internal FluentActionHandlerDefinition CurrentHandler
         {
