@@ -11,7 +11,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         Unknown,
         Func,
-        View
+        View,
+        PartialView
     }
 
     public class FluentActionHandlerDefinition

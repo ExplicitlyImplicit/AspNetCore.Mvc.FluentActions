@@ -116,6 +116,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Definition.Handlers.Add(new FluentActionHandlerDefinition());
             return new FluentActionWithView(Definition, pathToView);
         }
+
+        public FluentActionWithPartialView ToPartialView(string pathToView)
+        {
+            return new FluentActionWithPartialView(Definition, pathToView);
+        }
     }
 
     public class FluentActionWithResultAndUsing<TR, TU1> : FluentActionBase

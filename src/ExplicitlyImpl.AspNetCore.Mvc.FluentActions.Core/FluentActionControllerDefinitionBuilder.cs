@@ -294,20 +294,31 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     // Push Func.Invoke
                     ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
                 } 
-                else if (handler.Type == FluentActionHandlerType.View)
+                else if (handler.Type == FluentActionHandlerType.View || handler.Type == FluentActionHandlerType.PartialView)
                 {
                     if (handler.PathToView == null)
                     {
                         throw new Exception("Must specify a path to a view.");
                     }
 
-                    // Call Controller.View(string pathName, object model) and return the results
+                    // Call one of the following controller methods:
+                    //   Controller.View(string pathName, object model)
+                    //   Controller.PartialView(string pathName, object model)
 
                     ilGenerator.Emit(OpCodes.Ldarg_0);
                     ilGenerator.Emit(OpCodes.Ldstr, handler.PathToView);
                     ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
 
-                    var viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
+                    MethodInfo viewMethod = null;
+                    if (handler.Type == FluentActionHandlerType.View)
+                    {
+                        viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
+                    }
+                    else if (handler.Type == FluentActionHandlerType.PartialView)
+                    {
+                        viewMethod = typeof(Controller).GetMethod("PartialView", new[] { typeof(string), typeof(object) });
+                    }
+
                     ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
                 }
 

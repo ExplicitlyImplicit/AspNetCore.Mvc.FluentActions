@@ -15,4 +15,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Definition.CurrentHandler.ReturnType = typeof(ViewResult);
         }
     }
+
+    public class FluentActionWithPartialView : FluentActionBase
+    {
+        public FluentActionWithPartialView(FluentActionDefinition fluentActionDefinition, string pathToView)
+            : base(fluentActionDefinition)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.PartialView;
+            Definition.CurrentHandler.PathToView = pathToView;
+            Definition.CurrentHandler.ReturnType = typeof(PartialViewResult);
+        }
+    }
 }
