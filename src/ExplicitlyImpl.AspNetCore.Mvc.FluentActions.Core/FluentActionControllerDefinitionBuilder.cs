@@ -318,6 +318,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     {
                         viewMethod = typeof(Controller).GetMethod("PartialView", new[] { typeof(string), typeof(object) });
                     }
+                    else if (handler.Type == FluentActionHandlerType.ViewComponent)
+                    {
+                        viewMethod = typeof(Controller).GetMethod("ViewComponent", new[] { typeof(string), typeof(object) });
+                    }
 
                     ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
                 }
