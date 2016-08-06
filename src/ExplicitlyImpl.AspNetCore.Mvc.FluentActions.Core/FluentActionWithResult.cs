@@ -110,7 +110,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView RenderedByView(string pathToView)
         {
             return new FluentActionWithView(Definition, pathToView);
         }
