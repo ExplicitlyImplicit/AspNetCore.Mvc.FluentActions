@@ -46,38 +46,38 @@ namespace SimpleWebApi
             app.UseMvcWithFluentActions(actions =>
             {
                 actions
-                    .Map("/api/users", HttpMethod.Get, "List users.")
+                    .Route("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .To(userService => userService.List())
                     .ToView("users/list.cshtml");
 
                 actions
-                    .Map("/api/users", HttpMethod.Post)
+                    .Route("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()
                     .UsingBody<UserItem>()
                     .To((userService, user) => userService.Add(user));
 
                 actions
-                    .Map("/api/users/{userId}", HttpMethod.Get)
+                    .Route("/api/users/{userId}", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .To((userService, userId) => userService.Get(userId));
 
                 actions
-                    .Map("/api/users/{userId}", HttpMethod.Put)
+                    .Route("/api/users/{userId}", HttpMethod.Put)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .UsingBody<UserItem>()
                     .To((userService, userId, user) => userService.Update(userId, user));
 
                 actions
-                    .Map("/api/users/{userId}", HttpMethod.Delete)
+                    .Route("/api/users/{userId}", HttpMethod.Delete)
                     .UsingService<IUserService>()
                     .UsingRouteParameter<int>("userId")
                     .To((userService, userId) => userService.Remove(userId));
 
                 //actions
-                //    .Map("/api/users/{userId}", HttpMethod.Put)
+                //    .Route("/api/users/{userId}", HttpMethod.Put)
                 //    .UsingService<IUserService>()
                 //    .UsingDataModel<UserItem>(model =>  
                 //        model.InitiallyBoundFromBody();  
@@ -86,17 +86,17 @@ namespace SimpleWebApi
                 //    .To((userService, user) => userService.Update(user));
 
                 //actions
-                //    .Map("/api/users/{userId}", HttpMethod.Get)
+                //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingController<UserController>()
                 //    .UsingParameter<int>("userId")
                 //    .To((userController, userId) => userController.Edit(userId));
 
                 //actions
-                //    .Map("/api/users/{userId}", HttpMethod.Get)
+                //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .ToController<UserController>("Get");
 
                 //actions
-                //    .Map("/api/users/{userId}", HttpMethod.Get)
+                //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingService<IUserService>()
                 //    .UsingParameter<int>("userId")
                 //    .To((userService, userId) => userService.Get(userId))
@@ -104,7 +104,7 @@ namespace SimpleWebApi
                 //    .To((result, jsonUtilsService) => jsonUtilsService.Encode(result));
 
                 //actions
-                //    .Map("/api/users/{userId}", HttpMethod.Get)
+                //    .Route("/api/users/{userId}", HttpMethod.Get)
                 //    .UsingService<IUserService>()
                 //    .UsingParameter<int>("userId")
                 //    .To((userService, userId) => userService.Get(userId))

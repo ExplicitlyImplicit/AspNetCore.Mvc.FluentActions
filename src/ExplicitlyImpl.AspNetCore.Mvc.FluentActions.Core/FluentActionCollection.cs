@@ -15,7 +15,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             FluentActions = new List<FluentActionBase>();
         }
 
-        public FluentAction Map(string url, HttpMethod httpMethod, string title = null)
+        public FluentAction Route(string url, HttpMethod httpMethod, string title = null)
         {
             var fluentAction = new FluentAction(httpMethod, url, title);
             FluentActions.Add(fluentAction);
