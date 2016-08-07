@@ -519,3 +519,7 @@ actions
 ```
 
 Why would you pipe handlers? Well, we are currently using some extension methods on top of our explicitly defined actions that are specific to our project business logic. Those extensions can be implemented using this concept.
+
+## License
+
+This software is [MIT licensed](LICENSE).
