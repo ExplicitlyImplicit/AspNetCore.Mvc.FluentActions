@@ -8,6 +8,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public Type Type { get; set; }
 
+        public bool HasDefaultValue { get; set; }
+
+        public object DefaultValue { get; set; }
+
         public abstract bool IsMethodParameter { get; }
 
         public override bool Equals(object other)

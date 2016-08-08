@@ -156,9 +156,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 var methodParameterIndex = methodParameterIndicesForUsings[usingDefinition.GetHashCode()];
 
                 var methodParameterBuilder = methodBuilder.DefineParameter(
-                    methodParameterIndex, 
-                    ParameterAttributes.None, 
+                    methodParameterIndex,
+                    usingDefinition.HasDefaultValue ? ParameterAttributes.HasDefault : ParameterAttributes.None, 
                     $"parameter{methodParameterIndex}");
+
+                if (usingDefinition.HasDefaultValue)
+                {
+                    methodParameterBuilder.SetConstant(usingDefinition.DefaultValue);
+                }
 
                 if (usingDefinition is FluentActionUsingServiceDefinition)
                 {
