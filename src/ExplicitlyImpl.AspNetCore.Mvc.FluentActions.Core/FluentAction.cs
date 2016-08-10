@@ -126,12 +126,33 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1> UsingService<TU1>(TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingServiceDefinition
+            {
+                Type = typeof(TU1),
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1> UsingRouteParameter<TU1>(string name)
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingRouteParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1> UsingRouteParameter<TU1>(string name, TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingRouteParameterDefinition
+            {
+                Type = typeof(TU1),
+                Name = name,
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
             });
         }
 
@@ -144,12 +165,34 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1> UsingQueryStringParameter<TU1>(string name, TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingQueryStringParameterDefinition
+            {
+                Type = typeof(TU1),
+                Name = name,
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1> UsingHeader<TU1>(string name)
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingHeaderParameterDefinition
             {
                 Type = typeof(TU1),
                 Name = name
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1> UsingHeader<TU1>(string name, TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingHeaderParameterDefinition
+            {
+                Type = typeof(TU1),
+                Name = name,
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
             });
         }
 
@@ -161,11 +204,31 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1> UsingBody<TU1>(TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingBodyDefinition
+            {
+                Type = typeof(TU1),
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1> UsingForm<TU1>()
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingFormDefinition
             {
                 Type = typeof(TU1)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1> UsingForm<TU1>(TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingFormDefinition
+            {
+                Type = typeof(TU1),
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
             });
         }
 
@@ -178,12 +241,34 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1> UsingFormValue<TU1>(string key, TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingFormValueDefinition
+            {
+                Type = typeof(TU1),
+                Key = key,
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType)
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType, TU1 defaultValue)
+        {
+            return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingModelBinderDefinition
+            {
+                Type = typeof(TU1),
+                ModelBinderType = modelBinderType,
+                HasDefaultValue = true,
+                DefaultValue = defaultValue
             });
         }
 
