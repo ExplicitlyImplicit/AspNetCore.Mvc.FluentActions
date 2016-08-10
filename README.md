@@ -393,6 +393,39 @@ public string Action([FromQuery]string name)
 }
 ```
 
+### Default values in `Using` statements
+
+The following `Using` statements supports default values:
+
+- UsingBody
+- UsingForm
+- UsingFormValue
+- UsingHeader
+- UsingModelBinder
+- UsingRouteParameter
+- UsingService
+- UsingQueryStringParameter
+
+Example:
+
+```
+actions
+  .Route("/hello/{name}")
+  .UsingQueryStringParameter<string>("name", defaultValue: "John Doe")
+  .To(name => $"Hello {name}!"));
+```
+
+This is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/hello/{name}")]
+public string Action([FromQuery]string name = "John Doe")
+{
+    return $"Hello {name}!";
+}
+```
+
 ### Specifying HTTP method
 
 You can specify which HTTP method to use for an action in the `Route` statement:
