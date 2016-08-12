@@ -80,7 +80,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 });
         }
 
-        public static IMvcBuilder AddMvcWithFluentActions(this IServiceCollection services, Action<MvcOptions> setupAction)
+        public static IMvcBuilder AddMvcWithFluentActions(
+            this IServiceCollection services, 
+            Action<MvcOptions> setupAction)
         {
             if (services == null)
             {
