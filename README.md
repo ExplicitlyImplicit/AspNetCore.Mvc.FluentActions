@@ -16,10 +16,11 @@ Another example:
 app.UseMvcWithFluentActions(actions =>
 {
     actions
-        .Route("/api/users/{userId}")
+        .Route("/users/{userId}")
         .UsingService<IUserService>()
         .UsingRouteParameter<int>("userId")
-        .To((userService, userId) => userService.GetUserWithId(userId));
+        .To((userService, userId) => userService.GetUserWithId(userId))
+		.ToView("~/views/users/show.cshtml")
 }
 ```
 
@@ -27,7 +28,7 @@ See [CHANGELOG.md](CHANGELOG.md) for a list of recent updates.
 
 ## Purpose
 
-This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use case(s) were:
+This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use cases were:
 
 1. We must use .NET MVC
 1. Our "web logic" is separated into its own layer (database, business logic, etc outside)
@@ -53,7 +54,7 @@ public ActionResult Index()
 }
 ```
 
-You can be more explicit than this using vanilla MVC and this tool is just that, an extension/repackaging of a couple of MVC web app implementations that veered towards the more explicit and direct way. Hopefully its usage will also result in a more clear and expressive solution as well.
+You can be more explicit than this using vanilla MVC and this tool is just that, an extension/repackaging of a couple of MVC web app implementations that veered towards the more explicit and direct way. Hopefully its usage will also result in a more clear and maintainable solution as well.
 
 ## Installation
 
@@ -66,8 +67,8 @@ Install-Package ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 You also need to replace these two lines in your `Startup.cs` file:
 
 ```
-// services.AddMvc();
-services.AddMvcWithFluentActions();
+// services.AddMvc(options);
+services.AddMvcWithFluentActions(options);
 
 // app.UseMvc(routes => ...);
 app.UseMvcWithFluentActions(actions => ...); // see usage chapter below 
@@ -110,9 +111,9 @@ public string HelloWorldAction()
 
 Fluent actions are only wrapping the tools that makes up the framework .NET MVC. We can still use MVC tools and concepts to implement our web app. In fact, `UseMvcWithFluentActions` can also define routes as you normally do in MVC (using `IAction<Route>`) and attribute routing also works together with fluent actions. 
 
-### Using-definitions
+### `Using` Statements
 
-If you need to define any kind of input for your action, use a using-definition. Each `UsingX` statement will become a parameter to your delegate in the `To` statement (in the same order as you call them). 
+If you need to define any kind of input for your action, use a `Using` statement. Each `Using` statement will become a parameter to your delegate in the `To` statement (in the same order as you call them). 
 
 ```
 actions
@@ -138,7 +139,7 @@ Lets look at a previous example:
 
 ```
 actions
-    .Route("/api/users/{userId}")
+    .Route("/users/{userId}")
     .UsingService<IUserService>()
     .UsingRouteParameter<int>("userId")
     .To((userService, userId) => userService.GetUserWithId(userId));
@@ -148,7 +149,7 @@ This is equivalent to the following action method:
 
 ```
 [HttpGet]
-[Route("/api/users/{userId}")]
+[Route("/users/{userId}")]
 public string GetUserAction([FromServices]IUserService userService, [FromRoute]int userId)
 {
     return userService.GetUserWithId(userId);
@@ -558,7 +559,7 @@ You can use async/await delegates:
 actions
   .Route("/users")
   .UsingService<IUserService>()
-  .ToAsync(async userService => await userService.ListAsync());
+  .To(async userService => await userService.ListAsync());
 ```
 
 ### Piping handlers (currently not supporting asynchronous handlers)
