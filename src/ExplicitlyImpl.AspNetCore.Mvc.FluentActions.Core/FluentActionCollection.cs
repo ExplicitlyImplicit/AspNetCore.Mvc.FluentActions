@@ -27,6 +27,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             FluentActions.Add(fluentAction);
         }
 
+        public void Add(FluentActionCollection fluentActions)
+        {
+            foreach (var fluentAction in fluentActions)
+            {
+                FluentActions.Add(fluentAction);
+            }
+        }
+
         public IEnumerator<FluentActionBase> GetEnumerator()
         {
             return FluentActions.GetEnumerator();

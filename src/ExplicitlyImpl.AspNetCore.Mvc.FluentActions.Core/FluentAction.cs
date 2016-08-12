@@ -297,5 +297,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             return new FluentActionWithResult<TR>(Definition, handlerFunc);
         }
+
+        public static FluentAction Route(string url, HttpMethod httpMethod, string title = null)
+        {
+            return new FluentAction(httpMethod, url, title);
+        }
     }
 }
