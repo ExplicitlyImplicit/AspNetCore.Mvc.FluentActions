@@ -452,6 +452,16 @@ actions
   .To((userService, user) => userService.Add(user));
 ```
 
+The following is also possible:
+
+```
+actions
+  .RoutePost("/users")
+  .UsingService<IUserService>()
+  .UsingBody<UserItem>()
+  .To((userService, user) => userService.Add(user));
+```
+
 ### `ToView`
 
 To pipe your output from a `To` statement to an MVC view, you can use `ToView`:

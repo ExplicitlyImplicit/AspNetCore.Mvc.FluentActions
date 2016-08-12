@@ -22,6 +22,41 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return fluentAction;
         }
 
+        public FluentAction RouteDelete(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Delete, title);
+        }
+
+        public FluentAction RouteGet(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Get, title);
+        }
+
+        public FluentAction RouteHead(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Head, title);
+        }
+
+        public FluentAction RouteOptions(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Options, title);
+        }
+
+        public FluentAction RoutePatch(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Patch, title);
+        }
+
+        public FluentAction RoutePost(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Post, title);
+        }
+
+        public FluentAction RoutePut(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Put, title);
+        }
+
         public void Add(FluentActionBase fluentAction)
         {
             FluentActions.Add(fluentAction);

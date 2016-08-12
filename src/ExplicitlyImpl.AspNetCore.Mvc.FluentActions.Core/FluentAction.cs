@@ -302,5 +302,40 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             return new FluentAction(httpMethod, url, title);
         }
+
+        public static FluentAction RouteDelete(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Delete, title);
+        }
+
+        public static FluentAction RouteGet(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Get, title);
+        }
+
+        public static FluentAction RouteHead(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Head, title);
+        }
+
+        public static FluentAction RouteOptions(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Options, title);
+        }
+
+        public static FluentAction RoutePatch(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Patch, title);
+        }
+
+        public static FluentAction RoutePost(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Post, title);
+        }
+
+        public static FluentAction RoutePut(string url, string title = null)
+        {
+            return Route(url, HttpMethod.Put, title);
+        }
     }
 }
