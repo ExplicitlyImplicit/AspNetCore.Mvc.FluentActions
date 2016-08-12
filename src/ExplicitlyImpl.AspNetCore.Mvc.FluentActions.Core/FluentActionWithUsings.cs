@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 
@@ -176,6 +178,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithController<TU1, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
             });
         }
 
@@ -359,6 +369,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithController<TU1, TU2, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
+            });
+        }
+
         public FluentActionWithResult<TR> To<TR>(Func<TU1, TU2, TR> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR>(Definition, handlerFuncAsync);
@@ -536,6 +554,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithController<TU1, TU2, TU3, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TU3, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
             });
         }
 
@@ -719,6 +745,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TU3, TU4, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
+            });
+        }
+
         public FluentActionWithResult<TR> To<TR>(Func<TU1, TU2, TU3, TU4, TR> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR>(Definition, handlerFuncAsync);
@@ -896,6 +930,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
             });
         }
 
@@ -1079,6 +1121,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
+            });
+        }
+
         public FluentActionWithResult<TR> To<TR>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR>(Definition, handlerFuncAsync);
@@ -1256,6 +1306,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
             });
         }
 

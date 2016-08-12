@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -17,7 +18,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             foreach (var controllerDefinition in Context.ControllerDefinitions)
             {
-                feature.Controllers.Add(controllerDefinition.TypeInfo);
+                if (!feature.Controllers.Contains(controllerDefinition.TypeInfo))
+                {
+                    feature.Controllers.Add(controllerDefinition.TypeInfo);
+                }
             }
         }
     }

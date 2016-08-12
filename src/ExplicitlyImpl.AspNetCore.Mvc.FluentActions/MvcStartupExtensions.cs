@@ -30,7 +30,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var controllerDefinitionBuilder = new FluentActionControllerDefinitionBuilder();
 
             var controllerDefinitions = fluentActions
-                .Select(fluentAction => controllerDefinitionBuilder.Create(fluentAction))
+                .Select(fluentAction => controllerDefinitionBuilder.Build(fluentAction))
                 .ToList();
 
             var context = (FluentActionControllerFeatureProviderContext)app

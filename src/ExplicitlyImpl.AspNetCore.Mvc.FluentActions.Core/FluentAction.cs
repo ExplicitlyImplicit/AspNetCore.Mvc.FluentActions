@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 
@@ -13,7 +15,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         Func,
         View,
         PartialView,
-        ViewComponent
+        ViewComponent,
+        Controller
     }
 
     public class FluentActionHandlerDefinition
@@ -27,6 +30,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public Delegate Delegate { get; set; }
 
         public string PathToView { get; set; }
+
+        public LambdaExpression Expression { get; set; }
 
         public FluentActionHandlerDefinition()
         {
@@ -277,6 +282,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithController<TC> UsingController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
             });
         }
 

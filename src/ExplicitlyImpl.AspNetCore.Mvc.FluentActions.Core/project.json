@@ -6,6 +6,7 @@
     "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Mvc.Core": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Routing": "1.0.0-rc2-final",
+    "System.Linq.Expressions": "4.1.0",
     "System.Reflection.Emit": "4.0.1-rc2-24027"
   },
 

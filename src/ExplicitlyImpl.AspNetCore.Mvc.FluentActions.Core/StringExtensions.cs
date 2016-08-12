@@ -42,6 +42,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
+        public static string Without(this string text,
+            string textToRemove)
+        {
+            return text.Replace(textToRemove, "");
+        }
+
         public static bool Contains(this string originalValue, string valueToCheck, StringComparison comparison)
         {
             return originalValue.IndexOf(valueToCheck, comparison) >= 0;

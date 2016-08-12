@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -11,7 +12,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         private const string ActionName = "HandlerAction";
 
-        public FluentActionControllerDefinition Create(FluentActionBase fluentAction)
+        public FluentActionControllerDefinition Build(FluentActionBase fluentAction)
         {
             if (fluentAction == null)
             {
@@ -23,16 +24,55 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 throw new ArgumentException($"Missing handler for action {fluentAction}.");
             }
 
-            var controllerTypeInfo = DefineControllerType(fluentAction.Definition);
-
-            return new FluentActionControllerDefinition()
+            if (fluentAction.Definition.Handlers.Count() == 1 && 
+                fluentAction.Definition.Handlers.First().Type == FluentActionHandlerType.Controller)
             {
-                Id = controllerTypeInfo.Name,
-                Name = controllerTypeInfo.Name,
-                ActionName = ActionName,
-                FluentAction = fluentAction,
-                TypeInfo = controllerTypeInfo
-            };
+                var handler = fluentAction.Definition.Handlers.First();
+
+                if (handler.Expression == null)
+                {
+                    throw new ArgumentException(
+                        $"Missing action expression for {fluentAction}.");
+                }
+
+                if (!(handler.Expression.Body is MethodCallExpression))
+                {
+                    throw new ArgumentException(
+                        $"Expression for {fluentAction} must be a single method call expression.");
+                }
+
+                var method = ((MethodCallExpression)handler.Expression.Body).Method;
+                var controllerTypeInfo = method.DeclaringType.GetTypeInfo();
+
+                if (!(controllerTypeInfo.IsAssignableFrom(typeof(Controller))))
+                {
+                    throw new ArgumentException(
+                        $"Method call for {fluentAction} must come from a controller.");
+                }
+
+                var guid = Guid.NewGuid().ToString().Without("-");
+
+                return new FluentActionControllerDefinition()
+                {
+                    Id = controllerTypeInfo.Name + "_" + method.Name + "_" + guid,
+                    Name = controllerTypeInfo.Name,
+                    ActionName = method.Name,
+                    FluentAction = fluentAction,
+                    TypeInfo = controllerTypeInfo
+                };
+            } else
+            {
+                var controllerTypeInfo = DefineControllerType(fluentAction.Definition);
+
+                return new FluentActionControllerDefinition()
+                {
+                    Id = controllerTypeInfo.Name,
+                    Name = controllerTypeInfo.Name,
+                    ActionName = ActionName,
+                    FluentAction = fluentAction,
+                    TypeInfo = controllerTypeInfo
+                };
+            }
         }
 
         public static TypeInfo DefineControllerType(
