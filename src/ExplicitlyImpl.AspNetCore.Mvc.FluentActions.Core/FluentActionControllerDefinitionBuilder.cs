@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -19,9 +20,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 throw new ArgumentNullException(nameof(fluentAction));
             }
 
-            if (!fluentAction.Definition.Handlers.Any())
+            var validationResult = ValidateFluentActionForBuilding(fluentAction);
+
+            if (!validationResult.Valid)
             {
-                throw new ArgumentException($"Missing handler for action {fluentAction}.");
+                throw new FluentActionValidationException($"Could not validate fluent action {fluentAction}: {validationResult}");
             }
 
             if (fluentAction.Definition.Handlers.Count() == 1 && 
@@ -75,7 +78,85 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
-        public static TypeInfo DefineControllerType(
+        private FluentActionValidationResult ValidateFluentActionForBuilding(FluentActionBase fluentAction)
+        {
+            if (fluentAction == null)
+            {
+                throw new ArgumentNullException(nameof(fluentAction));
+            }
+
+            var validationResult = new FluentActionValidationResult
+            {
+                Valid = true,
+                ValidationErrorMessages = new List<string>()
+            };
+
+            if (fluentAction.Definition == null)
+            {
+                validationResult.AddValidationError($"{nameof(fluentAction.Definition)} is null.");
+                return validationResult;
+            }
+
+            if (fluentAction.Definition.Handlers == null)
+            {
+                validationResult.AddValidationError($"{nameof(fluentAction.Definition.Handlers)} is null.");
+                return validationResult;
+            }
+
+            var handlers = fluentAction.Definition.Handlers;
+
+            if (!handlers.Any())
+            {
+                validationResult.AddValidationError("At least one handler is required.");
+            }
+
+            foreach (var handlerWithNoReturnType in handlers
+                .Where(handler => handler.ReturnType == null))
+            {
+                validationResult.AddValidationError("Missing return type for handler.");
+            }
+
+            //foreach (var routeParameterNotInRoute in handlers
+            //    .SelectMany(handler => handler.Usings)
+            //    .OfType<FluentActionUsingRouteParameterDefinition>()
+            //    .Where(@using => @using.Name))
+            //{
+            //    validationResult.AddValidationError("Missing return type for handler.");
+            //}
+
+            return validationResult;
+        }
+
+        public class FluentActionValidationResult
+        {
+            public FluentActionValidationResult()
+            {
+                ValidationErrorMessages = new List<string>();
+            }
+
+            public bool Valid { get; set; }
+
+            public IList<string> ValidationErrorMessages { get; set; }
+
+            public void AddValidationError(string errorMessage)
+            {
+                Valid = false;
+                ValidationErrorMessages.Add(errorMessage);
+            }
+
+            public override string ToString()
+            {
+                return Valid ? "This fluent action is valid" : string.Join(Environment.NewLine, ValidationErrorMessages);
+            }
+        }
+
+        public class FluentActionValidationException : Exception
+        {
+            public FluentActionValidationException() : base() { }
+            public FluentActionValidationException(string message) : base(message) { }
+        }
+
+        private static TypeInfo DefineControllerType(
             FluentActionDefinition fluentActionDefinition)
         {
             if (fluentActionDefinition == null)
@@ -107,7 +188,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var name = $"FluentAction{guid}Controller";
 
             var typeBuilder = moduleBuilder.DefineType(
-                    name + "Controller",
+                    name,
                     TypeAttributes.Class | TypeAttributes.Public,
                     typeof(Controller));
 
