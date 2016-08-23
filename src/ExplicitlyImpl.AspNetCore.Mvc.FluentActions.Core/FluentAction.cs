@@ -74,7 +74,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public override string ToString()
         {
-            return $"[{HttpMethod}]{Url}";
+            return $"[{HttpMethod}]/{Url ?? "?"}";
         }
     }
 
