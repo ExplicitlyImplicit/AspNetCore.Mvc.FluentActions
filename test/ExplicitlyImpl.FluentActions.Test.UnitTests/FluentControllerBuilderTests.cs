@@ -1,4 +1,6 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers;
+using ExplicitlyImpl.FluentActions.Test.Utils;
 using System;
 using System.Linq;
 using Xunit;
@@ -48,7 +50,29 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
             Assert.Equal("Hello", result);
 
-            // TODO compare builtTypeInfo
+            CompareDynamicControllerToStaticController(
+                builtType,
+                typeof(ControllerForHandlerWithoutUsingsAndReturnsString));
+        }
+
+        public static void CompareDynamicControllerToStaticController(Type dynamicControllerType, Type staticControllerType)
+        {
+            var comparer = new TypeComparer(new TypeComparisonFeature[]
+            {
+                TypeComparisonFeature.Name
+            }, new TypeComparerOptions());
+
+            var comparisonResult = comparer.Compare(staticControllerType, dynamicControllerType);
+
+            if (!comparisonResult.CompleteMatch)
+            { 
+                throw new Exception(string.Format(
+                    "Static controller {0} does not match dynamically created controller {1}: {2}",
+                    staticControllerType.Name,
+                    dynamicControllerType.Name,
+                    string.Join(" ", comparisonResult.MismatchingFeaturesResults
+                        .Select(comparedFeaturesResult => comparedFeaturesResult.Message))));
+            }
         }
 
         public static FluentActionControllerDefinition BuildController(FluentActionBase fluentAction)

@@ -8,6 +8,14 @@ namespace SimpleMvcWithViews.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
+        [Route("/")]
+        public IActionResult Hello()
+        {
+            var hej = 1337;
+            return View("~/views/users/list.cshtml", hej);
+        }
+
         public IActionResult Index()
         {
             var hej = 1;
