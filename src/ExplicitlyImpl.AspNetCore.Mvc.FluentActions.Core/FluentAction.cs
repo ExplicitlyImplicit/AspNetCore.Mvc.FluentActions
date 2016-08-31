@@ -63,6 +63,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
+        public Type ReturnType => Handlers?.LastOrDefault()?.ReturnType;
+
         public FluentActionDefinition(string url, HttpMethod httpMethod, string title = null)
         {
             Url = url.TrimStart('/');
