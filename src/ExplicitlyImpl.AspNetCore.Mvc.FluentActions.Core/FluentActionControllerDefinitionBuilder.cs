@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -378,7 +379,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             var dictionaryField = typeof(FluentActionControllerDefinitionHandlerFuncs)
                 .GetField("All");
-            var dictionaryGetMethod = typeof(Dictionary<,>)
+            var dictionaryGetMethod = typeof(ConcurrentDictionary<,>)
                 .MakeGenericType(typeof(string), typeof(Delegate))
                 .GetMethod("get_Item");
 
@@ -467,12 +468,17 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public static class FluentActionControllerDefinitionHandlerFuncs
     {
-        public static Dictionary<string, Delegate> All = new Dictionary<string, Delegate>();
+        public static ConcurrentDictionary<string, Delegate> All = new ConcurrentDictionary<string, Delegate>();
 
         public static string Add(Delegate value)
         {
             var funcKey = Guid.NewGuid().ToString();
-            All.Add(funcKey, value);
+
+            if (!All.TryAdd(funcKey, value))
+            {
+                throw new Exception($"Tried to add a fluent action delegate but key already exists in dictionary ({funcKey}).");
+            }
+
             return funcKey;
         }
     }
