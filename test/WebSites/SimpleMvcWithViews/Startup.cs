@@ -13,6 +13,7 @@ using SimpleMvcWithViews.Data;
 using SimpleMvcWithViews.Models;
 using SimpleMvcWithViews.Services;
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using SimpleMvcWithViews.Controllers;
 
 namespace SimpleMvcWithViews
 {
@@ -85,6 +86,11 @@ namespace SimpleMvcWithViews
                 actions
                     .Route("/helloWorld", HttpMethod.Get)
                     .To(() => "Hello World!");
+
+                actions
+                    .Route("/toHome", HttpMethod.Get)
+                    .UsingController<HomeController>()
+                    .To(homeController => homeController.Index());
 
                 actions
                     .Route("/users", HttpMethod.Get, "List users.")
