@@ -65,6 +65,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public Type ReturnType => Handlers?.LastOrDefault()?.ReturnType;
 
+        public bool IsMapRoute => Handlers.Count == 1 && Handlers.First().Type == FluentActionHandlerType.Controller;
+
         public FluentActionDefinition(string url, HttpMethod httpMethod, string title = null)
         {
             Url = url.TrimStart('/');

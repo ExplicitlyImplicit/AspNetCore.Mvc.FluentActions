@@ -28,8 +28,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 throw new FluentActionValidationException($"Could not validate fluent action {fluentAction}: {validationResult}");
             }
 
-            if (fluentAction.Definition.Handlers.Count() == 1 && 
-                fluentAction.Definition.Handlers.First().Type == FluentActionHandlerType.Controller)
+            if (fluentAction.Definition.IsMapRoute)
             {
                 var handler = fluentAction.Definition.Handlers.First();
 
@@ -48,7 +47,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 var method = ((MethodCallExpression)handler.Expression.Body).Method;
                 var controllerTypeInfo = method.DeclaringType.GetTypeInfo();
 
-                if (!(controllerTypeInfo.IsAssignableFrom(typeof(Controller))))
+                if (!(typeof(Controller).IsAssignableFrom(controllerTypeInfo.UnderlyingSystemType)))
                 {
                     throw new ArgumentException(
                         $"Method call for {fluentAction} must come from a controller.");
@@ -266,10 +265,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var returnType = fluentActionDefinition.Handlers.Last().ReturnType;
             var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, methodParameterTypes);
 
-            var attributeConstructorInfo = GetHttpMethodAttribute(fluentActionDefinition.HttpMethod)
-                .GetConstructor(new Type[0]);
-            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new Type[0]);
-            methodBuilder.SetCustomAttribute(attributeBuilder);
+            SetHttpMethodAttribute(methodBuilder, fluentActionDefinition.HttpMethod);
+            SetRouteAttribute(methodBuilder, fluentActionDefinition.Url);
 
             var ilGenerator = methodBuilder.GetILGenerator();
 
@@ -463,6 +460,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             // Return last handlers return value
             ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
             ilGenerator.Emit(OpCodes.Ret);
+        }
+
+        private static void SetHttpMethodAttribute(MethodBuilder methodBuilder, HttpMethod httpMethod)
+        {
+            var attributeConstructorInfo = GetHttpMethodAttribute(httpMethod)
+                .GetConstructor(new Type[0]);
+            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new Type[0]);
+            methodBuilder.SetCustomAttribute(attributeBuilder);
+        }
+
+        private static void SetRouteAttribute(MethodBuilder methodBuilder, string url)
+        {
+            var attributeConstructorInfo = typeof(RouteAttribute)
+                .GetConstructor(new Type[] { typeof(string) });
+            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new[] { url });
+            methodBuilder.SetCustomAttribute(attributeBuilder);
         }
     }
 

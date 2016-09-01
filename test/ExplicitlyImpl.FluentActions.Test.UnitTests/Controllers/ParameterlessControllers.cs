@@ -6,6 +6,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
     public class ParameterlessControllerReturnsString : Controller
     {
         [HttpGet]
+        [Route("/route/url")]
         public string HandlerAction()
         {
             return "Hello";
@@ -15,6 +16,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
     public class ParameterlessControllerReturnsInt : Controller
     {
         [HttpGet]
+        [Route("/route/url")]
         public int HandlerAction()
         {
             return 13;
@@ -24,6 +26,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
     public class ParameterlessControllerReturnsGuid : Controller
     {
         [HttpGet]
+        [Route("/route/url")]
         public Guid HandlerAction()
         {
             return new Guid("2a6d4959-817c-4514-90f3-52b518e9ddb0");
@@ -40,6 +43,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
     public class ParameterlessControllerReturnsEnum : Controller
     {
         [HttpGet]
+        [Route("/route/url")]
         public ExampleEnumWithoutUsings HandlerAction()
         {
             return ExampleEnumWithoutUsings.ExampleEnumValue2;
@@ -66,6 +70,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
     public class ParameterlessControllerReturnsObject : Controller
     {
         [HttpGet]
+        [Route("/route/url")]
         public ExampleClassWithoutUsings HandlerAction()
         {
             return new ExampleClassWithoutUsings

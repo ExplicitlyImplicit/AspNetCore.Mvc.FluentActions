@@ -41,7 +41,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             return app.UseMvc(routes =>
             {
-                foreach (var controllerDefinition in controllerDefinitions)
+                foreach (var controllerDefinition in controllerDefinitions
+                    .Where(controllerDefinition => controllerDefinition.FluentAction.Definition.IsMapRoute))
                 {
                     routes.MapRoute(
                         controllerDefinition.Id,

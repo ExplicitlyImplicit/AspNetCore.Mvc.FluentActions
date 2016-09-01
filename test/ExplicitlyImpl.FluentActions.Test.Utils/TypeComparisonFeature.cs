@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ExplicitlyImpl.FluentActions.Test.Utils
 {
@@ -95,19 +98,31 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                     $"Return type does not match between action methods ({actionMethodForType1.ReturnType.Name} vs {actionMethodForType2.ReturnType.Name})."));
             }
 
-            //var attributesForActionMethod1 = actionMethodForType1.GetCustomAttributes();
-            //var attributesForActionMethod2 = actionMethodForType2.GetCustomAttributes();
+            var attributesForActionMethod1 = actionMethodForType1.GetCustomAttributes()
+                .ToArray();
+            var attributesForActionMethod2 = actionMethodForType2.GetCustomAttributes()
+                .Where(attribute => !(attribute is AsyncStateMachineAttribute) && !(attribute is DebuggerStepThroughAttribute))
+                .ToArray();
 
-            //if (attributesForActionMethod1.Count() != attributesForActionMethod2.Count())
-            //{
-            //    comparisonResults.Add(new TypeFeatureComparisonResult(
-            //        TypeComparisonFeature.HandlerActionMethod,
-            //        false,
-            //        $"Custom attribute count does not match between action methods ({attributesForActionMethod1.Count()} vs {attributesForActionMethod2.Count()})."));
-            //} else
-            //{
-            //    // TODO
-            //}
+            if (attributesForActionMethod1.Count() != attributesForActionMethod2.Count())
+            {
+                comparisonResults.Add(new TypeFeatureComparisonResult(
+                    TypeComparisonFeature.HandlerActionMethod,
+                    false,
+                    $"Custom attribute count does not match between action methods ({attributesForActionMethod1.Count()} vs {attributesForActionMethod2.Count()})."));
+            } else
+            {
+                for(var attributeIndex = 0; attributeIndex < attributesForActionMethod1.Length; attributeIndex++)
+                {
+                    if (attributesForActionMethod1[attributeIndex].GetType() != attributesForActionMethod2[attributeIndex].GetType())
+                    {
+                        comparisonResults.Add(new TypeFeatureComparisonResult(
+                            TypeComparisonFeature.HandlerActionMethod,
+                            false,
+                            $"Attribute types do not match between action methods (attribute index: {attributeIndex})."));
+                    } 
+                }
+            }
 
             if (!comparisonResults.Any())
             {
