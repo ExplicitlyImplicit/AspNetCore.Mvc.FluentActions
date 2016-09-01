@@ -69,7 +69,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentActionDefinition(string url, HttpMethod httpMethod, string title = null)
         {
-            Url = url.TrimStart('/');
+            Url = url;
             HttpMethod = httpMethod;
             Title = title;
 

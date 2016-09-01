@@ -121,6 +121,19 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                             false,
                             $"Attribute types do not match between action methods (attribute index: {attributeIndex})."));
                     } 
+                    else if (attributesForActionMethod1[attributeIndex] is RouteAttribute)
+                    {
+                        var routeTemplate1 = ((RouteAttribute)attributesForActionMethod1[attributeIndex]).Template;
+                        var routeTemplate2 = ((RouteAttribute)attributesForActionMethod2[attributeIndex]).Template;
+
+                        if (routeTemplate1 != routeTemplate2)
+                        {
+                            comparisonResults.Add(new TypeFeatureComparisonResult(
+                                TypeComparisonFeature.HandlerActionMethod,
+                                false,
+                                $"Route templates do not match between action methods ({routeTemplate1} vs {routeTemplate2})."));
+                        }
+                    }
                 }
             }
 
