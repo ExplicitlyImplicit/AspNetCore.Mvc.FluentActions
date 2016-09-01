@@ -11,7 +11,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         [Fact(DisplayName = "No handler, throws")]
         public void FluentControllerBuilder_ThrowsOnFluentActionWithoutHandler()
         {
-            var fluentAction = new FluentAction("/", HttpMethod.Get);
+            var fluentAction = new FluentAction("/route/url", HttpMethod.Get);
 
             Assert.Throws<FluentActionValidationException>(() => BuilderTestUtils.BuildController(fluentAction));
         }
@@ -20,7 +20,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithoutUsingsAndReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => "Hello"), 
                 typeof(ParameterlessControllerReturnsString));
         }
@@ -29,7 +29,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithoutUsingsAndReturnsInt()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => 13),
                 typeof(ParameterlessControllerReturnsInt));
         }
@@ -38,7 +38,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithoutUsingsAndReturnsGuid()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => new Guid("2a6d4959-817c-4514-90f3-52b518e9ddb0")),
                 typeof(ParameterlessControllerReturnsGuid));
         }
@@ -47,7 +47,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithoutUsingsAndReturnsEnum()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => ExampleEnumWithoutUsings.ExampleEnumValue2),
                 typeof(ParameterlessControllerReturnsEnum));
         }
@@ -56,7 +56,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithoutUsingsAndReturnsObject()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => new ExampleClassWithoutUsings
                     {
                         StringField = "Hello",

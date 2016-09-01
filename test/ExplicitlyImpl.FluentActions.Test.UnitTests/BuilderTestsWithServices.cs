@@ -12,7 +12,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionUsingServiceReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .UsingService<IStringTestService>()
                     .To(stringTestService => stringTestService.GetTestString() + "FromAFluentAction"),
                 typeof(ControllerWithStringService),
@@ -23,7 +23,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionUsingServiceReturnsStringAsync()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .UsingService<IStringTestService>()
                     .To(async stringTestService => await stringTestService.GetTestStringAsync() + "FromAFluentAction"),
                 typeof(ControllerWithStringServiceAsync),
@@ -34,7 +34,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionUsingServiceReturnsListOfUsers()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .To(userService => userService.ListUsers()),
                 typeof(ControllerWithUserService),
@@ -45,7 +45,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionUsingServiceReturnsListOfUsersAsync()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                new FluentAction("/", HttpMethod.Get)
+                new FluentAction("/route/url", HttpMethod.Get)
                     .UsingService<IUserService>()
                     .To(userService => userService.ListUsersAsync()),
                 typeof(ControllerWithUserServiceAsync),
@@ -58,7 +58,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             Assert.Throws<Exception>(() =>
                 BuilderTestUtils.BuildActionAndCompareToStaticAction(
-                    new FluentAction("/", HttpMethod.Get)
+                    new FluentAction("/route/url", HttpMethod.Get)
                         .UsingService<IStringTestService>()
                         .UsingService<IStringTestService>()
                         .To((stringTestService1, stringTestService2) => 
