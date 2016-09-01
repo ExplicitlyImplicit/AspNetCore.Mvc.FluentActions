@@ -19,7 +19,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         }
 
         [Fact(DisplayName = "1 query string parameter (string) with used default value, returns string")]
-        public void FluentControllerBuilder_FluentActionUsingQueryStringParmeterWithUsedDefaultValueReturnsString()
+        public void FluentControllerBuilder_FluentActionUsingQueryStringParameterWithUsedDefaultValueReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
@@ -30,7 +30,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         }
 
         [Fact(DisplayName = "1 query string parameter (string) with unused default value, returns string")]
-        public void FluentControllerBuilder_FluentActionUsingQueryStringParmeterWithUnusedDefaultValueReturnsString()
+        public void FluentControllerBuilder_FluentActionUsingQueryStringParameterWithUnusedDefaultValueReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
