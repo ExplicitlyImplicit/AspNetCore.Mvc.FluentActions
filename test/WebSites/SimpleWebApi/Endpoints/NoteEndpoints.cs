@@ -5,7 +5,7 @@ namespace SimpleWebApi
 {
     public static class FluentNoteActions
     {
-        public static Action<FluentActionCollection> All => actions =>
+        public static FluentActionCollection All => FluentActionCollection.DefineActions(actions =>
         {
             actions
                 .Route("/api/notes", HttpMethod.Get)
@@ -36,6 +36,6 @@ namespace SimpleWebApi
                 .UsingService<INoteService>()
                 .UsingRouteParameter<int>("noteId")
                 .To((noteService, noteId) => noteService.Remove(noteId));
-        };
+        });
     }
 }

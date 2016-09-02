@@ -1,17 +1,16 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
-using System;
 
 namespace SimpleWebApi
 {
     public static class FluentActions
     {
-        public static Action<FluentActionCollection> AllExternal => actions =>
+        public static FluentActionCollection AllExternal => FluentActionCollection.DefineActions(actions =>
         {
-            FluentUserActions.All(actions);
-            FluentNoteActions.All(actions);
-        };
+            actions.Add(FluentUserActions.All);
+            actions.Add(FluentNoteActions.All);
+        });
 
-        public static Action<FluentActionCollection> All => actions =>
+        public static FluentActionCollection All => FluentActionCollection.DefineActions(actions =>
         {
             actions
                 .Route("/api/users", HttpMethod.Get)
@@ -42,6 +41,6 @@ namespace SimpleWebApi
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
                 .To((userService, userId) => userService.Remove(userId));
-        };
+        });
     }
 }

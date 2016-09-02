@@ -15,9 +15,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Action<FluentActionCollection> configureFluentActions,
             Action<IRouteBuilder> configureRoutes = null)
         {
-            var fluentActions = new FluentActionCollection();
-
-            configureFluentActions(fluentActions);
+            var fluentActions = FluentActionCollection.DefineActions(configureFluentActions);
 
             return app.UseMvcWithFluentActions(fluentActions, configureRoutes);
         }

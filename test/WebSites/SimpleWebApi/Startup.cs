@@ -51,6 +51,8 @@ namespace SimpleWebApi
                     .To(userService => userService.List())
                     .ToView("users/list.cshtml");
 
+                actions.Add(FluentActions.AllExternal);
+
                 actions
                     .Route("/api/users", HttpMethod.Post)
                     .UsingService<IUserService>()

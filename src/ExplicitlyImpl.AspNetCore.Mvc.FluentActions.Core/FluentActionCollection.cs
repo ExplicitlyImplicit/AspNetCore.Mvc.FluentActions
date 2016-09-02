@@ -10,7 +10,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public List<FluentActionBase> FluentActions { get; internal set; }
 
-        public FluentActionCollection()
+        private FluentActionCollection()
         {
             FluentActions = new List<FluentActionBase>();
         }
@@ -78,6 +78,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
+        {
+            var actionCollection = new FluentActionCollection();
+
+            addFluentActions(actionCollection);
+
+            return actionCollection;
         }
     }
 }

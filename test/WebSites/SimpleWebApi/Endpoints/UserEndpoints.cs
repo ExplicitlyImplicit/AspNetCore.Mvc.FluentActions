@@ -5,7 +5,7 @@ namespace SimpleWebApi
 {
     public static class FluentUserActions
     {
-        public static Action<FluentActionCollection> All => actions =>
+        public static FluentActionCollection All => FluentActionCollection.DefineActions(actions =>
         {
             actions
                 .Route("/api/users", HttpMethod.Get)
@@ -36,6 +36,6 @@ namespace SimpleWebApi
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
                 .To((userService, userId) => userService.Remove(userId));
-        };
+        });
     }
 }
