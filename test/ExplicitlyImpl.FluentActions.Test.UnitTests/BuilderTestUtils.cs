@@ -26,7 +26,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             Assert.True(builtControllerTypeInfo.Name.EndsWith("Controller"));
         }
 
-        public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType, object[] actionMethodArguments = null)
+        public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType)
+        {
+            var builtController = BuildController(fluentAction);
+
+            AssertConstantValuesOfBuiltController(builtController, fluentAction);
+
+            CompareBuiltControllerToStaticController(builtController.TypeInfo.UnderlyingSystemType, staticControllerType);
+        }
+
+        public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType, object[] actionMethodArguments)
         {
             var builtController = BuildController(fluentAction);
 

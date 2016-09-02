@@ -22,7 +22,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => "Hello"), 
-                typeof(ParameterlessControllerReturnsString));
+                typeof(ParameterlessControllerReturnsString),
+                null);
         }
 
         [Fact(DisplayName = "No usings, returns int")]
@@ -31,7 +32,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => 13),
-                typeof(ParameterlessControllerReturnsInt));
+                typeof(ParameterlessControllerReturnsInt),
+                null);
         }
 
         [Fact(DisplayName = "No usings, returns guid")]
@@ -40,7 +42,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => new Guid("2a6d4959-817c-4514-90f3-52b518e9ddb0")),
-                typeof(ParameterlessControllerReturnsGuid));
+                typeof(ParameterlessControllerReturnsGuid),
+                null);
         }
 
         [Fact(DisplayName = "No usings, returns enum")]
@@ -49,7 +52,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => ExampleEnumWithoutUsings.ExampleEnumValue2),
-                typeof(ParameterlessControllerReturnsEnum));
+                typeof(ParameterlessControllerReturnsEnum),
+                null);
         }
 
         [Fact(DisplayName = "No usings, returns object")]
@@ -63,7 +67,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                         IntField = 14,
                         StringProperty = "World!"
                     }),
-                typeof(ParameterlessControllerReturnsObject));
+                typeof(ParameterlessControllerReturnsObject),
+                null);
         }
     }
 }
