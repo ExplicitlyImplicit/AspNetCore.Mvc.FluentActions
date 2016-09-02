@@ -6,7 +6,7 @@ Usage example:
 ```
 app.UseMvcWithFluentActions(actions =>
 {
-    actions.Route("/").To(() => "Hello World!"));
+    actions.RouteGet("/").To(() => "Hello World!"));
 }
 ```
 
@@ -16,7 +16,7 @@ Another example:
 app.UseMvcWithFluentActions(actions =>
 {
     actions
-        .Route("/users/{userId}")
+        .RouteGet("/users/{userId}")
         .UsingService<IUserService>()
         .UsingRouteParameter<int>("userId")
         .To((userService, userId) => userService.GetUserById(userId))
@@ -81,7 +81,7 @@ Fluent actions are added inside the `Startup.cs` file but the fluent action defi
 ```
 app.UseMvcWithFluentActions(actions => 
 {
-    actions.Route("/helloWorld").To(() => "Hello World!"));
+    actions.RouteGet("/helloWorld").To(() => "Hello World!"));
     actions.Add(MyFluentActions.SingleReference);
     actions.Add(MyFluentActions.MultipleReferences);
 }
@@ -91,11 +91,11 @@ If we examine the first defined action in the code above:
 
 ```
 actions
-    .Route("/helloWorld")
+    .RouteGet("/helloWorld")
     .To(() => "Hello World!"));
 ```
 
-- The first statement `Route` defines the routing, any **GET** requests to **/helloWorld** will be handled by this action.
+- The first statement `RouteGet` defines the routing, any **GET** requests to **/helloWorld** will be handled by this action.
 - The second statement `To` defines what will happen when someone makes a **GET** request to this url. In this case, a plain text "Hello World!" will be returned by the web app. 
 
 How do we know how the web app writes our output to the HTTP response? The code above is equivalent to an action method in a controller looking like this:
@@ -117,7 +117,7 @@ If you need to define any kind of input for your action, use a `Using` statement
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingQueryStringParameter<string>("name")
     .To(name => $"Hello {name}!"));
 ```
@@ -139,7 +139,7 @@ Lets look at a previous example:
 
 ```
 actions
-    .Route("/users/{userId}")
+    .RouteGet("/users/{userId}")
     .UsingService<IUserService>()
     .UsingRouteParameter<int>("userId")
     .To((userService, userId) => userService.GetUserById(userId))
@@ -178,7 +178,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingBody<UserItem>()
     .To(user => $"Hello {user.Name}!"));
 ```
@@ -200,7 +200,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingForm<UserItem>()
     .To(user => $"Hello {user.Name}!"));
 ```
@@ -222,7 +222,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingFormValue<string>("name")
     .To(name => $"Hello {name}!"));
 ```
@@ -244,7 +244,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingHeader<string>("Content-Type")
     .To(contentType => $"Hello, your Content-Type is: {contentType}"));
 ```
@@ -266,7 +266,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingHttpContext()
     .To(httpContext => $"Hello, your request path is: {httpContext.Request.Path}"));
 ```
@@ -288,7 +288,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingModelBinder<UserItem>(typeof(MyModelBinder))
     .To(user => $"Hello {user.Name}!"));
 ```
@@ -310,7 +310,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .To(() => "Hello"))
     .UsingResultFromHandler()
     .To(hello => hello + " World!"));
@@ -333,7 +333,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello/{name}")
+    .RouteGet("/hello/{name}")
     .UsingRouteParameter<string>("name")
     .To(name => $"Hello {name}!"));
 ```
@@ -355,7 +355,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .To(userService => userService.List()));
 ```
@@ -379,7 +379,7 @@ This fluent action:
 
 ```
 actions
-    .Route("/hello/{name}")
+    .RouteGet("/hello/{name}")
     .UsingQueryStringParameter<string>("name")
     .To(name => $"Hello {name}!"));
 ```
@@ -412,7 +412,7 @@ Example:
 
 ```
 actions
-    .Route("/hello/{name}")
+    .RouteGet("/hello/{name}")
     .UsingQueryStringParameter<string>("name", defaultValue: "John Doe")
     .To(name => $"Hello {name}!"));
 ```
@@ -434,7 +434,7 @@ You can specify which HTTP method to use for an action in the `Route` statement:
 
 ```
 actions
-    .Route("/users", HttpMethod.Post)
+    .RouteGet("/users", HttpMethod.Post)
     .UsingService<IUserService>()
     .UsingBody<UserItem>()
     .To((userService, user) => userService.Add(user));
@@ -456,7 +456,7 @@ To pipe your output from a `To` statement to an MVC view, you can use `ToView`:
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .To(userService => userService.List()))
     .ToView("~/Views/Users/ListUsers.cshtml");
@@ -480,7 +480,7 @@ To pipe your output from a `To` statement to an MVC partial view, you can use `T
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .To(userService => userService.List()))
     .ToPartialView("~/Views/Users/ListUsers.cshtml");
@@ -504,7 +504,7 @@ To pipe your output from a `To` statement to an MVC view component, you can use 
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .To(userService => userService.List()))
     .ToViewComponent("~/Views/Users/ListUsers.cshtml");
@@ -528,7 +528,7 @@ You can also use fluent actions for routing only:
 
 ```
 actions
-    .Route("/hello")
+    .RouteGet("/hello")
     .UsingQueryStringParameter("name")
     .ToController<HelloController>()
     .ToAction((name, controller) => controller.Hello(name));
@@ -542,7 +542,7 @@ If you want to you can also write code like this:
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .UsingQueryStringParameter<int>("userId")
     .To((userService, userId) => 
@@ -558,7 +558,7 @@ You can use async/await delegates:
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .To(async userService => await userService.ListAsync());
 ```
@@ -569,7 +569,7 @@ You can use multiple `To` statements for an action:
 
 ```
 actions
-    .Route("/users")
+    .RouteGet("/users")
     .UsingService<IUserService>()
     .To(userService => userService.List())
     .UsingQueryStringParameter<string>("name")
