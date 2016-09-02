@@ -289,7 +289,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TC>(Definition, new FluentActionUsingControllerDefinition
             {

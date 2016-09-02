@@ -181,7 +181,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -369,7 +369,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TU2, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -557,7 +557,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TU2, TU3, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -745,7 +745,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TU4, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -933,7 +933,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -1121,7 +1121,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -1309,7 +1309,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC> UsingController<TC>() where TC : Controller
+        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC>(Definition, new FluentActionUsingControllerDefinition
             {
@@ -1328,6 +1328,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentActionWithUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public virtual new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TC> ToController<TC>() where TC : Controller
+        {
+            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TC>(Definition, new FluentActionUsingControllerDefinition
+            {
+                Type = typeof(TC)
+            });
         }
 
         public FluentActionWithResult<TR> To<TR>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR> handlerFuncAsync)

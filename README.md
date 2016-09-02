@@ -160,7 +160,6 @@ public string GetUserAction([FromServices]IUserService userService, [FromRoute]i
 Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/latest/mvc/models/model-binding.html#customize-model-binding-behavior-with-attributes) for a better understanding of how the equivalent code of most of these using-definitions work.
 
 - UsingBody
-- UsingController (only for routing)
 - UsingForm
 - UsingFormValue
 - UsingHeader
@@ -192,20 +191,6 @@ public string Action([FromBody]UserItem user)
     return $"Hello {user.Name}!";
 }
 ```
-
-#### UsingController
-
-You can also use fluent actions for routing only:
-
-```
-actions
-  .Route("/hello")
-  .UsingController<HelloController>()
-  .UsingQueryStringParameter("name")
-  .To((controller, name) => controller.Hello(name));
-```
-
-Note that the lambda expression in the `To` statement must be a single method call to a controller method.
 
 #### UsingForm
 
@@ -534,6 +519,20 @@ public ActionResult Action([FromServices]IUserService userService)
     return ViewComponent("~/views/users/list.cshtml", users);
 }
 ```
+
+### Routing to controller action
+
+You can also use fluent actions for routing only:
+
+```
+actions
+  .Route("/hello")
+  .UsingQueryStringParameter("name")
+  .ToController<HelloController>()
+  .ToAction((name, controller) => controller.Hello(name));
+```
+
+Note that the lambda expression in the `ToAction` statement must be a single method call to a controller method.
 
 ### Code block in `To`
 

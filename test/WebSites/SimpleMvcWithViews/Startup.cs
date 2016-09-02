@@ -89,8 +89,8 @@ namespace SimpleMvcWithViews
 
                 actions
                     .Route("/toHome", HttpMethod.Get)
-                    .UsingController<HomeController>()
-                    .To(homeController => homeController.Index());
+                    .ToController<HomeController>()
+                    .ToAction(homeController => homeController.Index());
 
                 actions
                     .Route("/users", HttpMethod.Get, "List users.")
