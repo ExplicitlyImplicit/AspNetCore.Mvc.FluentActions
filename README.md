@@ -20,7 +20,7 @@ app.UseMvcWithFluentActions(actions =>
         .UsingService<IUserService>()
         .UsingRouteParameter<int>("userId")
         .To((userService, userId) => userService.GetUserById(userId))
-		.ToView("~/Views/Users/DisplayUser.cshtml")
+        .ToView("~/Views/Users/DisplayUser.cshtml")
 }
 ```
 
@@ -50,7 +50,7 @@ This kind of routing is fairly implicit and it is pretty hard to know what this 
 ```
 public ActionResult Index() 
 {
-  return View();
+    return View();
 }
 ```
 
@@ -81,9 +81,9 @@ Fluent actions are added inside the `Startup.cs` file but the fluent action defi
 ```
 app.UseMvcWithFluentActions(actions => 
 {
-  actions.Route("/helloWorld").To(() => "Hello World!"));
-  actions.Add(MyFluentActions.SingleReference);
-  actions.Add(MyFluentActions.MultipleReferences);
+    actions.Route("/helloWorld").To(() => "Hello World!"));
+    actions.Add(MyFluentActions.SingleReference);
+    actions.Add(MyFluentActions.MultipleReferences);
 }
 ```
 
@@ -91,8 +91,8 @@ If we examine the first defined action in the code above:
 
 ```
 actions
-  .Route("/helloWorld")
-  .To(() => "Hello World!"));
+    .Route("/helloWorld")
+    .To(() => "Hello World!"));
 ```
 
 - The first statement `Route` defines the routing, any **GET** requests to **/helloWorld** will be handled by this action.
@@ -117,9 +117,9 @@ If you need to define any kind of input for your action, use a `Using` statement
 
 ```
 actions
-  .Route("/hello")
-  .UsingQueryStringParameter<string>("name")
-  .To(name => $"Hello {name}!"));
+    .Route("/hello")
+    .UsingQueryStringParameter<string>("name")
+    .To(name => $"Hello {name}!"));
 ```
 
 The `name` parameter in `To` is of type `string`, inferred from the generic type of `UsingQueryStringParameter`.
@@ -139,11 +139,11 @@ Lets look at a previous example:
 
 ```
 actions
-	.Route("/users/{userId}")
-	.UsingService<IUserService>()
-	.UsingRouteParameter<int>("userId")
-	.To((userService, userId) => userService.GetUserById(userId))
-	.ToView("~/Views/Users/DisplayUser.cshtml")
+    .Route("/users/{userId}")
+    .UsingService<IUserService>()
+    .UsingRouteParameter<int>("userId")
+    .To((userService, userId) => userService.GetUserById(userId))
+    .ToView("~/Views/Users/DisplayUser.cshtml")
 ```
 
 This is equivalent to the following action method:
@@ -178,9 +178,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .UsingBody<UserItem>()
-  .To(user => $"Hello {user.Name}!"));
+    .Route("/hello")
+    .UsingBody<UserItem>()
+    .To(user => $"Hello {user.Name}!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -200,9 +200,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .UsingForm<UserItem>()
-  .To(user => $"Hello {user.Name}!"));
+    .Route("/hello")
+    .UsingForm<UserItem>()
+    .To(user => $"Hello {user.Name}!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -222,9 +222,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .UsingFormValue<string>("name")
-  .To(name => $"Hello {name}!"));
+    .Route("/hello")
+    .UsingFormValue<string>("name")
+    .To(name => $"Hello {name}!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -244,9 +244,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .UsingHeader<string>("Content-Type")
-  .To(contentType => $"Hello, your Content-Type is: {contentType}"));
+    .Route("/hello")
+    .UsingHeader<string>("Content-Type")
+    .To(contentType => $"Hello, your Content-Type is: {contentType}"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -266,9 +266,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .UsingHttpContext()
-  .To(httpContext => $"Hello, your request path is: {httpContext.Request.Path}"));
+    .Route("/hello")
+    .UsingHttpContext()
+    .To(httpContext => $"Hello, your request path is: {httpContext.Request.Path}"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -288,9 +288,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .UsingModelBinder<UserItem>(typeof(MyModelBinder))
-  .To(user => $"Hello {user.Name}!"));
+    .Route("/hello")
+    .UsingModelBinder<UserItem>(typeof(MyModelBinder))
+    .To(user => $"Hello {user.Name}!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -310,10 +310,10 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello")
-  .To(() => "Hello"))
-  .UsingResultFromHandler()
-  .To(hello => hello + " World!"));
+    .Route("/hello")
+    .To(() => "Hello"))
+    .UsingResultFromHandler()
+    .To(hello => hello + " World!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -333,9 +333,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello/{name}")
-  .UsingRouteParameter<string>("name")
-  .To(name => $"Hello {name}!"));
+    .Route("/hello/{name}")
+    .UsingRouteParameter<string>("name")
+    .To(name => $"Hello {name}!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -355,9 +355,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .To(userService => userService.List()));
+    .Route("/users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List()));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -379,9 +379,9 @@ This fluent action:
 
 ```
 actions
-  .Route("/hello/{name}")
-  .UsingQueryStringParameter<string>("name")
-  .To(name => $"Hello {name}!"));
+    .Route("/hello/{name}")
+    .UsingQueryStringParameter<string>("name")
+    .To(name => $"Hello {name}!"));
 ```
 
 Is equivalent to the following action method in a controller:
@@ -412,9 +412,9 @@ Example:
 
 ```
 actions
-  .Route("/hello/{name}")
-  .UsingQueryStringParameter<string>("name", defaultValue: "John Doe")
-  .To(name => $"Hello {name}!"));
+    .Route("/hello/{name}")
+    .UsingQueryStringParameter<string>("name", defaultValue: "John Doe")
+    .To(name => $"Hello {name}!"));
 ```
 
 This is equivalent to the following action method in a controller:
@@ -434,20 +434,20 @@ You can specify which HTTP method to use for an action in the `Route` statement:
 
 ```
 actions
-  .Route("/users", HttpMethod.Post)
-  .UsingService<IUserService>()
-  .UsingBody<UserItem>()
-  .To((userService, user) => userService.Add(user));
+    .Route("/users", HttpMethod.Post)
+    .UsingService<IUserService>()
+    .UsingBody<UserItem>()
+    .To((userService, user) => userService.Add(user));
 ```
 
 The following is also possible:
 
 ```
 actions
-  .RoutePost("/users")
-  .UsingService<IUserService>()
-  .UsingBody<UserItem>()
-  .To((userService, user) => userService.Add(user));
+    .RoutePost("/users")
+    .UsingService<IUserService>()
+    .UsingBody<UserItem>()
+    .To((userService, user) => userService.Add(user));
 ```
 
 ### `ToView`
@@ -456,10 +456,10 @@ To pipe your output from a `To` statement to an MVC view, you can use `ToView`:
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .To(userService => userService.List()))
-  .ToView("~/Views/Users/ListUsers.cshtml");
+    .Route("/users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List()))
+    .ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 This is equivalent to:
@@ -480,10 +480,10 @@ To pipe your output from a `To` statement to an MVC partial view, you can use `T
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .To(userService => userService.List()))
-  .ToPartialView("~/Views/Users/ListUsers.cshtml");
+    .Route("/users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List()))
+    .ToPartialView("~/Views/Users/ListUsers.cshtml");
 ```
 
 This is equivalent to:
@@ -504,10 +504,10 @@ To pipe your output from a `To` statement to an MVC view component, you can use 
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .To(userService => userService.List()))
-  .ToViewComponent("~/Views/Users/ListUsers.cshtml");
+    .Route("/users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List()))
+    .ToViewComponent("~/Views/Users/ListUsers.cshtml");
 ```
 
 This is equivalent to:
@@ -528,10 +528,10 @@ You can also use fluent actions for routing only:
 
 ```
 actions
-  .Route("/hello")
-  .UsingQueryStringParameter("name")
-  .ToController<HelloController>()
-  .ToAction((name, controller) => controller.Hello(name));
+    .Route("/hello")
+    .UsingQueryStringParameter("name")
+    .ToController<HelloController>()
+    .ToAction((name, controller) => controller.Hello(name));
 ```
 
 Note that the lambda expression in the `ToAction` statement must be a single method call to a controller method.
@@ -542,14 +542,14 @@ If you want to you can also write code like this:
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .UsingQueryStringParameter<int>("userId")
-  .To((userService, userId) => 
-  {
-    var user = userService.GetById(userId);
-    return $"Hello {user.Name}!";
-  });
+    .Route("/users")
+    .UsingService<IUserService>()
+    .UsingQueryStringParameter<int>("userId")
+    .To((userService, userId) => 
+    {
+      var user = userService.GetById(userId);
+      return $"Hello {user.Name}!";
+    });
 ```
 
 ### Asynchronous handlers (currently not supporting piping handlers)
@@ -558,9 +558,9 @@ You can use async/await delegates:
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .To(async userService => await userService.ListAsync());
+    .Route("/users")
+    .UsingService<IUserService>()
+    .To(async userService => await userService.ListAsync());
 ```
 
 ### Piping handlers (currently not supporting asynchronous handlers)
@@ -569,12 +569,12 @@ You can use multiple `To` statements for an action:
 
 ```
 actions
-  .Route("/users")
-  .UsingService<IUserService>()
-  .To(userService => userService.List())
-  .UsingQueryStringParameter<string>("name")
-  .UsingResultFromHandler()
-  .To((name, users) => $"Hello {name}! We got {users.Count} users!");
+    .Route("/users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List())
+    .UsingQueryStringParameter<string>("name")
+    .UsingResultFromHandler()
+    .To((name, users) => $"Hello {name}! We got {users.Count} users!");
 ```
 
 Why would you pipe handlers? Well, we are currently using some extension methods on top of our explicitly defined actions that are specific to our project business logic. Those extensions can be implemented using this concept.
