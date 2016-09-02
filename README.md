@@ -82,8 +82,8 @@ Fluent actions are added inside the `Startup.cs` file but the fluent action defi
 app.UseMvcWithFluentActions(actions => 
 {
     actions.RouteGet("/helloWorld").To(() => "Hello World!"));
-    actions.Add(MyFluentActions.SingleReference);
-    actions.Add(MyFluentActions.MultipleReferences);
+    actions.Add(FluentActions.UserActions);
+    actions.Add(FluentActions.ProfileActions);
 }
 ```
 
