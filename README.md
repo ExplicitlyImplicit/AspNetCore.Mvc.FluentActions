@@ -19,7 +19,7 @@ app.UseMvcWithFluentActions(actions =>
         .Route("/users/{userId}")
         .UsingService<IUserService>()
         .UsingRouteParameter<int>("userId")
-        .To((userService, userId) => userService.GetUserWithId(userId))
+        .To((userService, userId) => userService.GetUserById(userId))
 		.ToView("~/Views/Users/DisplayUser.cshtml")
 }
 ```
@@ -31,10 +31,10 @@ See [CHANGELOG.md](CHANGELOG.md) for a list of recent updates.
 This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use cases were:
 
 1. We must use .NET MVC
-1. Our "web logic" is separated into its own layer (database, business logic, etc outside)
+1. Our web logic is separated into its own layer (database, business logic, etc outside)
 1. We wanted a more _explicit_ way of defining our web layer
 
-If you take a look at the routing definition of the Visual Studio template used when creating a .NET MVC app:
+If you take a look at the routing definition of a regular template used when creating a .NET MVC app:
 
 ```
 app.UseMvc(routes =>
@@ -109,7 +109,7 @@ public string HelloWorldAction()
 }
 ```
 
-Fluent actions are only wrapping the tools that makes up the framework .NET MVC. We can still use MVC tools and concepts to implement our web app. In fact, `UseMvcWithFluentActions` can also define routes as you normally do in MVC (using `IAction<Route>`) and attribute routing also works together with fluent actions. 
+Fluent actions are only wrapping the tools that makes up the framework .NET MVC. We can still use MVC tools and concepts to implement our web app. In fact, `UseMvcWithFluentActions` can also define routes as you normally do in MVC (using `IAction<Route>` as a second parameter) and attribute routing also works together with fluent actions. 
 
 ### `Using` Statements
 
@@ -142,7 +142,7 @@ actions
     .Route("/users/{userId}")
     .UsingService<IUserService>()
     .UsingRouteParameter<int>("userId")
-    .To((userService, userId) => userService.GetUserWithId(userId));
+    .To((userService, userId) => userService.GetUserById(userId));
 ```
 
 This is equivalent to the following action method:
@@ -152,7 +152,7 @@ This is equivalent to the following action method:
 [Route("/users/{userId}")]
 public string GetUserAction([FromServices]IUserService userService, [FromRoute]int userId)
 {
-    return userService.GetUserWithId(userId);
+    return userService.GetUserById(userId);
 }
 ```
 
