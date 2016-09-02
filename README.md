@@ -20,7 +20,7 @@ app.UseMvcWithFluentActions(actions =>
         .UsingService<IUserService>()
         .UsingRouteParameter<int>("userId")
         .To((userService, userId) => userService.GetUserWithId(userId))
-		.ToView("~/views/users/show.cshtml")
+		.ToView("~/Views/Users/DisplayUser.cshtml")
 }
 ```
 
@@ -457,7 +457,7 @@ actions
   .Route("/users")
   .UsingService<IUserService>()
   .To(userService => userService.List()))
-  .ToView("~/views/users/list.cshtml");
+  .ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 This is equivalent to:
@@ -468,7 +468,7 @@ This is equivalent to:
 public ActionResult Action([FromServices]IUserService userService)
 {
     var users = userService.List();
-    return View("~/views/users/list.cshtml", users);
+    return View("~/Views/Users/ListUsers.cshtml", users);
 }
 ```
 
@@ -481,7 +481,7 @@ actions
   .Route("/users")
   .UsingService<IUserService>()
   .To(userService => userService.List()))
-  .ToPartialView("~/views/users/list.cshtml");
+  .ToPartialView("~/Views/Users/ListUsers.cshtml");
 ```
 
 This is equivalent to:
@@ -492,7 +492,7 @@ This is equivalent to:
 public ActionResult Action([FromServices]IUserService userService)
 {
     var users = userService.List();
-    return PartialView("~/views/users/list.cshtml", users);
+    return PartialView("~/Views/Users/ListUsers.cshtml", users);
 }
 ```
 
@@ -505,7 +505,7 @@ actions
   .Route("/users")
   .UsingService<IUserService>()
   .To(userService => userService.List()))
-  .ToViewComponent("~/views/users/list.cshtml");
+  .ToViewComponent("~/Views/Users/ListUsers.cshtml");
 ```
 
 This is equivalent to:
@@ -516,7 +516,7 @@ This is equivalent to:
 public ActionResult Action([FromServices]IUserService userService)
 {
     var users = userService.List();
-    return ViewComponent("~/views/users/list.cshtml", users);
+    return ViewComponent("~/Views/Users/ListUsers.cshtml", users);
 }
 ```
 
