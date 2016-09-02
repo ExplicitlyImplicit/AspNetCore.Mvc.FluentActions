@@ -139,10 +139,11 @@ Lets look at a previous example:
 
 ```
 actions
-    .Route("/users/{userId}")
-    .UsingService<IUserService>()
-    .UsingRouteParameter<int>("userId")
-    .To((userService, userId) => userService.GetUserById(userId));
+	.Route("/users/{userId}")
+	.UsingService<IUserService>()
+	.UsingRouteParameter<int>("userId")
+	.To((userService, userId) => userService.GetUserById(userId))
+	.ToView("~/Views/Users/DisplayUser.cshtml")
 ```
 
 This is equivalent to the following action method:
@@ -152,7 +153,8 @@ This is equivalent to the following action method:
 [Route("/users/{userId}")]
 public string GetUserAction([FromServices]IUserService userService, [FromRoute]int userId)
 {
-    return userService.GetUserById(userId);
+    var user = userService.GetUserById(userId);
+    return View("~/Views/Users/DisplayUser.cshtml", user);
 }
 ```
 
