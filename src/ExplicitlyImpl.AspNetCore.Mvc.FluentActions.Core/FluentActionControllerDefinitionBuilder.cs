@@ -266,7 +266,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, methodParameterTypes);
 
             SetHttpMethodAttribute(methodBuilder, fluentActionDefinition.HttpMethod);
-            SetRouteAttribute(methodBuilder, fluentActionDefinition.Url);
+            SetRouteAttribute(methodBuilder, fluentActionDefinition.RouteTemplate);
 
             var ilGenerator = methodBuilder.GetILGenerator();
 
@@ -295,9 +295,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     var attributeType = typeof(FromRouteAttribute);
                     var name = ((FluentActionUsingRouteParameterDefinition)usingDefinition).Name;
 
-                    if (!fluentActionDefinition.Url.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
+                    if (!fluentActionDefinition.RouteTemplate.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        throw new Exception($"Route parameter {name} does not exist in url {fluentActionDefinition.Url}.");
+                        throw new Exception($"Route parameter {name} does not exist in routeTemplate {fluentActionDefinition.RouteTemplate}.");
                     }
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
@@ -470,11 +470,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             methodBuilder.SetCustomAttribute(attributeBuilder);
         }
 
-        private static void SetRouteAttribute(MethodBuilder methodBuilder, string url)
+        private static void SetRouteAttribute(MethodBuilder methodBuilder, string routeTemplate)
         {
             var attributeConstructorInfo = typeof(RouteAttribute)
                 .GetConstructor(new Type[] { typeof(string) });
-            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new[] { url });
+            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new[] { routeTemplate });
             methodBuilder.SetCustomAttribute(attributeBuilder);
         }
     }

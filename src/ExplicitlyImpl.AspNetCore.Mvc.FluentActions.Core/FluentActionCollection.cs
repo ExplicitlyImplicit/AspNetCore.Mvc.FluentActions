@@ -15,46 +15,46 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             FluentActions = new List<FluentActionBase>();
         }
 
-        public FluentAction Route(string url, HttpMethod httpMethod, string title = null)
+        public FluentAction Route(string routeTemplate, HttpMethod httpMethod, string title = null)
         {
-            var fluentAction = new FluentAction(httpMethod, url, title);
+            var fluentAction = new FluentAction(httpMethod, routeTemplate, title);
             FluentActions.Add(fluentAction);
             return fluentAction;
         }
 
-        public FluentAction RouteDelete(string url, string title = null)
+        public FluentAction RouteDelete(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Delete, title);
+            return Route(routeTemplate, HttpMethod.Delete, title);
         }
 
-        public FluentAction RouteGet(string url, string title = null)
+        public FluentAction RouteGet(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Get, title);
+            return Route(routeTemplate, HttpMethod.Get, title);
         }
 
-        public FluentAction RouteHead(string url, string title = null)
+        public FluentAction RouteHead(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Head, title);
+            return Route(routeTemplate, HttpMethod.Head, title);
         }
 
-        public FluentAction RouteOptions(string url, string title = null)
+        public FluentAction RouteOptions(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Options, title);
+            return Route(routeTemplate, HttpMethod.Options, title);
         }
 
-        public FluentAction RoutePatch(string url, string title = null)
+        public FluentAction RoutePatch(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Patch, title);
+            return Route(routeTemplate, HttpMethod.Patch, title);
         }
 
-        public FluentAction RoutePost(string url, string title = null)
+        public FluentAction RoutePost(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Post, title);
+            return Route(routeTemplate, HttpMethod.Post, title);
         }
 
-        public FluentAction RoutePut(string url, string title = null)
+        public FluentAction RoutePut(string routeTemplate, string title = null)
         {
-            return Route(url, HttpMethod.Put, title);
+            return Route(routeTemplate, HttpMethod.Put, title);
         }
 
         public void Add(FluentActionBase fluentAction)

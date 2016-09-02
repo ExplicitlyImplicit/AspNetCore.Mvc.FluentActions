@@ -12,7 +12,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public TypeInfo TypeInfo { get; set; }
 
-        public string Url => FluentAction.Url;
+        public string RouteTemplate => FluentAction.RouteTemplate;
 
         public FluentActionBase FluentAction { get; set; }
     }

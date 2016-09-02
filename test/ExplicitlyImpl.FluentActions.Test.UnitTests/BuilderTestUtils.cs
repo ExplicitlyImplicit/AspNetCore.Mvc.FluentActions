@@ -16,7 +16,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             var builtControllerTypeInfo = builtController.TypeInfo;
 
-            Assert.Equal(fluentAction.Url, builtController.Url);
+            Assert.Equal(fluentAction.RouteTemplate, builtController.RouteTemplate);
             Assert.Equal("HandlerAction", builtController.ActionName);
             Assert.Equal(builtControllerTypeInfo.Name, builtController.Id);
             Assert.Equal(builtControllerTypeInfo.Name, builtController.Name);

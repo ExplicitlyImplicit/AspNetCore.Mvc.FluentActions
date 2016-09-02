@@ -46,7 +46,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 {
                     routes.MapRoute(
                         controllerDefinition.Id,
-                        controllerDefinition.Url.WithoutLeading("/"),
+                        controllerDefinition.RouteTemplate.WithoutLeading("/"),
                         new
                         {
                             controller = controllerDefinition.Name.WithoutTrailing("Controller"),
