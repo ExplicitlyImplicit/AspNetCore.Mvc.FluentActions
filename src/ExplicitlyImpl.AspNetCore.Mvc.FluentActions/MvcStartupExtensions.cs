@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;

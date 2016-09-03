@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq.Expressions;

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
+
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

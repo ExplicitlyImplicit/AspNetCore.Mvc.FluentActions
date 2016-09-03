@@ -1,4 +1,6 @@
-﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
+
+using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using ExplicitlyImpl.FluentActions.Test.Utils;
 using System;
 using System.Collections;

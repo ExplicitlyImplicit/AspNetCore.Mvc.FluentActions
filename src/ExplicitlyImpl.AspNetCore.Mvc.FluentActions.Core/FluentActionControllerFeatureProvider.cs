@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
+
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Collections.Generic;
 
