@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-// ReSharper disable InconsistentNaming
-
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public enum FluentActionHandlerType

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-// ReSharper disable InconsistentNaming
-
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionWithResult<TR> : FluentActionBase

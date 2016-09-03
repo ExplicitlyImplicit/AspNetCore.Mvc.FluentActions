@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq.Expressions;
 
-// ReSharper disable InconsistentNaming
-
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionWithUsing<TU1> : FluentActionBase

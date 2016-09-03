@@ -1,6 +1,4 @@
 ﻿
-// ReSharper disable InconsistentNaming
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-// ReSharper disable InconsistentNaming
-
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionWithController<TU1> : FluentActionBase

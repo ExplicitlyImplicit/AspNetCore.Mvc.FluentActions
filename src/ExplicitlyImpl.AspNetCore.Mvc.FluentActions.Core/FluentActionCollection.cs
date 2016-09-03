@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// ReSharper disable InconsistentNaming
-
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionCollection : IEnumerable<FluentActionBase>

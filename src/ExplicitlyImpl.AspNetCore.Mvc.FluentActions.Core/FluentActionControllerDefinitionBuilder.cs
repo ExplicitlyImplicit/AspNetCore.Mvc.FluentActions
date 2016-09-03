@@ -116,14 +116,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 validationResult.AddValidationError("Missing return type for handler.");
             }
 
-            //foreach (var routeParameterNotInRoute in handlers
-            //    .SelectMany(handler => handler.Usings)
-            //    .OfType<FluentActionUsingRouteParameterDefinition>()
-            //    .Where(@using => @using.Name))
-            //{
-            //    validationResult.AddValidationError("Missing return type for handler.");
-            //}
-
             return validationResult;
         }
 
