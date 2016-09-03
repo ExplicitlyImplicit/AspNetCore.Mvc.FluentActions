@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +24,6 @@ namespace SimpleMvcWithViews
 
             if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
             }
 
@@ -38,10 +33,8 @@ namespace SimpleMvcWithViews
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -49,16 +42,13 @@ namespace SimpleMvcWithViews
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add framework services.
             services.AddMvcWithFluentActions();
 
-            // Add application services.
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -78,8 +68,6 @@ namespace SimpleMvcWithViews
             app.UseStaticFiles();
 
             app.UseIdentity();
-
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvcWithFluentActions(actions =>
             {
@@ -102,31 +90,6 @@ namespace SimpleMvcWithViews
                     .Route("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .To(userService => userService.List());
-
-                actions
-                    .Route("/api/users", HttpMethod.Post)
-                    .UsingService<IUserService>()
-                    .UsingBody<UserItem>()
-                    .To((userService, user) => userService.Add(user));
-
-                actions
-                    .Route("/api/users/{userId}", HttpMethod.Get)
-                    .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .To((userService, userId) => userService.Get(userId));
-
-                actions
-                    .Route("/api/users/{userId}", HttpMethod.Put)
-                    .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .UsingBody<UserItem>()
-                    .To((userService, userId, user) => userService.Update(userId, user));
-
-                actions
-                    .Route("/api/users/{userId}", HttpMethod.Delete)
-                    .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .To((userService, userId) => userService.Remove(userId));
             }, routes =>
             {
                 routes.MapRoute(
