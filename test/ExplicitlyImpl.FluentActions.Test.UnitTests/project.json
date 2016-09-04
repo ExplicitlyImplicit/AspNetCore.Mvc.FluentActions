@@ -1,15 +1,16 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "testRunner": "xunit",
   "dependencies": {
+    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": "1.0.0",
+    "ExplicitlyImpl.FluentActions.Test.Utils": "1.0.0",
+
     "xunit": "2.2.0-beta2-build3300",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0-rc2-3002702"
-    },
-    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": "1.0.0-*",
-    "ExplicitlyImpl.FluentActions.Test.Utils": "1.0.0-*"
+      "version": "1.0.0"
+    }
   },
 
   "frameworks": {
