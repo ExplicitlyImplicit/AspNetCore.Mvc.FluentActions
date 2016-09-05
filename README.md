@@ -1,4 +1,4 @@
-# [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/)
+# [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions/1.0.0)
 Fluent Actions is a tool to define your web logic in an expressive and typed manner without manually creating any controllers or action methods.  
 
 Usage example:
@@ -23,8 +23,6 @@ app.UseMvcWithFluentActions(actions =>
         .ToView("~/Views/Users/DisplayUser.cshtml")
 }
 ```
-
-See [CHANGELOG.md](CHANGELOG.md) for a list of recent updates.
 
 ## Purpose
 
