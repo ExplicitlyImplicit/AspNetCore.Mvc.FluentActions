@@ -1,8 +1,31 @@
 ﻿{
   "version": "1.0.0",
 
+  "title": "Fluent Actions for ASP.NET Core MVC",
+  "description": "Fluent Actions for ASP.NET Core MVC is a tool to define your web logic in an expressive and typed manner without manually creating any controllers or action methods.",
+  "authors": [ "https://github.com/ExplicitlyImplicit" ],
+  "language": "English (en-US)",
+
+  "packOptions": {
+    "owners": [ "https://github.com/ExplicitlyImplicit" ],
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions"
+    },
+    "tags": [
+      "aspnetcoremvc"
+    ],
+    "projectUrl": "https://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions",
+    "licenseUrl": "https://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions/blob/master/LICENSE"
+  },
+
   "dependencies": {
-    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": "1.0.0",
+    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": {
+      "version": "1.0.0",
+      "target": "project",
+      "type": "build",
+      "include": "build"
+    },
 
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Mvc.Core": "1.0.0",
