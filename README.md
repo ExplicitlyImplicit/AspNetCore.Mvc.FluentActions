@@ -428,21 +428,21 @@ public string Action([FromQuery]string name = "John Doe")
 
 ### Specifying HTTP method
 
-You can specify which HTTP method to use for an action in the `Route` statement:
+There is a `Route` statement for each HTTP method, for example:
 
 ```
 actions
-    .RouteGet("/users", HttpMethod.Post)
+    .RoutePost("/users")
     .UsingService<IUserService>()
     .UsingBody<UserItem>()
     .To((userService, user) => userService.Add(user));
 ```
 
-The following is also possible:
+You can also specify which HTTP method to use for an action using:
 
 ```
 actions
-    .RoutePost("/users")
+    .Route("/users", HttpMethod.Post)
     .UsingService<IUserService>()
     .UsingBody<UserItem>()
     .To((userService, user) => userService.Add(user));
@@ -520,7 +520,7 @@ public ActionResult Action([FromServices]IUserService userService)
 }
 ```
 
-### Routing to controller action
+### Routing to an MVC controller 
 
 You can also use fluent actions for routing only:
 
