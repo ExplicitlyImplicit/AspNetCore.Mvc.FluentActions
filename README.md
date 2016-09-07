@@ -87,7 +87,25 @@ app.UseMvcWithFluentActions(actions =>
 }
 ```
 
-If we examine the first defined action in the code above:
+Where `FluentActions.UserActions` could look like this:
+
+```
+public static FluentActionCollection UserActions => FluentActionCollection.DefineActions(actions =>
+{
+    actions
+        .RouteGet("/users")
+        .UsingService<IUserService>()
+        .To(userService => userService.List());
+    
+    actions
+        .RouteGet("/users/{userId}")
+        .UsingService<IUserService>()
+        .UsingRouteParameter<int>("userId")
+        .To((userService, userId) => userService.Get(userId));
+});
+```
+
+If we examine the first defined action in the `Startup.cs` above:
 
 ```
 actions
