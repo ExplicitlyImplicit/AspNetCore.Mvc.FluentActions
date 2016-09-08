@@ -13,6 +13,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
+    public class ControllerWithModelBinderAndNamePropertyReturnsString : Controller
+    {
+        [HttpGet]
+        [Route("/route/url")]
+        public string HandlerAction([ModelBinder(BinderType = typeof(NoOpBinder), Name = "NoOpName")]string name)
+        {
+            return $"Hello {name}!";
+        }
+    }
+
     public class ControllerWithModelBinderAndDefaultValueReturnsString : Controller
     {
         [HttpGet]

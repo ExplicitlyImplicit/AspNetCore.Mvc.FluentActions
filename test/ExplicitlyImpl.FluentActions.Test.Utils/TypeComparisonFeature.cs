@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace ExplicitlyImpl.FluentActions.Test.Utils
 {
@@ -78,7 +79,8 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                     TypeComparisonFeature.HandlerActionMethod,
                     false,
                     $"Parameter count does not match between action methods ({parametersForType1.Length} vs {parametersForType2.Length})."));
-            } else
+            } 
+            else
             {
                 for(var parameterIndex = 0; parameterIndex < parametersForType1.Length; parameterIndex++)
                 {
@@ -88,6 +90,53 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                             TypeComparisonFeature.HandlerActionMethod,
                             false,
                             $"Parameter types do not match between action methods (parameter index: {parameterIndex})."));
+                    } 
+                    else
+                    {
+                        var parameterAttributes1 = parametersForType1[parameterIndex].CustomAttributes
+                            .Where(attribute => attribute.AttributeType != typeof(OptionalAttribute))
+                            .ToArray();
+                        var parameterAttributes2 = parametersForType2[parameterIndex].CustomAttributes
+                            .Where(attribute => attribute.AttributeType != typeof(OptionalAttribute))
+                            .ToArray();
+
+                        if (parameterAttributes1.Length != parameterAttributes2.Length)
+                        {
+                            comparisonResults.Add(new TypeFeatureComparisonResult(
+                                TypeComparisonFeature.HandlerActionMethod,
+                                false,
+                                $"Parameter attribute count does not match between action methods for parameter at index {parameterIndex} ({parameterAttributes1.Length} vs {parameterAttributes2.Length})."));
+                        } 
+                        else
+                        {
+                            for (var parameterAttributeIndex = 0; parameterAttributeIndex < parameterAttributes1.Length; parameterAttributeIndex++)
+                            {
+                                if (parameterAttributes1[parameterAttributeIndex].AttributeType != parameterAttributes2[parameterAttributeIndex].AttributeType)
+                                {
+                                    comparisonResults.Add(new TypeFeatureComparisonResult(
+                                        TypeComparisonFeature.HandlerActionMethod,
+                                        false,
+                                        $"Parameter attribute types do not match between action methods for parameter at index {parameterIndex} ({parameterAttributes1[parameterAttributeIndex].AttributeType} vs {parameterAttributes2[parameterAttributeIndex].AttributeType})."));
+                                } 
+                                else if (parameterAttributes1[parameterAttributeIndex].AttributeType == typeof(ModelBinderAttribute))
+                                {
+                                    var parameterAttribute1 = parameterAttributes1[parameterAttributeIndex];
+                                    var parameterAttribute2 = parameterAttributes2[parameterAttributeIndex];
+
+                                    if (parameterAttribute1.NamedArguments.Count != parameterAttribute2.NamedArguments.Count)
+                                    {
+                                        comparisonResults.Add(new TypeFeatureComparisonResult(
+                                            TypeComparisonFeature.HandlerActionMethod,
+                                            false,
+                                            $"Named argument count for ModelBinderAttribute does not match between action methods for parameter at index {parameterIndex} ({parameterAttribute1.NamedArguments.Count} vs {parameterAttribute2.NamedArguments.Count})."));
+                                    } 
+                                    else
+                                    {
+                                        // TODO
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -112,7 +161,8 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                     TypeComparisonFeature.HandlerActionMethod,
                     false,
                     $"Custom attribute count does not match between action methods ({attributesForActionMethod1.Count()} vs {attributesForActionMethod2.Count()})."));
-            } else
+            } 
+            else
             {
                 for(var attributeIndex = 0; attributeIndex < attributesForActionMethod1.Length; attributeIndex++)
                 {

@@ -92,6 +92,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public Type ModelBinderType { get; set; }
 
+        public string ParameterName { get; set; }
+
         public override bool IsMethodParameter => true;
 
         public override int GetHashCode()

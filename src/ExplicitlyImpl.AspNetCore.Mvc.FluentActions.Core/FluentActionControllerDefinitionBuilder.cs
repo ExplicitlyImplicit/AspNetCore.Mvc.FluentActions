@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -356,13 +355,41 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 else if (usingDefinition is FluentActionUsingModelBinderDefinition)
                 {
                     var attributeType = typeof(ModelBinderAttribute);
-                    var modelBinderType = ((FluentActionUsingModelBinderDefinition)usingDefinition).ModelBinderType;
+                    var modelBinderDefinition = ((FluentActionUsingModelBinderDefinition)usingDefinition);
+                    var modelBinderType = modelBinderDefinition.ModelBinderType;
+
+                    PropertyInfo[] propertyTypes = null;
+                    object[] propertyValues = null;
+                    if (!string.IsNullOrWhiteSpace(modelBinderDefinition.ParameterName))
+                    {
+                        propertyTypes = new[]
+                        {
+                            attributeType.GetProperty("BinderType"),
+                            attributeType.GetProperty("Name")
+                        };
+                        propertyValues = new object[] 
+                        {
+                            modelBinderType,
+                            modelBinderDefinition.ParameterName
+                        };
+                    } 
+                    else
+                    {
+                        propertyTypes = new[]
+                        {
+                            attributeType.GetProperty("BinderType")
+                        };
+                        propertyValues = new object[]
+                        {
+                            modelBinderType
+                        };
+                    }
 
                     var parameterAttributeBuilder = new CustomAttributeBuilder(
                         attributeType.GetConstructor(new Type[0]),
                         new Type[0],
-                        new[] { attributeType.GetProperty("BinderType") },
-                        new object[] { modelBinderType });
+                        propertyTypes,
+                        propertyValues);
 
                     methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
                 }

@@ -163,23 +163,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1> UsingModelBinder<TU1>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1> UsingModelBinder<TU1>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1> UsingModelBinder<TU1>(Type modelBinderType, TU1 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1> UsingModelBinder<TU1>(Type modelBinderType, string parameterName, TU1 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -368,23 +370,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2> UsingModelBinder<TU2>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2> UsingModelBinder<TU2>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU2),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2> UsingModelBinder<TU2>(Type modelBinderType, TU2 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2> UsingModelBinder<TU2>(Type modelBinderType, string parameterName, TU2 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU2),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -556,23 +560,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3> UsingModelBinder<TU3>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3> UsingModelBinder<TU3>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU3),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3> UsingModelBinder<TU3>(Type modelBinderType, TU3 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3> UsingModelBinder<TU3>(Type modelBinderType, string parameterName, TU3 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU3),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -744,23 +750,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4> UsingModelBinder<TU4>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4> UsingModelBinder<TU4>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU4),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4> UsingModelBinder<TU4>(Type modelBinderType, TU4 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4> UsingModelBinder<TU4>(Type modelBinderType, string parameterName, TU4 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU4),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -932,23 +940,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5> UsingModelBinder<TU5>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5> UsingModelBinder<TU5>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU5),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5> UsingModelBinder<TU5>(Type modelBinderType, TU5 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5> UsingModelBinder<TU5>(Type modelBinderType, string parameterName, TU5 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU5),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -1120,23 +1130,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> UsingModelBinder<TU6>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> UsingModelBinder<TU6>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU6),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> UsingModelBinder<TU6>(Type modelBinderType, TU6 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> UsingModelBinder<TU6>(Type modelBinderType, string parameterName, TU6 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU6),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -1308,23 +1320,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelBinder<TU7>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelBinder<TU7>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU7),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelBinder<TU7>(Type modelBinderType, TU7 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingModelBinder<TU7>(Type modelBinderType, string parameterName, TU7 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU7),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
@@ -1496,23 +1510,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelBinder<TU8>(Type modelBinderType)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelBinder<TU8>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU8),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelBinder<TU8>(Type modelBinderType, TU8 defaultValue)
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> UsingModelBinder<TU8>(Type modelBinderType, string parameterName, TU8 defaultValue)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU8),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 

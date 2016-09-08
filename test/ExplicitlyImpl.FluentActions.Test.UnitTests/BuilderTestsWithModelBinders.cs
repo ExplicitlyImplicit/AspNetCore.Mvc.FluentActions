@@ -19,12 +19,23 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                 new object[] { "Charlie" });
         }
 
+        [Fact(DisplayName = "1 model binder (string) with name property, returns string")]
+        public void FluentControllerBuilder_FluentActionUsingModelBinderWithNamePropertyReturnsString()
+        {
+            BuilderTestUtils.BuildActionAndCompareToStaticAction(
+                new FluentAction("/route/url", HttpMethod.Get)
+                    .UsingModelBinder<string>(typeof(NoOpBinder), "NoOpName2")
+                    .To(name => $"Hello {name}!"),
+                typeof(ControllerWithModelBinderAndNamePropertyReturnsString),
+                new object[] { "Charlie" });
+        }
+
         [Fact(DisplayName = "1 model binder (string) with used default value, returns string")]
         public void FluentControllerBuilder_FluentActionUsingModelBinderWithUsedDefaultValueReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
-                    .UsingModelBinder<string>(typeof(NoOpBinder), "Hanzel")
+                    .UsingModelBinder<string>(typeof(NoOpBinder), null, "Hanzel")
                     .To(name => $"Hello {name}!"),
                 typeof(ControllerWithModelBinderAndDefaultValueReturnsString),
                 new object[] { Type.Missing });
@@ -35,7 +46,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)
-                    .UsingModelBinder<string>(typeof(NoOpBinder), "Hanzel")
+                    .UsingModelBinder<string>(typeof(NoOpBinder), null, "Hanzel")
                     .To(name => $"Hello {name}!"),
                 typeof(ControllerWithModelBinderAndDefaultValueReturnsString),
                 new object[] { "Charlie" });

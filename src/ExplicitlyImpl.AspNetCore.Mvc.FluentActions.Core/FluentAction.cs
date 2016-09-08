@@ -261,23 +261,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType)
+        public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType, string parameterName = null)
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
-                ModelBinderType = modelBinderType
+                ModelBinderType = modelBinderType,
+                ParameterName = parameterName
             });
         }
 
-        public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType, TU1 defaultValue)
+        public virtual FluentActionWithUsing<TU1> UsingModelBinder<TU1>(Type modelBinderType, string parameterName, TU1 defaultValue)
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingModelBinderDefinition
             {
                 Type = typeof(TU1),
                 ModelBinderType = modelBinderType,
                 HasDefaultValue = true,
-                DefaultValue = defaultValue
+                DefaultValue = defaultValue,
+                ParameterName = parameterName
             });
         }
 
