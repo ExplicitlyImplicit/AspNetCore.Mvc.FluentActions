@@ -81,6 +81,10 @@ namespace SimpleMvcWithViews
                     .ToAction(homeController => homeController.Index());
 
                 actions
+                    .Route("/toError", HttpMethod.Get)
+                    .ToView("~/Views/Shared/Error.cshtml");
+
+                actions
                     .Route("/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .To(userService => userService.List())

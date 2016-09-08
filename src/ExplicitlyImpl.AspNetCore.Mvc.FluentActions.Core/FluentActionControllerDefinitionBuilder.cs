@@ -457,20 +457,30 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
                     ilGenerator.Emit(OpCodes.Ldarg_0);
                     ilGenerator.Emit(OpCodes.Ldstr, handler.PathToView);
-                    ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+
+                    Type[] viewMethodParameterTypes = null;
+                    if (localVariableForPreviousReturnValue != null)
+                    {
+                        ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+                        viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
+                    } 
+                    else
+                    {
+                        viewMethodParameterTypes = new[] { typeof(string) };
+                    }
 
                     MethodInfo viewMethod = null;
                     if (handler.Type == FluentActionHandlerType.View)
                     {
-                        viewMethod = typeof(Controller).GetMethod("View", new[] { typeof(string), typeof(object) });
+                        viewMethod = typeof(Controller).GetMethod("View", viewMethodParameterTypes);
                     }
                     else if (handler.Type == FluentActionHandlerType.PartialView)
                     {
-                        viewMethod = typeof(Controller).GetMethod("PartialView", new[] { typeof(string), typeof(object) });
+                        viewMethod = typeof(Controller).GetMethod("PartialView", viewMethodParameterTypes);
                     }
                     else if (handler.Type == FluentActionHandlerType.ViewComponent)
                     {
-                        viewMethod = typeof(Controller).GetMethod("ViewComponent", new[] { typeof(string), typeof(object) });
+                        viewMethod = typeof(Controller).GetMethod("ViewComponent", viewMethodParameterTypes);
                     }
 
                     ilGenerator.Emit(OpCodes.Callvirt, viewMethod);

@@ -313,6 +313,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResult<TR>(Definition, handlerFunc);
         }
 
+        public FluentActionWithView ToView(string pathToView)
+        {
+            return new FluentActionWithView(Definition, pathToView);
+        }
+
         public static FluentAction Route(string routeTemplate, HttpMethod httpMethod, string title = null)
         {
             return new FluentAction(httpMethod, routeTemplate, title);
