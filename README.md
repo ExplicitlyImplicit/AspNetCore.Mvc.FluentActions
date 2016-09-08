@@ -26,6 +26,8 @@ app.UseMvcWithFluentActions(actions =>
 }
 ```
 
+See [CHANGELOG.md](CHANGELOG.md) for changes of each published version.
+
 ## Purpose
 
 This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use cases were:
