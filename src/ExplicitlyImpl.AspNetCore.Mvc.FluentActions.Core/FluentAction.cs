@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -288,6 +289,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithUsing<ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
             });
         }
 

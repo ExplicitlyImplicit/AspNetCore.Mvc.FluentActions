@@ -402,6 +402,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .GetMethod("get_Item");
 
             var httpContextControllerProperty = typeof(Controller).GetProperty("HttpContext");
+            var viewDataControllerProperty = typeof(Controller).GetProperty("ViewData");
 
             LocalBuilder localVariableForPreviousReturnValue = null;
 
@@ -433,6 +434,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
+                        } else if (handlerUsing is FluentActionUsingViewDataDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Callvirt, viewDataControllerProperty.GetGetMethod());
                         }
                     }
 

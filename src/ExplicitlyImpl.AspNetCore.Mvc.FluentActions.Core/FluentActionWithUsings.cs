@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Linq.Expressions;
 
@@ -180,6 +181,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
             });
         }
 
@@ -373,6 +382,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
+            });
+        }
+
         public virtual FluentActionWithController<TU1, TU2, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TC>(Definition, new FluentActionUsingControllerDefinition
@@ -560,6 +577,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
             });
         }
 
@@ -753,6 +778,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
+            });
+        }
+
         public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TU4, TC>(Definition, new FluentActionUsingControllerDefinition
@@ -940,6 +973,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
             });
         }
 
@@ -1133,6 +1174,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
+            });
+        }
+
         public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC> ToController<TC>() where TC : Controller
         {
             return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC>(Definition, new FluentActionUsingControllerDefinition
@@ -1320,6 +1369,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ViewDataDictionary> UsingViewData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
+            {
+                Type = typeof(ViewDataDictionary)
             });
         }
 
