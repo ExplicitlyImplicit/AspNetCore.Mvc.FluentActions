@@ -1,5 +1,7 @@
 # [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions/1.0.0)
-Fluent Actions is a tool to define your web logic in an expressive and typed manner without manually creating any controllers or action methods.  
+Fluent Actions is a tool to define your web logic in an expressive and typed manner without manually creating any controllers
+ or action methods. It focuses on bringing forward the _main flow_ of your web logic, making it more explicit, 
+ while you can still use all of the functionality that the MVC framework provides. 
 
 Usage example:
 
