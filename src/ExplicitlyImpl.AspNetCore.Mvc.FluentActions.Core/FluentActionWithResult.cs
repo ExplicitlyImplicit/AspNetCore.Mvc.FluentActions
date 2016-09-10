@@ -202,6 +202,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public FluentAction Do(Action handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
+        }
+
         public FluentActionWithResult<TR2> To<TR2>(Func<TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
@@ -417,6 +425,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public FluentAction Do(Action<TU1> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
+        }
+
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
@@ -613,6 +629,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 Type = typeof(ViewDataDictionary)
             });
+        }
+
+        public FluentAction Do(Action<TU1, TU2> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
         }
 
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TR2> handlerFuncAsync)
@@ -813,6 +837,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public FluentAction Do(Action<TU1, TU2, TU3> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
+        }
+
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
@@ -1009,6 +1041,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 Type = typeof(ViewDataDictionary)
             });
+        }
+
+        public FluentAction Do(Action<TU1, TU2, TU3, TU4> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
         }
 
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TR2> handlerFuncAsync)
@@ -1209,6 +1249,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
+        }
+
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
@@ -1405,6 +1453,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 Type = typeof(ViewDataDictionary)
             });
+        }
+
+        public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
         }
 
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR2> handlerFuncAsync)
@@ -1605,6 +1661,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6, TU7> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
+        }
+
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR2> handlerFuncAsync)
         {
             return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
@@ -1616,6 +1680,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
             Definition.CurrentHandler.Usings.Add(usingDefinition);
+        }
+
+        public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
         }
 
         public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR2> handlerFuncAsync)

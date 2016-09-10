@@ -14,6 +14,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         Unknown,
         Func,
+        Action,
         View,
         PartialView,
         ViewComponent,
@@ -298,6 +299,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 Type = typeof(ViewDataDictionary)
             });
+        }
+
+        public FluentAction Do(Action handlerAction)
+        {
+            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
+            Definition.CurrentHandler.Delegate = handlerAction;
+            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            return new FluentAction(Definition);
         }
 
         public virtual FluentActionWithController<TC> ToController<TC>() where TC : Controller

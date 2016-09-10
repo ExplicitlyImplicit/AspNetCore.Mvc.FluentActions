@@ -30,7 +30,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
         public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType)
         {
-            var builtController = BuildController(fluentAction);
+            var builtController = BuildAction(fluentAction);
 
             AssertConstantValuesOfBuiltController(builtController, fluentAction);
 
@@ -39,7 +39,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
         public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType, object[] actionMethodArguments)
         {
-            var builtController = BuildController(fluentAction);
+            var builtController = BuildAction(fluentAction);
 
             AssertConstantValuesOfBuiltController(builtController, fluentAction);
 
@@ -147,7 +147,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             }
         }
 
-        public static FluentActionControllerDefinition BuildController(FluentActionBase fluentAction)
+        public static FluentActionControllerDefinition BuildAction(FluentActionBase fluentAction)
         {
             var controllerBuilder = new FluentActionControllerDefinitionBuilder();
             return controllerBuilder.Build(fluentAction);

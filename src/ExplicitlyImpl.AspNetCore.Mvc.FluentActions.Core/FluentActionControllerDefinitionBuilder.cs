@@ -66,16 +66,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 };
             } else
             {
-                var controllerTypeInfo = DefineControllerType(fluentAction.Definition);
-
-                return new FluentActionControllerDefinition()
+                try
                 {
-                    Id = controllerTypeInfo.Name,
-                    Name = controllerTypeInfo.Name,
-                    ActionName = ActionName,
-                    FluentAction = fluentAction,
-                    TypeInfo = controllerTypeInfo
-                };
+                    var controllerTypeInfo = DefineControllerType(fluentAction.Definition);
+
+                    return new FluentActionControllerDefinition()
+                    {
+                        Id = controllerTypeInfo.Name,
+                        Name = controllerTypeInfo.Name,
+                        ActionName = ActionName,
+                        FluentAction = fluentAction,
+                        TypeInfo = controllerTypeInfo
+                    };
+                } catch (Exception buildException)
+                {
+                    throw new Exception($"Could not build controller type for {fluentAction}: {buildException.Message}", buildException);
+                }
             }
         }
 
@@ -112,7 +118,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
 
             foreach (var handlerWithNoReturnType in handlers
-                .Where(handler => handler.ReturnType == null))
+                .Where(handler => handler.Type != FluentActionHandlerType.Action && handler.ReturnType == null))
             {
                 validationResult.AddValidationError("Missing return type for handler.");
             }
@@ -190,7 +196,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return typeBuilder;
         }
 
-        private static Type MakeGenericFuncType(FluentActionHandlerDefinition handler)
+        private static Type GetFuncType(FluentActionHandlerDefinition handler)
         {
             var argumentTypes = handler.Usings.Select(@using => @using.Type).ToList();
             argumentTypes.Add(handler.ReturnType);
@@ -215,7 +221,41 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 case 8: return typeof(Func<,,,,,,,>);
             }
 
-            throw new Exception($"{nameof(GetUnspecifiedGenericFuncType)} only supports up to eight arguments.");
+            throw new Exception($"Fluent actions supports only up to eight arguments.");
+        }
+
+        private static Type GetActionType(FluentActionHandlerDefinition handler)
+        {
+            var argumentTypes = handler.Usings.Select(@using => @using.Type).ToList();
+
+            if (argumentTypes.Count == 0)
+            {
+                return typeof(Action);
+            }
+            else
+            {
+                var unspecifiedGenericActionType = GetUnspecifiedGenericActionType(argumentTypes.Count);
+                var specifiedGenericActionType = unspecifiedGenericActionType.MakeGenericType(argumentTypes.ToArray());
+
+                return specifiedGenericActionType;
+            }
+        }
+
+        private static Type GetUnspecifiedGenericActionType(int arguments)
+        {
+            switch (arguments)
+            {
+                case 1: return typeof(Action<>);
+                case 2: return typeof(Action<,>);
+                case 3: return typeof(Action<,,>);
+                case 4: return typeof(Action<,,,>);
+                case 5: return typeof(Action<,,,,>);
+                case 6: return typeof(Action<,,,,,>);
+                case 7: return typeof(Action<,,,,,,>);
+                case 8: return typeof(Action<,,,,,,,>);
+            }
+
+            throw new Exception($"Fluent actions supports only up to eight arguments.");
         }
 
         private static Type GetHttpMethodAttribute(HttpMethod httpMethod)
@@ -395,7 +435,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 }
             }
 
-            var dictionaryField = typeof(FluentActionControllerDefinitionHandlerFuncs)
+            var dictionaryField = typeof(FluentActionControllerDefinitionHandlerDelegates)
                 .GetField("All");
             var dictionaryGetMethod = typeof(ConcurrentDictionary<,>)
                 .MakeGenericType(typeof(string), typeof(Delegate))
@@ -408,17 +448,16 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             foreach (var handler in fluentActionDefinition.Handlers)
             {
-                var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
-
                 if (handler.Type == FluentActionHandlerType.Func)
                 {
+                   var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
 
-                    var customFuncType = MakeGenericFuncType(handler);
-                    var customFuncKey = FluentActionControllerDefinitionHandlerFuncs.Add(handler.Delegate);
+                    var funcType = GetFuncType(handler);
+                    var delegateKey = FluentActionControllerDefinitionHandlerDelegates.Add(handler.Delegate);
 
                     // Push Func
                     ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
-                    ilGenerator.Emit(OpCodes.Ldstr, customFuncKey);
+                    ilGenerator.Emit(OpCodes.Ldstr, delegateKey);
                     ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
 
                     // Push arguments for Func
@@ -429,6 +468,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                             ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
                         } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
                         {
+                            if (localVariableForPreviousReturnValue == null)
+                            {
+                                throw new Exception("Cannot use previous result from handler as no previous result exists.");
+                            }
                             ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
                         } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
                         {
@@ -442,7 +485,53 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     }
 
                     // Push Func.Invoke
-                    ilGenerator.Emit(OpCodes.Callvirt, customFuncType.GetMethod("Invoke"));
+                    ilGenerator.Emit(OpCodes.Callvirt, funcType.GetMethod("Invoke"));
+
+                    // Push storing result in local variable
+                    ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
+
+                    // Make sure next handler has access to previous handler's return value
+                    localVariableForPreviousReturnValue = localVariableForReturnValue;
+                } 
+                else if (handler.Type == FluentActionHandlerType.Action)
+                {
+                    var actionType = GetActionType(handler);
+                    var delegateKey = FluentActionControllerDefinitionHandlerDelegates.Add(handler.Delegate);
+
+                    // Push Func
+                    ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
+                    ilGenerator.Emit(OpCodes.Ldstr, delegateKey);
+                    ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
+
+                    // Push arguments for Action
+                    foreach (var handlerUsing in handler.Usings)
+                    {
+                        if (handlerUsing.IsMethodParameter)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
+                        } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
+                        {
+                            if (localVariableForPreviousReturnValue == null)
+                            {
+                                throw new Exception("Cannot use previous result from handler as no previous result exists.");
+                            }
+                            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+                        } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
+                        } else if (handlerUsing is FluentActionUsingViewDataDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Callvirt, viewDataControllerProperty.GetGetMethod());
+                        }
+                    }
+
+                    // Push Action.Invoke
+                    ilGenerator.Emit(OpCodes.Callvirt, actionType.GetMethod("Invoke"));
+
+                    // This handler does not produce a result
+                    localVariableForPreviousReturnValue = null;
                 } 
                 else if (handler.Type == FluentActionHandlerType.View || handler.Type == FluentActionHandlerType.PartialView)
                 {
@@ -450,6 +539,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     {
                         throw new Exception("Must specify a path to a view.");
                     }
+
+                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
 
                     // Call one of the following controller methods:
                     //   Controller.View(string pathName, object model)
@@ -484,13 +575,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     }
 
                     ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
+
+                    // Push storing result in local variable
+                    ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
+
+                    // Make sure next handler has access to previous handler's return value
+                    localVariableForPreviousReturnValue = localVariableForReturnValue;
                 }
-
-                // Push storing result in local variable
-                ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
-
-                // Make sure next handler has access to previous handler's return value
-                localVariableForPreviousReturnValue = localVariableForReturnValue;
             }
              
             // Return last handlers return value
@@ -515,20 +606,20 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public static class FluentActionControllerDefinitionHandlerFuncs
+    public static class FluentActionControllerDefinitionHandlerDelegates
     {
         public static ConcurrentDictionary<string, Delegate> All = new ConcurrentDictionary<string, Delegate>();
 
         public static string Add(Delegate value)
         {
-            var funcKey = Guid.NewGuid().ToString();
+            var key = Guid.NewGuid().ToString();
 
-            if (!All.TryAdd(funcKey, value))
+            if (!All.TryAdd(key, value))
             {
-                throw new Exception($"Tried to add a fluent action delegate but key already exists in dictionary ({funcKey}).");
+                throw new Exception($"Tried to add a fluent action delegate but key already exists in dictionary ({key}).");
             }
 
-            return funcKey;
+            return key;
         }
     }
 }

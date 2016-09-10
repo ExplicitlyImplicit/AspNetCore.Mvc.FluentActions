@@ -81,6 +81,15 @@ namespace SimpleMvcWithViews
                     .ToAction(homeController => homeController.Index());
 
                 actions
+                    .Route("/toAbout", HttpMethod.Get)
+                    .UsingViewData()
+                    .Do(viewData => 
+                    {
+                        viewData["Message"] = "Custom ViewData message.";
+                    })
+                    .ToView("~/Views/Home/About.cshtml");
+
+                actions
                     .Route("/toError", HttpMethod.Get)
                     .ToView("~/Views/Shared/Error.cshtml");
 

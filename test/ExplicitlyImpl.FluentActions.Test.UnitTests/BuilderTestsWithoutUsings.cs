@@ -13,7 +13,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             var fluentAction = new FluentAction("/route/url", HttpMethod.Get);
 
-            Assert.Throws<FluentActionValidationException>(() => BuilderTestUtils.BuildController(fluentAction));
+            Assert.Throws<FluentActionValidationException>(() => BuilderTestUtils.BuildAction(fluentAction));
         }
 
         [Fact(DisplayName = "No usings, returns string")]
