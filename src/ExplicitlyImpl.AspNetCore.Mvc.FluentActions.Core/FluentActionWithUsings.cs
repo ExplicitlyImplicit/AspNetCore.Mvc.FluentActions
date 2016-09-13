@@ -192,6 +192,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
+            });
+        }
+
         public FluentAction Do(Action<TU1> handlerAction)
         {
             Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
@@ -395,6 +403,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
             {
                 Type = typeof(ViewDataDictionary)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
             });
         }
 
@@ -604,6 +620,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
+            });
+        }
+
         public FluentAction Do(Action<TU1, TU2, TU3> handlerAction)
         {
             Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
@@ -807,6 +831,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
             {
                 Type = typeof(ViewDataDictionary)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
             });
         }
 
@@ -1016,6 +1048,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
+            });
+        }
+
         public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5> handlerAction)
         {
             Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
@@ -1222,6 +1262,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
+            });
+        }
+
         public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6> handlerAction)
         {
             Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
@@ -1425,6 +1473,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
             {
                 Type = typeof(ViewDataDictionary)
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
             });
         }
 

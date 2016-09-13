@@ -35,6 +35,9 @@ namespace SimpleMvcWithViews
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -69,6 +72,8 @@ namespace SimpleMvcWithViews
 
             app.UseIdentity();
 
+            app.UseSession();
+
             app.UseMvcWithFluentActions(actions =>
             {
                 actions
@@ -83,9 +88,11 @@ namespace SimpleMvcWithViews
                 actions
                     .Route("/toAbout", HttpMethod.Get)
                     .UsingViewData()
-                    .Do(viewData => 
+                    .UsingTempData()
+                    .Do((viewData, tempData) => 
                     {
                         viewData["Message"] = "Custom ViewData message.";
+                        tempData["Text"] = "Custom TempData message.";
                     })
                     .ToView("~/Views/Home/About.cshtml");
 

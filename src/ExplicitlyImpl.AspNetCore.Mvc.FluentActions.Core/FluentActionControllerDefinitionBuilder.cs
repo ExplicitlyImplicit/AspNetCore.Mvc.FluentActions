@@ -443,6 +443,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             var httpContextControllerProperty = typeof(Controller).GetProperty("HttpContext");
             var viewDataControllerProperty = typeof(Controller).GetProperty("ViewData");
+            var tempDataControllerProperty = typeof(Controller).GetProperty("TempData");
 
             LocalBuilder localVariableForPreviousReturnValue = null;
 
@@ -466,21 +467,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                         if (handlerUsing.IsMethodParameter)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
-                        } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
+                        } 
+                        else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
                         {
                             if (localVariableForPreviousReturnValue == null)
                             {
                                 throw new Exception("Cannot use previous result from handler as no previous result exists.");
                             }
                             ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
+                        } 
+                        else if (handlerUsing is FluentActionUsingHttpContextDefinition)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
-                        } else if (handlerUsing is FluentActionUsingViewDataDefinition)
+                        } 
+                        else if (handlerUsing is FluentActionUsingViewDataDefinition)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Callvirt, viewDataControllerProperty.GetGetMethod());
+                            ilGenerator.Emit(OpCodes.Call, viewDataControllerProperty.GetGetMethod());
+                        }
+                        else if (handlerUsing is FluentActionUsingTempDataDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Call, tempDataControllerProperty.GetGetMethod());
                         }
                     }
 
@@ -509,21 +518,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                         if (handlerUsing.IsMethodParameter)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
-                        } else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
+                        } 
+                        else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
                         {
                             if (localVariableForPreviousReturnValue == null)
                             {
                                 throw new Exception("Cannot use previous result from handler as no previous result exists.");
                             }
                             ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        } else if (handlerUsing is FluentActionUsingHttpContextDefinition)
+                        }
+                        else if (handlerUsing is FluentActionUsingHttpContextDefinition)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
-                        } else if (handlerUsing is FluentActionUsingViewDataDefinition)
+                        }
+                        else if (handlerUsing is FluentActionUsingViewDataDefinition)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, viewDataControllerProperty.GetGetMethod());
+                        }
+                        else if (handlerUsing is FluentActionUsingTempDataDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Call, tempDataControllerProperty.GetGetMethod());
                         }
                     }
 

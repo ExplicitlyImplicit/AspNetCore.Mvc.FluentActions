@@ -25,6 +25,7 @@ namespace SimpleMvcWithViews.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
+            TempData["Text"] = "TempData message from HomeController.";
 
             return View();
         }

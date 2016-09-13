@@ -121,4 +121,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public override bool IsMethodParameter => false;
     }
+
+    public class FluentActionUsingTempDataDefinition : FluentActionUsingDefinition
+    {
+        public override bool IsMethodParameter => false;
+    }
 }

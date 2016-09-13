@@ -7,7 +7,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
     public class BuilderTestsWithViewData
     {
         [Fact(DisplayName = "1 ViewData, returns string")]
-        public void FluentControllerBuilder_FluentActionUsingFormValueReturnsString()
+        public void FluentControllerBuilder_FluentActionWithViewDataReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticAction(
                 new FluentAction("/route/url", HttpMethod.Get)

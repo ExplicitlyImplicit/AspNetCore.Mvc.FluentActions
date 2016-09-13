@@ -2,6 +2,7 @@
 
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using ExplicitlyImpl.FluentActions.Test.Utils;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
+using Moq;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 {
@@ -52,7 +56,17 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             var resultsFromBuiltController = InvokeActionMethod(builtController.TypeInfo, actionMethodArguments);
             var resultsFromStaticController = InvokeActionMethod(staticControllerType.GetTypeInfo(), actionMethodArguments);
-            
+
+            if (resultsFromBuiltController == null)
+            {
+                throw new Exception($"Invoked action method returns null of built controller {builtController.Name}.");
+            }
+
+            if (resultsFromStaticController == null)
+            {
+                throw new Exception($"Invoked action method returns null of statically defined controller {staticControllerType.Name}.");
+            }
+
             if (!fluentAction.Definition.ReturnType.IsAssignableFrom(resultsFromBuiltController.GetType()))
             {
                 throw new Exception($"Incorrect return type from invoked action method of built controller {builtController.Name} ({resultsFromBuiltController.GetType().Name} should be {fluentAction.Definition.ReturnType}).");
@@ -118,6 +132,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             try
             {
                 var instance = Activator.CreateInstance(controllerTypeInfo.UnderlyingSystemType);
+
+                var mockedHttpContext = Mock.Of<HttpContext>();
+                var mockedTempDataProvider = Mock.Of<ITempDataProvider>();
+                var tempData = new TempDataDictionary(mockedHttpContext, mockedTempDataProvider);
+                var setTempDataMethod = typeof(Controller).GetProperty("TempData").GetSetMethod();
+                setTempDataMethod.Invoke(instance, new object[] { tempData });
+
                 var method = controllerTypeInfo.GetMethod("HandlerAction");
                 return method.Invoke(instance, arguments);
             } 

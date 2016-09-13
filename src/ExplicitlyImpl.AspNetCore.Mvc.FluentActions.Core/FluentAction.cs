@@ -301,6 +301,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<ITempDataDictionary> UsingTempData()
+        {
+            return new FluentActionWithUsing<ITempDataDictionary>(Definition, new FluentActionUsingTempDataDefinition
+            {
+                Type = typeof(ITempDataDictionary)
+            });
+        }
+
         public FluentAction Do(Action handlerAction)
         {
             Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
