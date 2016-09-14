@@ -50,7 +50,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public readonly string Id;
 
-        public IList<FluentActionHandlerDefinition> Handlers { get; set; }
+        public string GroupName { get; internal set; }
+
+        public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
 
         internal FluentActionHandlerDefinition CurrentHandler
         {
@@ -123,6 +125,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction(FluentActionDefinition fluentActionDefinition)
             : base(fluentActionDefinition) { }
+
+        public virtual FluentAction GroupBy(string groupName)
+        {
+            Definition.GroupName = groupName;
+            return this;
+        }
 
         public virtual FluentActionWithUsing<TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
         {

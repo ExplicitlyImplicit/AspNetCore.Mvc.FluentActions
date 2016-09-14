@@ -6,6 +6,8 @@ namespace SimpleWebApi
     {
         public static FluentActionCollection All => FluentActionCollection.DefineActions(actions =>
         {
+            actions.GroupBy("NoteActions");
+
             actions
                 .Route("/notes", HttpMethod.Get)
                 .UsingService<INoteService>()

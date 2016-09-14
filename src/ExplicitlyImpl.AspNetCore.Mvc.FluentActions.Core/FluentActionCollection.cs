@@ -10,7 +10,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public List<FluentActionBase> FluentActions { get; internal set; }
 
-        private FluentActionCollection()
+        public string GroupName { get; internal set; }
+
+        internal FluentActionCollection()
         {
             FluentActions = new List<FluentActionBase>();
         }
@@ -18,7 +20,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
             var fluentAction = new FluentAction(httpMethod, routeTemplate, id);
-            FluentActions.Add(fluentAction);
+            ConfigureAndAddAction(fluentAction);
             return fluentAction;
         }
 
@@ -59,15 +61,20 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public void Add(FluentActionBase fluentAction)
         {
-            FluentActions.Add(fluentAction);
+            ConfigureAndAddAction(fluentAction);
         }
 
         public void Add(FluentActionCollection fluentActions)
         {
             foreach (var fluentAction in fluentActions)
             {
-                FluentActions.Add(fluentAction);
+                ConfigureAndAddAction(fluentAction);
             }
+        }
+
+        public void GroupBy(string groupName)
+        {
+            GroupName = groupName;
         }
 
         public IEnumerator<FluentActionBase> GetEnumerator()
@@ -78,6 +85,16 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void ConfigureAndAddAction(FluentActionBase fluentAction)
+        {
+            if (GroupName != null)
+            {
+                fluentAction.Definition.GroupName = GroupName;
+            }
+
+            FluentActions.Add(fluentAction);
         }
 
         public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
