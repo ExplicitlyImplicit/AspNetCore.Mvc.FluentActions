@@ -442,6 +442,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .GetMethod("get_Item");
 
             var httpContextControllerProperty = typeof(Controller).GetProperty("HttpContext");
+            var viewBagControllerProperty = typeof(Controller).GetProperty("ViewBag");
             var viewDataControllerProperty = typeof(Controller).GetProperty("ViewData");
             var tempDataControllerProperty = typeof(Controller).GetProperty("TempData");
 
@@ -481,6 +482,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
                         } 
+                        else if (handlerUsing is FluentActionUsingViewBagDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Call, viewBagControllerProperty.GetGetMethod());
+                        }
                         else if (handlerUsing is FluentActionUsingViewDataDefinition)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
@@ -531,6 +537,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
+                        }
+                        else if (handlerUsing is FluentActionUsingViewBagDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Call, viewBagControllerProperty.GetGetMethod());
                         }
                         else if (handlerUsing is FluentActionUsingViewDataDefinition)
                         {

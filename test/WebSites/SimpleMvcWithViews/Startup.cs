@@ -87,12 +87,14 @@ namespace SimpleMvcWithViews
 
                 actions
                     .Route("/toAbout", HttpMethod.Get)
+                    .UsingViewBag()
                     .UsingViewData()
                     .UsingTempData()
-                    .Do((viewData, tempData) => 
+                    .Do((viewBag, viewData, tempData) => 
                     {
-                        viewData["Message"] = "Custom ViewData message.";
-                        tempData["Text"] = "Custom TempData message.";
+                        viewData["ViewDataMessage"] = "ViewData message from fluent action.";
+                        tempData["TempDataMessage"] = "TempData message from fluent action.";
+                        viewBag.ViewBagMessage = "ViewBag message from fluent action.";
                     })
                     .ToView("~/Views/Home/About.cshtml");
 

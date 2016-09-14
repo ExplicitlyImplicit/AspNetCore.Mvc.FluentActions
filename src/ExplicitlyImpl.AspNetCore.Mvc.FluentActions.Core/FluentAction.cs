@@ -293,6 +293,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<dynamic> UsingViewBag()
+        {
+            return new FluentActionWithUsing<dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
+            });
+        }
+
         public virtual FluentActionWithUsing<ViewDataDictionary> UsingViewData()
         {
             return new FluentActionWithUsing<ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition

@@ -194,6 +194,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, ViewDataDictionary> UsingViewData()
         {
             return new FluentActionWithResultAndUsing<TR, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
@@ -425,6 +433,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, ViewDataDictionary> UsingViewData()
         {
             return new FluentActionWithResultAndUsing<TR, TU1, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
@@ -636,6 +652,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
             });
         }
 
@@ -853,6 +877,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, ViewDataDictionary> UsingViewData()
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
@@ -1064,6 +1096,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
             });
         }
 
@@ -1281,6 +1321,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, ViewDataDictionary> UsingViewData()
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
@@ -1495,6 +1543,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, ViewDataDictionary> UsingViewData()
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, ViewDataDictionary>(Definition, new FluentActionUsingViewDataDefinition
@@ -1706,6 +1762,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
             {
                 Type = typeof(HttpContext)
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, dynamic> UsingViewBag()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, dynamic>(Definition, new FluentActionUsingViewBagDefinition
+            {
+                Type = typeof(object)
             });
         }
 

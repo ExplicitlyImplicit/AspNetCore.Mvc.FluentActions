@@ -2,7 +2,8 @@
     ViewData["Title"] = "About";
 }
 <h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
-<h4>@(TempData.ContainsKey("Text") ? TempData["Text"]: "No TempData message.")</h4>
 
-<p>Use this area to provide additional information.</p>
+<h4>@(ViewBag.ViewBagMessage ?? "No ViewBag message.")</h4>
+<h4>@(ViewData.ContainsKey("ViewDataMessage") ? ViewData["ViewDataMessage"] : "No ViewData message.")</h4>
+<h4>@(TempData.ContainsKey("TempDataMessage") ? TempData["TempDataMessage"] : "No TempData message.")</h4>
+
