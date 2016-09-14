@@ -7,31 +7,31 @@ namespace SimpleWebApi
         public static FluentActionCollection All => FluentActionCollection.DefineActions(actions =>
         {
             actions
-                .Route("/users", HttpMethod.Get)
+                .RouteGet("/users", "ListUsers")
                 .UsingService<IUserService>()
                 .To(userService => userService.List());
 
             actions
-                .Route("/users", HttpMethod.Post)
+                .RoutePost("/users", "AddUser")
                 .UsingService<IUserService>()
                 .UsingBody<UserItem>()
                 .To((userService, user) => userService.Add(user));
 
             actions
-                .Route("/users/{userId}", HttpMethod.Get)
+                .RouteGet("/users/{userId}", "GetUser")
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
                 .To((userService, userId) => userService.Get(userId));
 
             actions
-                .Route("/users/{userId}", HttpMethod.Put)
+                .RoutePut("/users/{userId}", "UpdateUser")
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
                 .UsingBody<UserItem>()
                 .To((userService, userId, user) => userService.Update(userId, user));
 
             actions
-                .Route("/users/{userId}", HttpMethod.Delete)
+                .RouteDelete("/users/{userId}", "RemoveUser")
                 .UsingService<IUserService>()
                 .UsingRouteParameter<int>("userId")
                 .To((userService, userId) => userService.Remove(userId));

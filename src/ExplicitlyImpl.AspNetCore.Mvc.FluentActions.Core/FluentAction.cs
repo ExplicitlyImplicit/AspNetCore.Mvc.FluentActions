@@ -48,7 +48,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public readonly HttpMethod HttpMethod;
 
-        public readonly string Title;
+        public readonly string Id;
 
         public IList<FluentActionHandlerDefinition> Handlers { get; set; }
 
@@ -69,11 +69,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public bool IsMapRoute => Handlers.Count == 1 && Handlers.First().Type == FluentActionHandlerType.Controller;
 
-        public FluentActionDefinition(string routeTemplate, HttpMethod httpMethod, string title = null)
+        public FluentActionDefinition(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
             RouteTemplate = routeTemplate;
             HttpMethod = httpMethod;
-            Title = title;
+            Id = id;
 
             Handlers = new List<FluentActionHandlerDefinition>();
         }
@@ -92,15 +92,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public HttpMethod HttpMethod => Definition.HttpMethod;
 
-        public string Title => Definition.Title;
+        public string Id => Definition.Id;
 
-        public FluentActionBase(HttpMethod httpMethod, string routeTemplate, string title = null)
+        public FluentActionBase(HttpMethod httpMethod, string routeTemplate, string id = null)
         {
-            Definition = new FluentActionDefinition(routeTemplate, httpMethod, title);
+            Definition = new FluentActionDefinition(routeTemplate, httpMethod, id);
         }
 
-        public FluentActionBase(string routeTemplate, HttpMethod httpMethod, string title = null)
-            : this(httpMethod, routeTemplate, title) { }
+        public FluentActionBase(string routeTemplate, HttpMethod httpMethod, string id = null)
+            : this(httpMethod, routeTemplate, id) { }
 
         public FluentActionBase(FluentActionDefinition actionDefinition)
         {
@@ -115,11 +115,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentAction : FluentActionBase
     {
-        public FluentAction(HttpMethod httpMethod, string routeTemplate, string title = null)
-            : base(httpMethod, routeTemplate, title) { }
+        public FluentAction(HttpMethod httpMethod, string routeTemplate, string id = null)
+            : base(httpMethod, routeTemplate, id) { }
 
-        public FluentAction(string routeTemplate, HttpMethod httpMethod, string title = null)
-            : base(httpMethod, routeTemplate, title) { }
+        public FluentAction(string routeTemplate, HttpMethod httpMethod, string id = null)
+            : base(httpMethod, routeTemplate, id) { }
 
         public FluentAction(FluentActionDefinition fluentActionDefinition)
             : base(fluentActionDefinition) { }
@@ -343,44 +343,44 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithView(Definition, pathToView);
         }
 
-        public static FluentAction Route(string routeTemplate, HttpMethod httpMethod, string title = null)
+        public static FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
-            return new FluentAction(httpMethod, routeTemplate, title);
+            return new FluentAction(httpMethod, routeTemplate, id);
         }
 
-        public static FluentAction RouteDelete(string routeTemplate, string title = null)
+        public static FluentAction RouteDelete(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Delete, title);
+            return Route(routeTemplate, HttpMethod.Delete, id);
         }
 
-        public static FluentAction RouteGet(string routeTemplate, string title = null)
+        public static FluentAction RouteGet(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Get, title);
+            return Route(routeTemplate, HttpMethod.Get, id);
         }
 
-        public static FluentAction RouteHead(string routeTemplate, string title = null)
+        public static FluentAction RouteHead(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Head, title);
+            return Route(routeTemplate, HttpMethod.Head, id);
         }
 
-        public static FluentAction RouteOptions(string routeTemplate, string title = null)
+        public static FluentAction RouteOptions(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Options, title);
+            return Route(routeTemplate, HttpMethod.Options, id);
         }
 
-        public static FluentAction RoutePatch(string routeTemplate, string title = null)
+        public static FluentAction RoutePatch(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Patch, title);
+            return Route(routeTemplate, HttpMethod.Patch, id);
         }
 
-        public static FluentAction RoutePost(string routeTemplate, string title = null)
+        public static FluentAction RoutePost(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Post, title);
+            return Route(routeTemplate, HttpMethod.Post, id);
         }
 
-        public static FluentAction RoutePut(string routeTemplate, string title = null)
+        public static FluentAction RoutePut(string routeTemplate, string id = null)
         {
-            return Route(routeTemplate, HttpMethod.Put, title);
+            return Route(routeTemplate, HttpMethod.Put, id);
         }
     }
 }
