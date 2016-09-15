@@ -561,7 +561,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     // This handler does not produce a result
                     localVariableForPreviousReturnValue = null;
                 } 
-                else if (handler.Type == FluentActionHandlerType.View || handler.Type == FluentActionHandlerType.PartialView)
+                else if (handler.Type == FluentActionHandlerType.View 
+                    || handler.Type == FluentActionHandlerType.PartialView
+                    || handler.Type == FluentActionHandlerType.ViewComponent)
                 {
                     if (handler.PathToView == null)
                     {
@@ -573,6 +575,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     // Call one of the following controller methods:
                     //   Controller.View(string pathName, object model)
                     //   Controller.PartialView(string pathName, object model)
+                    //   Controller.PartialView(string pathName, object arguments)
 
                     ilGenerator.Emit(OpCodes.Ldarg_0);
                     ilGenerator.Emit(OpCodes.Ldstr, handler.PathToView);

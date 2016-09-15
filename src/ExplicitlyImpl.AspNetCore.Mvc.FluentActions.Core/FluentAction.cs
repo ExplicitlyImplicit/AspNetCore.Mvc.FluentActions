@@ -356,6 +356,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithPartialView(Definition, pathToView);
         }
 
+        public FluentActionWithViewComponent ToViewComponent(string pathToView)
+        {
+            return new FluentActionWithViewComponent(Definition, pathToView);
+        }
+
         public static FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
             return new FluentAction(httpMethod, routeTemplate, id);
