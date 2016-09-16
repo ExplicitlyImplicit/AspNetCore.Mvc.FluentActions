@@ -52,6 +52,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string GroupName { get; internal set; }
 
+        public string Title { get; internal set; }
+
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
 
         internal FluentActionHandlerDefinition CurrentHandler
@@ -129,6 +131,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction GroupBy(string groupName)
         {
             Definition.GroupName = groupName;
+            return this;
+        }
+
+        public virtual FluentAction WithTitle(string title)
+        {
+            Definition.Title = title;
             return this;
         }
 
