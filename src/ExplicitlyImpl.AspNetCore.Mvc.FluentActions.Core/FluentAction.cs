@@ -50,9 +50,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public readonly string Id;
 
-        public string GroupName { get; internal set; }
-
         public string Title { get; internal set; }
+
+        public string Description { get; internal set; }
+
+        public string GroupName { get; internal set; }
 
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
 
@@ -137,6 +139,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction WithTitle(string title)
         {
             Definition.Title = title;
+            return this;
+        }
+
+        public virtual FluentAction WithDescription(string description)
+        {
+            Definition.Description = description;
             return this;
         }
 
