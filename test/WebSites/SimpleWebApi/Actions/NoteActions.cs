@@ -1,4 +1,5 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleWebApi
 {
@@ -6,7 +7,10 @@ namespace SimpleWebApi
     {
         public static FluentActionCollection All => FluentActionCollection.DefineActions(actions =>
         {
-            actions.GroupBy("NoteActions");
+            actions.Configure(config =>
+            {
+                config.GroupBy("NoteActions");
+            });
 
             actions
                 .Route("/notes", HttpMethod.Get)
