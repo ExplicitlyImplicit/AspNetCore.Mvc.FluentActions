@@ -16,12 +16,15 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             Assert.Equal("CustomGroupName", action.Definition.GroupName);
         }
 
-        [Fact(DisplayName = "GroupBy inside action collection")]
+        [Fact(DisplayName = "GroupBy inside action collection config")]
         public void FluentControllerBuilder_FluentActionCollectionWithGroupBy()
         {
             var actionCollection = FluentActionCollection.DefineActions(actions => 
             {
-                actions.GroupBy("CustomGroupName");
+                actions.Configure(config => 
+                {
+                    config.GroupBy("CustomGroupName");
+                });
 
                 actions
                     .RouteGet("/users", "ListUsers")
@@ -54,7 +57,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                     .To((userService, userId) => userService.RemoveUser(userId));
             });
 
-            Assert.Equal("CustomGroupName", actionCollection.GroupName);
+            Assert.Equal("CustomGroupName", actionCollection.Config.GroupName);
 
             foreach (var action in actionCollection)
             {
