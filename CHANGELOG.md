@@ -1,8 +1,36 @@
 # Changelog
 
+## 1.0.2 (2016-09-18)
+
+This release consists mostly of new functionality, both for additional use cases
+and for better documentation.
+
+- Added new `Using` statements:
+	- `UsingTempData`
+	- `UsingViewBag`
+	- `UsingViewData`
+- Fluent actions can now have metadata to help with documentation and maintainability. 
+The following information can be added to every action:
+	- Id (Optional parameter to the `Route` statements)
+	- Group (`GroupBy` statement)
+	- Title (`WithTitle` statement)
+	- Description (`WithDescription` statement)
+- The new `Configure` statement can be used to apply settings to multiple actions supporting
+the following statements:
+	- `GroupBy`
+	- `SetTitle`
+	- `SetTitleFromResource`
+	- `SetDescription`
+	- `SetDescriptionFromResource`
+- The new `Do` statement can be used instead of `To` when there is no return value.
+- `ToView`, `ToPartialView` and `ToViewComponent` can now be used without a preceding `To` 
+statement.
+- `UsingModelBinder` now has a **Name** parameter.
+- Added sample project **MvcTemplate**
+
 ## 1.0.1 (2016-08-06)
 
-- Moved Core project into a separate nuget package
+Core project has been moved into a separate nuget package.
 
 ## 1.0.0 (2016-08-05)
 
