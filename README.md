@@ -187,10 +187,13 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingHeader
 - UsingHttpContext
 - UsingModelBinder
+- UsingQueryStringParameter
 - UsingResultFromHandler (for piping multiple handlers)
 - UsingRouteParameter
 - UsingService
-- UsingQueryStringParameter
+- UsingTempData
+- UsingViewBag
+- UsingViewData
 
 #### UsingBody
 
@@ -324,6 +327,28 @@ public string Action([FromModelBinder(typeof(MyModelBinder))UserItem user])
 }
 ```
 
+#### UsingQueryStringParameter
+
+This fluent action:
+
+```
+actions
+    .RouteGet("/hello/{name}")
+    .UsingQueryStringParameter<string>("name")
+    .To(name => $"Hello {name}!"));
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/hello/{name}")]
+public string Action([FromQuery]string name)
+{
+    return $"Hello {name}!";
+}
+```
+
 #### UsingResultFromHandler
 
 This fluent action:
@@ -393,25 +418,75 @@ public IList<UserItem> Action([FromServices]IUserService userService)
 
 This assumes you have defined a dependency injection mapping for a `IUserService` in `StartUp.cs`.
 
-#### UsingQueryStringParameter
+#### UsingTempData
 
 This fluent action:
 
 ```
 actions
-    .RouteGet("/hello/{name}")
-    .UsingQueryStringParameter<string>("name")
-    .To(name => $"Hello {name}!"));
+    .RouteGet("/users")
+    .UsingTempData()
+    .Do(tempData => tempData["Title"] = "List of Users")
+	.ToView("~/Views/Users/ListUsers.cshtml")
 ```
 
 Is equivalent to the following action method in a controller:
 
 ```
 [HttpGet]
-[Route("/hello/{name}")]
-public string Action([FromQuery]string name)
+[Route("/users")]
+public ViewResult Action()
 {
-    return $"Hello {name}!";
+	TempData["Title"] = "List of Users";
+    return View("~/Views/Users/ListUsers.cshtml");
+}
+```
+
+#### UsingViewBag
+
+This fluent action:
+
+```
+actions
+    .RouteGet("/users")
+    .UsingViewBag()
+    .Do(viewBag => viewBag["Title"] = "List of Users")
+	.ToView("~/Views/Users/ListUsers.cshtml")
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/users")]
+public ViewResult Action()
+{
+	ViewBag["Title"] = "List of Users";
+    return View("~/Views/Users/ListUsers.cshtml");
+}
+```
+
+#### UsingViewData
+
+This fluent action:
+
+```
+actions
+    .RouteGet("/users")
+    .UsingViewData()
+    .Do(viewData => viewData["Title"] = "List of Users")
+	.ToView("~/Views/Users/ListUsers.cshtml")
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/users")]
+public ViewResult Action()
+{
+	ViewData["Title"] = "List of Users";
+    return View("~/Views/Users/ListUsers.cshtml");
 }
 ```
 
@@ -424,9 +499,9 @@ The following `Using` statements supports default values:
 - UsingFormValue
 - UsingHeader
 - UsingModelBinder
+- UsingQueryStringParameter
 - UsingRouteParameter
 - UsingService
-- UsingQueryStringParameter
 
 Example:
 
@@ -472,6 +547,8 @@ actions
 
 ### `ToView`
 
+**(currently not supporting asynchronous handlers)**
+
 To pipe your output from a `To` statement to an MVC view, you can use `ToView`:
 
 ```
@@ -495,6 +572,8 @@ public ActionResult Action([FromServices]IUserService userService)
 ```
 
 ### `ToPartialView`
+
+**(currently not supporting asynchronous handlers)**
 
 To pipe your output from a `To` statement to an MVC partial view, you can use `ToPartialView`:
 
@@ -520,6 +599,8 @@ public ActionResult Action([FromServices]IUserService userService)
 
 ### `ToViewComponent`
 
+**(currently not supporting asynchronous handlers)**
+
 To pipe your output from a `To` statement to an MVC view component, you can use `ToViewComponent`:
 
 ```
@@ -539,6 +620,34 @@ public ActionResult Action([FromServices]IUserService userService)
 {
     var users = userService.List();
     return ViewComponent("~/Views/Users/ListUsers.cshtml", users);
+}
+```
+
+#### `Do` statement
+
+If you want to perform some logic but are not interested in outputting a result, 
+you can use a `Do` statement. A `Do` statement must be accompanied by something 
+that does not need an input such as `ToView`, `ToPartialView` or `ToViewComponent`.
+
+The following fluent action:
+
+```
+actions
+    .RouteGet("/users")
+    .UsingViewData()
+    .Do(viewData => viewData["Title"] = "List of Users")
+	.ToView("~/Views/Users/ListUsers.cshtml")
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/users")]
+public ViewResult Action()
+{
+	ViewData["Title"] = "List of Users";
+    return View("~/Views/Users/ListUsers.cshtml");
 }
 ```
 
@@ -572,7 +681,9 @@ actions
     });
 ```
 
-### Asynchronous handlers (currently not supporting piping handlers)
+### Asynchronous handlers
+
+**(currently not supporting piping output to handlers or views)**
 
 You can use async/await delegates:
 
@@ -583,7 +694,9 @@ actions
     .To(async userService => await userService.ListAsync());
 ```
 
-### Piping handlers (currently not supporting asynchronous handlers)
+### Piping handlers 
+
+**(currently not supporting asynchronous handlers)**
 
 You can use multiple `To` statements for an action:
 
@@ -598,6 +711,90 @@ actions
 ```
 
 Why would you pipe handlers? Well, we are currently using some extension methods on top of our explicitly defined actions that are specific to our project business logic. Those extensions can be implemented using this concept.
+
+### Id of Fluent Action
+
+You can set an id of a fluent action using an optional parameter of any of the `Route` statements. Example:
+
+```
+actions
+    .RouteGet("/users", "ListUsers")
+    .UsingService<IUserService>()
+    .To(userService => userService.List());
+```
+
+This may increase the maintainability of your project as it might be easier 
+to understand and debug your fluent actions. It can also be used for generating 
+different kinds of documentation for your project.
+
+### Title of Fluent Action
+
+You can set a title of a fluent action using the statement `WithTitle`. Example:
+
+```
+actions
+    .RouteGet("/users")
+	.WithTitle("List Users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List());
+```
+
+The title can be used for generating different kinds of documentation for your project.
+
+Take a look at the `Configure` statement to set titles of multiple actions.
+
+### Description of Fluent Action
+
+You can set a description of a fluent action using the statement `WithDescription`. Example:
+
+```
+actions
+    .RouteGet("/users")
+	.WithDescription("Description of an endpoint that list users.")
+    .UsingService<IUserService>()
+    .To(userService => userService.List());
+```
+
+The title can be used for generating different kinds of documentation for your project.
+
+Take a look at the `Configure` statement to set descriptions of multiple actions.
+
+### Grouping Fluent Actions
+
+You can group multiple actions by setting a common group name on each action:
+
+```
+actions
+    .RouteGet("/users")
+	.GroupBy("UserActions")
+    .UsingService<IUserService>()
+    .To(userService => userService.List());
+```
+
+The group can be used for generating different kinds of documentation for your project.
+
+Take a look at the `Configure` statement to group multiple actions all at once.
+
+### `Configure`
+
+You can use the `Configure` statement to apply settings among multiple actions. For example:
+
+```
+actions.Configure(config => 
+{
+    config.GroupBy("GroupName");
+});
+```
+
+This will apply the group name to all actions in the collection. 
+
+The following settings are available with the `Configure` statement:
+
+- GroupBy
+- SetTitle
+- SetTitleFromResource
+- SetDescription
+- SetDescriptionFromResource
 
 ## License
 
