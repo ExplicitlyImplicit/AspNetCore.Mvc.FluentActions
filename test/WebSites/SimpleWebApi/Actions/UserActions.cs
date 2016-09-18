@@ -9,8 +9,8 @@ namespace SimpleWebApi
             actions.Configure(config => 
             {
                 config.GroupBy("UserActions");
-                config.UseTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
-                config.UseDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
+                config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
+                config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
             });
 
             actions

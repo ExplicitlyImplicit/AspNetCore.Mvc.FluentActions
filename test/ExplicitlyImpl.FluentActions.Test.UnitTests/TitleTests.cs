@@ -23,7 +23,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             {
                 actions.Configure(config => 
                 {
-                    config.UseTitle(action => action.Id);
+                    config.SetTitle(action => action.Id);
                 });
 
                 actions

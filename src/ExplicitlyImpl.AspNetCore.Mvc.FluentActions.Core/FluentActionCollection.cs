@@ -146,26 +146,26 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Config.GroupName = groupName;
         }
 
-        public void UseTitle(Func<FluentActionDefinition, string> getTitleFunc)
+        public void SetTitle(Func<FluentActionDefinition, string> getTitleFunc)
         {
             Config.GetTitleFunc = getTitleFunc;
         }
 
-        public void UseTitleFromResource(
+        public void SetTitleFromResource(
             Type resourceType,
             Func<FluentActionDefinition, string> getResourceNameFunc,
             bool ignoreMissingValues = false)
         {
-            UseTitleFromResource(resourceType, getResourceNameFunc, CultureInfo.CurrentUICulture, ignoreMissingValues);
+            SetTitleFromResource(resourceType, getResourceNameFunc, CultureInfo.CurrentUICulture, ignoreMissingValues);
         }
 
-        public void UseTitleFromResource(
+        public void SetTitleFromResource(
             Type resourceType,
             Func<FluentActionDefinition, string> getResourceNameFunc,
             CultureInfo culture,
             bool ignoreMissingValues = false)
         {
-            UseTitle(action =>
+            SetTitle(action =>
             {
                 try
                 {
@@ -177,26 +177,26 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-        public void UseDescription(Func<FluentActionDefinition, string> getDescriptionFunc)
+        public void SetDescription(Func<FluentActionDefinition, string> getDescriptionFunc)
         {
             Config.GetDescriptionFunc = getDescriptionFunc;
         }
 
-        public void UseDescriptionFromResource(
+        public void SetDescriptionFromResource(
             Type resourceType, 
             Func<FluentActionDefinition, string> getResourceNameFunc, 
             bool ignoreMissingValues = false)
         {
-            UseDescriptionFromResource(resourceType, getResourceNameFunc, CultureInfo.CurrentUICulture, ignoreMissingValues);
+            SetDescriptionFromResource(resourceType, getResourceNameFunc, CultureInfo.CurrentUICulture, ignoreMissingValues);
         }
 
-        public void UseDescriptionFromResource(
+        public void SetDescriptionFromResource(
             Type resourceType, 
             Func<FluentActionDefinition, string> getResourceNameFunc, 
             CultureInfo culture, 
             bool ignoreMissingValues = false)
         {
-            UseDescription(action =>
+            SetDescription(action =>
             {
                 try
                 {
