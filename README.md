@@ -12,6 +12,19 @@ app.UseMvcWithFluentActions(actions =>
 }
 ```
 
+Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup. You may benefit from this tool if you are already working on an existing MVC project or have previous MVC experience as you already know how it works one level deeper. As long as you can wrap your head around the mapping between fluent actions and MVC actions you should be all set.
+
+The above fluent action is converted into the following MVC action:
+
+```
+[HttpGet]
+[Route("/")]
+public string Action()
+{
+    return "Hello World!";
+}
+```
+
 Another example:
 
 ```
@@ -26,7 +39,7 @@ app.UseMvcWithFluentActions(actions =>
 }
 ```
 
-See [CHANGELOG.md](CHANGELOG.md) for changes of each published version.
+See the **How to use** chapter for a better understanding of how fluent actions are mapped to MVC actions.
 
 ## Purpose
 
@@ -57,6 +70,8 @@ public ActionResult Index()
 ```
 
 You can be more explicit than this using vanilla MVC and this tool is just that, an extension/repackaging of a couple of MVC web app implementations that veered towards the more explicit and direct way. Hopefully its usage will also result in a more clear and maintainable solution as well.
+
+See [CHANGELOG.md](CHANGELOG.md) for changes of each published version.
 
 ## Installation
 
