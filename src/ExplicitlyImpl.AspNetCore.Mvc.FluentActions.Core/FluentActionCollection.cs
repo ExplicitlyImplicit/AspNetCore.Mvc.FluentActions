@@ -81,7 +81,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public void Configure(Action<FluentActionCollectionConfigurator> configureActions)
         {
-            var config = new FluentActionCollectionConfig();
+            var config = Config.Clone();
             var configurator = new FluentActionCollectionConfigurator(config);
 
             configureActions(configurator);
@@ -230,5 +230,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public Func<FluentActionDefinition, string> GetTitleFunc { get; internal set; }
 
         public Func<FluentActionDefinition, string> GetDescriptionFunc { get; internal set; }
+
+        internal FluentActionCollectionConfig Clone()
+        {
+            return new FluentActionCollectionConfig
+            {
+                GroupName = GroupName,
+                GetTitleFunc = GetTitleFunc,
+                GetDescriptionFunc = GetDescriptionFunc
+            };
+        }
     }
 }
