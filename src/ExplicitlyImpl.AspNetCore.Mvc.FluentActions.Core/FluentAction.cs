@@ -349,9 +349,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });

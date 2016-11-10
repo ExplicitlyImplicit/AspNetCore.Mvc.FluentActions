@@ -216,9 +216,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -438,9 +438,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TU2, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -660,9 +660,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TU2, TU3, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TU3, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TU3, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -882,9 +882,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TU2, TU3, TU4, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TU3, TU4, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TU3, TU4, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -1104,9 +1104,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -1326,9 +1326,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -1548,9 +1548,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC> ToController<TC>() where TC : Controller
+        public virtual FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });
@@ -1577,9 +1577,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction(Definition);
         }
 
-        public virtual new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TC> ToController<TC>() where TC : Controller
+        public virtual new FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TC> ToMvcController<TC>() where TC : Controller
         {
-            return new FluentActionWithController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TC>(Definition, new FluentActionUsingControllerDefinition
+            return new FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TC>(Definition, new FluentActionUsingMvcControllerDefinition
             {
                 Type = typeof(TC)
             });

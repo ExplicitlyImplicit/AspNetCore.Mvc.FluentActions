@@ -54,6 +54,7 @@ namespace SimpleMvcWithViews
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -82,8 +83,8 @@ namespace SimpleMvcWithViews
 
                 actions
                     .Route("/toHome", HttpMethod.Get)
-                    .ToController<HomeController>()
-                    .ToAction(homeController => homeController.Index());
+                    .ToMvcController<HomeController>()
+                    .ToMvcAction(homeController => homeController.Index());
 
                 actions
                     .Route("/toAbout", HttpMethod.Get)

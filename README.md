@@ -674,11 +674,11 @@ You can also use fluent actions for routing only:
 actions
     .RouteGet("/hello")
     .UsingQueryStringParameter("name")
-    .ToController<HelloController>()
-    .ToAction((name, controller) => controller.Hello(name));
+    .ToMvcController<HelloController>()
+    .ToMvcAction((name, controller) => controller.Hello(name));
 ```
 
-Note that the lambda expression in the `ToAction` statement must be a single method call to a controller method.
+Note that the lambda expression in the `ToMvcAction` statement must be a single method call to a controller method.
 
 ### Code block in `To`
 
