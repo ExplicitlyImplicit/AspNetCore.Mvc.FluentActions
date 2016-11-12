@@ -301,6 +301,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             SetHttpMethodAttribute(methodBuilder, fluentActionDefinition.HttpMethod);
             SetRouteAttribute(methodBuilder, fluentActionDefinition.RouteTemplate);
 
+            if (fluentActionDefinition.ValidateAntiForgeryToken)
+            {
+                SetValidateAntiForgeryTokenAttribute(methodBuilder);
+            }
+
             var ilGenerator = methodBuilder.GetILGenerator();
 
             foreach (var usingDefinition in usingsForMethodParameters)
@@ -633,6 +638,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var attributeConstructorInfo = typeof(RouteAttribute)
                 .GetConstructor(new Type[] { typeof(string) });
             var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new[] { routeTemplate });
+            methodBuilder.SetCustomAttribute(attributeBuilder);
+        }
+
+        private static void SetValidateAntiForgeryTokenAttribute(MethodBuilder methodBuilder)
+        {
+            var attributeConstructorInfo = typeof(ValidateAntiForgeryTokenAttribute)
+                .GetConstructor(new Type[0]);
+            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new object[0]);
             methodBuilder.SetCustomAttribute(attributeBuilder);
         }
     }

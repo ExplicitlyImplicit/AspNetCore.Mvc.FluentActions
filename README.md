@@ -773,6 +773,29 @@ actions
 
 Why would you pipe handlers? Well, we are currently using some extension methods on top of our explicitly defined actions that are specific to our project business logic. Those extensions can be implemented using this concept.
 
+### Validate Anti-Forgery Token
+
+The following fluent action:
+
+```
+actions
+    .RoutePost("/submit")
+	.ValidateAntiForgeryToken()
+    .To(() => "Anti-forgery token validated!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpPost]
+[Route("/submit")]
+[ValidateAntiForgeryToken]
+public ActionResult Action()
+{
+    return "Anti-forgery token validated!");
+}
+```
+
 ### Id of Fluent Action
 
 You can set an id of a fluent action using an optional parameter of any of the `Route` statements. Example:

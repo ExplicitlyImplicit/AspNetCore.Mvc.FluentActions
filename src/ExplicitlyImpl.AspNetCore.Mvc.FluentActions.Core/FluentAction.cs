@@ -56,6 +56,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string GroupName { get; internal set; }
 
+        public bool ValidateAntiForgeryToken { get; internal set; }
+
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
 
         internal FluentActionHandlerDefinition CurrentHandler
@@ -145,6 +147,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction WithDescription(string description)
         {
             Definition.Description = description;
+            return this;
+        }
+
+        public virtual FluentAction ValidateAntiForgeryToken()
+        {
+            Definition.ValidateAntiForgeryToken = true;
             return this;
         }
 

@@ -132,6 +132,15 @@ namespace SimpleMvcWithViews
                     .RoutePost("/uploadFiles", "Upload files.")
                     .UsingFormFiles("files")
                     .To(files => $"Got {files.Count()} n.o. files!");
+
+                actions
+                    .RouteGet("/submitWithAntiForgeryToken", "Form to submit with anti forgery token.")
+                    .ToView("~/Views/Form/SubmitWithAntiForgeryToken.cshtml");
+
+                actions
+                    .RoutePost("/submitWithAntiForgeryToken", "Submit with anti forgery token.")
+                    .ValidateAntiForgeryToken()
+                    .To(() => "Got submission!");
             }, routes =>
             {
                 routes.MapRoute(

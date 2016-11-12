@@ -45,5 +45,20 @@ namespace SimpleMvcWithViews.Controllers
         {
             return $"Got {files.Count()} n.o. files!";
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ViewResult SubmitWithAntiForgeryToken()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public string SubmitWithAntiForgeryToken(string hiddenValue)
+        {
+            return "Got submission!";
+        }
     }
 }
