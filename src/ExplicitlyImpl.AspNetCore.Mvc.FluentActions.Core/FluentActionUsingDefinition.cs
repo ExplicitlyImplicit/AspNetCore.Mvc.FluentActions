@@ -14,6 +14,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public abstract bool IsMethodParameter { get; }
 
+        public virtual string MethodParameterName { get; }
+
         public override bool Equals(object other)
         {
             return other is FluentActionUsingDefinition && other.GetHashCode() == GetHashCode();
@@ -74,6 +76,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     public class FluentActionUsingFormDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => true;
+    }
+    
+    public class FluentActionUsingFormFileDefinition : FluentActionUsingDefinition
+    {
+        public string Name { get; set; }
+
+        public override bool IsMethodParameter => true;
+
+        public override string MethodParameterName => Name;
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(GetType(), Type, Name.ToLowerInvariant()).GetHashCode();
+        }
+    }
+
+    public class FluentActionUsingFormFilesDefinition : FluentActionUsingFormFileDefinition
+    {
     }
 
     public class FluentActionUsingFormValueDefinition : FluentActionUsingDefinition

@@ -198,6 +198,8 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 
 - UsingBody
 - UsingForm
+- UsingFormFile
+- UsingFormFiles
 - UsingFormValue
 - UsingHeader
 - UsingHttpContext
@@ -251,6 +253,50 @@ Is equivalent to the following action method in a controller:
 public string Action([FromForm]UserItem user)
 {
     return $"Hello {user.Name}!";
+}
+```
+
+#### UsingFormFile
+
+This fluent action:
+
+```
+actions
+    .RoutePost("/uploadFile")
+    .UsingFormFile("file")
+    .To(file => $"Got file with name {file.FileName}!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpPost]
+[Route("/uploadFile")]
+public string Action(IFormFile file)
+{
+    return $"Got file with name {file.FileName}!";
+}
+```
+
+#### UsingFormFiles
+
+This fluent action:
+
+```
+actions
+    .RoutePost("/uploadFiles")
+    .UsingFormFiles("files")
+    .To(files => $"Got {files.Count()} n.o. files!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpPost]
+[Route("/uploadFiles")]
+public string Action(IEnumerable<IFormFile> files)
+{
+    return $"Got {files.Count()} n.o. files!";
 }
 ```
 

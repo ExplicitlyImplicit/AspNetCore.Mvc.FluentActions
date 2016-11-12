@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
+using System.Collections.Generic;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -141,6 +142,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 Type = typeof(TU1),
                 HasDefaultValue = true,
                 DefaultValue = defaultValue
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
             });
         }
 
@@ -383,6 +402,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2> UsingFormValue<TU2>(string key)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2>(Definition, new FluentActionUsingFormValueDefinition
@@ -602,6 +639,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 Type = typeof(TU3),
                 HasDefaultValue = true,
                 DefaultValue = defaultValue
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
             });
         }
 
@@ -827,6 +882,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4> UsingFormValue<TU4>(string key)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4>(Definition, new FluentActionUsingFormValueDefinition
@@ -1046,6 +1119,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 Type = typeof(TU5),
                 HasDefaultValue = true,
                 DefaultValue = defaultValue
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
             });
         }
 
@@ -1271,6 +1362,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> UsingFormValue<TU6>(string key)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6>(Definition, new FluentActionUsingFormValueDefinition
@@ -1493,6 +1602,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
+            });
+        }
+
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> UsingFormValue<TU7>(string key)
         {
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7>(Definition, new FluentActionUsingFormValueDefinition
@@ -1712,6 +1839,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 Type = typeof(TU8),
                 HasDefaultValue = true,
                 DefaultValue = defaultValue
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
             });
         }
 

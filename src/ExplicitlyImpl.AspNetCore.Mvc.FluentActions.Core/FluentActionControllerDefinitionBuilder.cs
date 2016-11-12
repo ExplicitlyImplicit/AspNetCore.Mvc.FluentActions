@@ -309,8 +309,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
                 var methodParameterBuilder = methodBuilder.DefineParameter(
                     methodParameterIndex,
-                    usingDefinition.HasDefaultValue ? ParameterAttributes.HasDefault : ParameterAttributes.None, 
-                    $"parameter{methodParameterIndex}");
+                    usingDefinition.HasDefaultValue ? ParameterAttributes.HasDefault : ParameterAttributes.None,
+                    usingDefinition.MethodParameterName ?? $"parameter{methodParameterIndex}");
 
                 if (usingDefinition.HasDefaultValue)
                 {

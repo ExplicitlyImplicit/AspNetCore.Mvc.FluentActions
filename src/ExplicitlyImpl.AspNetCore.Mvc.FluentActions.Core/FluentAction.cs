@@ -267,6 +267,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<IFormFile> UsingFormFile(string name)
+        {
+            return new FluentActionWithUsing<IFormFile>(Definition, new FluentActionUsingFormFileDefinition
+            {
+                Type = typeof(IFormFile),
+                Name = name
+            });
+        }
+
+        public virtual FluentActionWithUsing<IEnumerable<IFormFile>> UsingFormFiles(string name)
+        {
+            return new FluentActionWithUsing<IEnumerable<IFormFile>>(Definition, new FluentActionUsingFormFilesDefinition
+            {
+                Type = typeof(IEnumerable<IFormFile>),
+                Name = name
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1> UsingFormValue<TU1>(string key)
         {
             return new FluentActionWithUsing<TU1>(Definition, new FluentActionUsingFormValueDefinition

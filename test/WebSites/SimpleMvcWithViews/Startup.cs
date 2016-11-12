@@ -10,6 +10,7 @@ using SimpleMvcWithViews.Models;
 using SimpleMvcWithViews.Services;
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using SimpleMvcWithViews.Controllers;
+using System.Linq;
 
 namespace SimpleMvcWithViews
 {
@@ -113,6 +114,24 @@ namespace SimpleMvcWithViews
                     .Route("/api/users", HttpMethod.Get, "List users.")
                     .UsingService<IUserService>()
                     .To(userService => userService.List());
+
+                actions
+                    .RouteGet("/uploadFile", "Form to upload file.")
+                    .ToView("~/Views/Form/UploadFile.cshtml");
+
+                actions
+                    .RoutePost("/uploadFile", "Upload file.")
+                    .UsingFormFile("file")
+                    .To(file => $"Got {file.FileName}!");
+
+                actions
+                    .RouteGet("/uploadFiles", "Form to upload files.")
+                    .ToView("~/Views/Form/UploadFiles.cshtml");
+
+                actions
+                    .RoutePost("/uploadFiles", "Upload files.")
+                    .UsingFormFiles("files")
+                    .To(files => $"Got {files.Count()} n.o. files!");
             }, routes =>
             {
                 routes.MapRoute(
