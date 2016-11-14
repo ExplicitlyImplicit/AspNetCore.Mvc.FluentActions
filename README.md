@@ -8,8 +8,8 @@ Usage example:
 ```
 app.UseMvcWithFluentActions(actions =>
 {
-    actions.RouteGet("/").To(() => "Hello World!"));
-}
+    actions.RouteGet("/").To(() => "Hello World!");
+});
 ```
 
 Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup. You may benefit from this tool if you are already working on an existing MVC project or have previous MVC experience as you already know how it works one level deeper. As long as you can wrap your head around the mapping between fluent actions and MVC actions you should be all set.
@@ -36,7 +36,7 @@ app.UseMvcWithFluentActions(actions =>
         .UsingRouteParameter<int>("userId")
         .To((userService, userId) => userService.GetUserById(userId))
         .ToView("~/Views/Users/DisplayUser.cshtml")
-}
+});
 ```
 
 See the **How to use** chapter for a better understanding of how fluent actions are mapped to MVC actions.
@@ -98,10 +98,10 @@ Fluent actions are added inside the `Startup.cs` file but the fluent action defi
 ```
 app.UseMvcWithFluentActions(actions => 
 {
-    actions.RouteGet("/helloWorld").To(() => "Hello World!"));
+    actions.RouteGet("/helloWorld").To(() => "Hello World!");
     actions.Add(FluentActions.UserActions);
     actions.Add(FluentActions.ProfileActions);
-}
+});
 ```
 
 Where `FluentActions.UserActions` could look like this:
@@ -127,7 +127,7 @@ If we examine the first defined action in the `Startup.cs` above:
 ```
 actions
     .RouteGet("/helloWorld")
-    .To(() => "Hello World!"));
+    .To(() => "Hello World!");
 ```
 
 - The first statement `RouteGet` defines the routing, any **GET** requests to **/helloWorld** will be handled by this action.
@@ -154,7 +154,7 @@ If you need to define any kind of input for your action, use a `Using` statement
 actions
     .RouteGet("/hello")
     .UsingQueryStringParameter<string>("name")
-    .To(name => $"Hello {name}!"));
+    .To(name => $"Hello {name}!");
 ```
 
 The `name` parameter in `To` is of type `string`, inferred from the generic type of `UsingQueryStringParameter`.
@@ -178,7 +178,7 @@ actions
     .UsingService<IUserService>()
     .UsingRouteParameter<int>("userId")
     .To((userService, userId) => userService.GetUserById(userId))
-    .ToView("~/Views/Users/DisplayUser.cshtml")
+    .ToView("~/Views/Users/DisplayUser.cshtml");
 ```
 
 This is equivalent to the following action method:
@@ -218,7 +218,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .UsingBody<UserItem>()
-    .To(user => $"Hello {user.Name}!"));
+    .To(user => $"Hello {user.Name}!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -240,7 +240,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .UsingForm<UserItem>()
-    .To(user => $"Hello {user.Name}!"));
+    .To(user => $"Hello {user.Name}!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -262,7 +262,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .UsingFormValue<string>("name")
-    .To(name => $"Hello {name}!"));
+    .To(name => $"Hello {name}!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -284,7 +284,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .UsingHeader<string>("Content-Type")
-    .To(contentType => $"Hello, your Content-Type is: {contentType}"));
+    .To(contentType => $"Hello, your Content-Type is: {contentType}");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -306,7 +306,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .UsingHttpContext()
-    .To(httpContext => $"Hello, your request path is: {httpContext.Request.Path}"));
+    .To(httpContext => $"Hello, your request path is: {httpContext.Request.Path}");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -328,7 +328,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .UsingModelBinder<UserItem>(typeof(MyModelBinder))
-    .To(user => $"Hello {user.Name}!"));
+    .To(user => $"Hello {user.Name}!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -350,7 +350,7 @@ This fluent action:
 actions
     .RouteGet("/hello/{name}")
     .UsingQueryStringParameter<string>("name")
-    .To(name => $"Hello {name}!"));
+    .To(name => $"Hello {name}!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -373,7 +373,7 @@ actions
     .RouteGet("/hello")
     .To(() => "Hello"))
     .UsingResultFromHandler()
-    .To(hello => hello + " World!"));
+    .To(hello => hello + " World!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -395,7 +395,7 @@ This fluent action:
 actions
     .RouteGet("/hello/{name}")
     .UsingRouteParameter<string>("name")
-    .To(name => $"Hello {name}!"));
+    .To(name => $"Hello {name}!");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -417,7 +417,7 @@ This fluent action:
 actions
     .RouteGet("/users")
     .UsingService<IUserService>()
-    .To(userService => userService.List()));
+    .To(userService => userService.List());
 ```
 
 Is equivalent to the following action method in a controller:
@@ -442,7 +442,7 @@ actions
     .RouteGet("/users")
     .UsingTempData()
     .Do(tempData => tempData["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml")
+	.ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -466,7 +466,7 @@ actions
     .RouteGet("/users")
     .UsingViewBag()
     .Do(viewBag => viewBag["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml")
+	.ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -490,7 +490,7 @@ actions
     .RouteGet("/users")
     .UsingViewData()
     .Do(viewData => viewData["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml")
+	.ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -524,7 +524,7 @@ Example:
 actions
     .RouteGet("/hello/{name}")
     .UsingQueryStringParameter<string>("name", defaultValue: "John Doe")
-    .To(name => $"Hello {name}!"));
+    .To(name => $"Hello {name}!");
 ```
 
 This is equivalent to the following action method in a controller:
@@ -651,7 +651,7 @@ actions
     .RouteGet("/users")
     .UsingViewData()
     .Do(viewData => viewData["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml")
+	.ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
