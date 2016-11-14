@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
@@ -332,6 +333,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 HasDefaultValue = true,
                 DefaultValue = defaultValue,
                 ParameterName = parameterName
+            });
+        }
+
+        public virtual FluentActionWithUsing<ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
             });
         }
 

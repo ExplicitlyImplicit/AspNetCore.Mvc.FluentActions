@@ -446,6 +446,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .MakeGenericType(typeof(string), typeof(Delegate))
                 .GetMethod("get_Item");
 
+            var modelStateControllerProperty = typeof(Controller).GetProperty("ModelState");
             var httpContextControllerProperty = typeof(Controller).GetProperty("HttpContext");
             var viewBagControllerProperty = typeof(Controller).GetProperty("ViewBag");
             var viewDataControllerProperty = typeof(Controller).GetProperty("ViewData");
@@ -487,6 +488,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
                         } 
+                        else if (handlerUsing is FluentActionUsingModelStateDefinition)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Callvirt, modelStateControllerProperty.GetGetMethod());
+                        }
                         else if (handlerUsing is FluentActionUsingViewBagDefinition)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);

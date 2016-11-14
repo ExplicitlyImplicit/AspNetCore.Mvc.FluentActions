@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
@@ -191,6 +192,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 HasDefaultValue = true,
                 DefaultValue = defaultValue,
                 ParameterName = parameterName
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
             });
         }
 
@@ -434,6 +443,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, TU2, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1, TU2, HttpContext> UsingHttpContext()
         {
             return new FluentActionWithUsing<TU1, TU2, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
@@ -671,6 +688,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 HasDefaultValue = true,
                 DefaultValue = defaultValue,
                 ParameterName = parameterName
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
             });
         }
 
@@ -914,6 +939,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, HttpContext> UsingHttpContext()
         {
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
@@ -1151,6 +1184,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 HasDefaultValue = true,
                 DefaultValue = defaultValue,
                 ParameterName = parameterName
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
             });
         }
 
@@ -1394,6 +1435,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
+            });
+        }
+
         public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, HttpContext> UsingHttpContext()
         {
             return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, HttpContext>(Definition, new FluentActionUsingHttpContextDefinition
@@ -1631,6 +1680,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 HasDefaultValue = true,
                 DefaultValue = defaultValue,
                 ParameterName = parameterName
+            });
+        }
+
+        public virtual FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ModelStateDictionary> UsingModelState()
+        {
+            return new FluentActionWithUsing<TU1, TU2, TU3, TU4, TU5, TU6, TU7, ModelStateDictionary>(Definition, new FluentActionUsingModelStateDefinition
+            {
+                Type = typeof(ModelStateDictionary)
             });
         }
 

@@ -126,6 +126,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public override bool IsMethodParameter => false;
     }
+    
+    public class FluentActionUsingModelStateDefinition : FluentActionUsingDefinition
+    {
+        public override bool IsMethodParameter => false;
+    }
 
     public class FluentActionUsingHttpContextDefinition : FluentActionUsingDefinition
     {

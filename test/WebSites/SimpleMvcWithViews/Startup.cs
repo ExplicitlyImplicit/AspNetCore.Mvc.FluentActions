@@ -141,6 +141,16 @@ namespace SimpleMvcWithViews
                     .RoutePost("/submitWithAntiForgeryToken", "Submit with anti forgery token.")
                     .ValidateAntiForgeryToken()
                     .To(() => "Got submission!");
+
+                actions
+                    .RouteGet("/submitWithModelState", "Form to submit with model state.")
+                    .ToView("~/Views/Form/SubmitWithModelState.cshtml");
+
+                actions
+                    .RoutePost("/submitWithModelState", "Submit with model state.")
+                    .UsingModelState()
+                    .UsingForm<ModelStateFormModel>()
+                    .To((modelState, model) => modelState.IsValid ? "Model valid! :)" : "Model invalid :(");
             }, routes =>
             {
                 routes.MapRoute(

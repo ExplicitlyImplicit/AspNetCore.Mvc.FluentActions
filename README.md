@@ -204,6 +204,7 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingHeader
 - UsingHttpContext
 - UsingModelBinder
+- UsingModelState
 - UsingQueryStringParameter
 - UsingResultFromHandler (for piping multiple handlers)
 - UsingRouteParameter
@@ -385,6 +386,29 @@ Is equivalent to the following action method in a controller:
 public string Action([FromModelBinder(typeof(MyModelBinder))UserItem user])
 {
     return $"Hello {user.Name}!";
+}
+```
+
+#### UsingModelState
+
+This fluent action:
+
+```
+actions
+    .RoutePost("/submit")
+    .UsingForm<MyModel>()
+    .UsingModelState()
+    .To((myModel, modelState) => modelState.IsValid ? "Model is valid! :)" : "Model is invalid :(");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpPost]
+[Route("/submit")]
+public string Action([FromForm]MyModel myModel)
+{
+    return ModelState.IsValid ? "Model is valid! :)" : "Model is invalid :(";
 }
 ```
 
