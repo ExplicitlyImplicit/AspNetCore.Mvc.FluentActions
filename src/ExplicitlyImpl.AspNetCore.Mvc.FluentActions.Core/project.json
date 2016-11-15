@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "title": "Core components of Fluent Actions for ASP.NET Core MVC",
   "description": "Contains core functionality of Fluent Actions for ASP.NET Core MVC.",
