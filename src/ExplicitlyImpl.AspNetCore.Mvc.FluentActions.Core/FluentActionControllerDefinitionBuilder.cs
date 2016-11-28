@@ -458,7 +458,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 if (handler.Type == FluentActionHandlerType.Func)
                 {
-                   var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
+                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
 
                     var funcType = GetFuncType(handler);
                     var delegateKey = FluentActionControllerDefinitionHandlerDelegates.Add(handler.Delegate);
@@ -586,7 +586,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     // Call one of the following controller methods:
                     //   Controller.View(string pathName, object model)
                     //   Controller.PartialView(string pathName, object model)
-                    //   Controller.PartialView(string pathName, object arguments)
+                    //   Controller.ViewComponent(string pathName, object arguments)
 
                     ilGenerator.Emit(OpCodes.Ldarg_0);
                     ilGenerator.Emit(OpCodes.Ldstr, handler.PathToView);
