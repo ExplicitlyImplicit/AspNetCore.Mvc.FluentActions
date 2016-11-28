@@ -284,7 +284,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .Distinct()
                 .ToArray();
 
-            var methodParameterIndicesForUsings = usingsForMethodParameters
+            var methodParameterIndices = usingsForMethodParameters
                 .Select((@using, index) => new { Using = @using, Index = index })
                 .ToDictionary(
                     indexedUsing => indexedUsing.Using.GetHashCode(),
@@ -306,138 +306,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 SetValidateAntiForgeryTokenAttribute(methodBuilder);
             }
 
-            var ilGenerator = methodBuilder.GetILGenerator();
-
             foreach (var usingDefinition in usingsForMethodParameters)
             {
-                var methodParameterIndex = methodParameterIndicesForUsings[usingDefinition.GetHashCode()];
+                var methodParameterIndex = methodParameterIndices[usingDefinition.GetHashCode()];
 
-                var methodParameterBuilder = methodBuilder.DefineParameter(
-                    methodParameterIndex,
-                    usingDefinition.HasDefaultValue ? ParameterAttributes.HasDefault : ParameterAttributes.None,
-                    usingDefinition.MethodParameterName ?? $"parameter{methodParameterIndex}");
-
-                if (usingDefinition.HasDefaultValue)
-                {
-                    methodParameterBuilder.SetConstant(usingDefinition.DefaultValue);
-                }
-
-                if (usingDefinition is FluentActionUsingServiceDefinition)
-                {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromServicesAttribute)
-                        .GetConstructor(new Type[0]), new Type[0]);
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                } 
-                else if (usingDefinition is FluentActionUsingRouteParameterDefinition)
-                {
-                    var attributeType = typeof(FromRouteAttribute);
-                    var name = ((FluentActionUsingRouteParameterDefinition)usingDefinition).Name;
-
-                    if (!fluentActionDefinition.RouteTemplate.Contains($"{{{name}}}", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        throw new Exception($"Route parameter {name} does not exist in routeTemplate {fluentActionDefinition.RouteTemplate}.");
-                    }
-
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(
-                        attributeType.GetConstructor(new Type[0]), 
-                        new Type[0],
-                        new[] { attributeType.GetProperty("Name") },
-                        new object[] { name });
-
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                }
-                else if (usingDefinition is FluentActionUsingQueryStringParameterDefinition)
-                {
-                    var attributeType = typeof(FromQueryAttribute);
-                    var name = ((FluentActionUsingQueryStringParameterDefinition)usingDefinition).Name;
-
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(
-                        attributeType.GetConstructor(new Type[0]),
-                        new Type[0],
-                        new[] { attributeType.GetProperty("Name") },
-                        new object[] { name });
-
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                }
-                else if (usingDefinition is FluentActionUsingHeaderParameterDefinition)
-                {
-                    var attributeType = typeof(FromHeaderAttribute);
-                    var name = ((FluentActionUsingHeaderParameterDefinition)usingDefinition).Name;
-
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(
-                        attributeType.GetConstructor(new Type[0]),
-                        new Type[0],
-                        new[] { attributeType.GetProperty("Name") },
-                        new object[] { name });
-
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                }
-                else if (usingDefinition is FluentActionUsingBodyDefinition)
-                {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromBodyAttribute)
-                        .GetConstructor(new Type[0]), new Type[0]);
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                } 
-                else if (usingDefinition is FluentActionUsingFormDefinition)
-                {
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(typeof(FromFormAttribute)
-                        .GetConstructor(new Type[0]), new Type[0]);
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                }
-                else if (usingDefinition is FluentActionUsingFormValueDefinition)
-                {
-                    var attributeType = typeof(FromFormAttribute);
-                    var key = ((FluentActionUsingFormValueDefinition)usingDefinition).Key;
-
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(
-                        attributeType.GetConstructor(new Type[0]),
-                        new Type[0],
-                        new[] { attributeType.GetProperty("Name") },
-                        new object[] { key });
-
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                }
-                else if (usingDefinition is FluentActionUsingModelBinderDefinition)
-                {
-                    var attributeType = typeof(ModelBinderAttribute);
-                    var modelBinderDefinition = ((FluentActionUsingModelBinderDefinition)usingDefinition);
-                    var modelBinderType = modelBinderDefinition.ModelBinderType;
-
-                    PropertyInfo[] propertyTypes = null;
-                    object[] propertyValues = null;
-                    if (!string.IsNullOrWhiteSpace(modelBinderDefinition.ParameterName))
-                    {
-                        propertyTypes = new[]
-                        {
-                            attributeType.GetProperty("BinderType"),
-                            attributeType.GetProperty("Name")
-                        };
-                        propertyValues = new object[] 
-                        {
-                            modelBinderType,
-                            modelBinderDefinition.ParameterName
-                        };
-                    } 
-                    else
-                    {
-                        propertyTypes = new[]
-                        {
-                            attributeType.GetProperty("BinderType")
-                        };
-                        propertyValues = new object[]
-                        {
-                            modelBinderType
-                        };
-                    }
-
-                    var parameterAttributeBuilder = new CustomAttributeBuilder(
-                        attributeType.GetConstructor(new Type[0]),
-                        new Type[0],
-                        propertyTypes,
-                        propertyValues);
-
-                    methodParameterBuilder.SetCustomAttribute(parameterAttributeBuilder);
-                }
+                usingDefinition.DefineMethodParameter(methodBuilder, fluentActionDefinition, usingDefinition, methodParameterIndex);
             }
 
             var dictionaryField = typeof(FluentActionControllerDefinitionHandlerDelegates)
@@ -451,6 +324,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var viewBagControllerProperty = typeof(Controller).GetProperty("ViewBag");
             var viewDataControllerProperty = typeof(Controller).GetProperty("ViewData");
             var tempDataControllerProperty = typeof(Controller).GetProperty("TempData");
+
+            var ilGenerator = methodBuilder.GetILGenerator();
 
             LocalBuilder localVariableForPreviousReturnValue = null;
 
@@ -473,7 +348,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     {
                         if (handlerUsing.IsMethodParameter)
                         {
-                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
+                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndices[handlerUsing.GetHashCode()]);
                         } 
                         else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
                         {
@@ -534,7 +409,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     {
                         if (handlerUsing.IsMethodParameter)
                         {
-                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndicesForUsings[handlerUsing.GetHashCode()]);
+                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndices[handlerUsing.GetHashCode()]);
                         } 
                         else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
                         {
