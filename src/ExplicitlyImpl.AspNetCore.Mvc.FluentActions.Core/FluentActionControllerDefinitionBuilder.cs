@@ -296,6 +296,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .ToArray();
 
             var returnType = fluentActionDefinition.Handlers.Last().ReturnType;
+
             var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, methodParameterTypes);
 
             SetHttpMethodAttribute(methodBuilder, fluentActionDefinition.HttpMethod);
@@ -319,12 +320,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .MakeGenericType(typeof(string), typeof(Delegate))
                 .GetMethod("get_Item");
 
-            var modelStateControllerProperty = typeof(Controller).GetProperty("ModelState");
-            var httpContextControllerProperty = typeof(Controller).GetProperty("HttpContext");
-            var viewBagControllerProperty = typeof(Controller).GetProperty("ViewBag");
-            var viewDataControllerProperty = typeof(Controller).GetProperty("ViewData");
-            var tempDataControllerProperty = typeof(Controller).GetProperty("TempData");
-
             var ilGenerator = methodBuilder.GetILGenerator();
 
             LocalBuilder localVariableForPreviousReturnValue = null;
@@ -344,45 +339,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
 
                     // Push arguments for Func
-                    foreach (var handlerUsing in handler.Usings)
+                    foreach (var usingDefinition in handler.Usings)
                     {
-                        if (handlerUsing.IsMethodParameter)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndices[handlerUsing.GetHashCode()]);
-                        } 
-                        else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
-                        {
-                            if (localVariableForPreviousReturnValue == null)
-                            {
-                                throw new Exception("Cannot use previous result from handler as no previous result exists.");
-                            }
-                            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        } 
-                        else if (handlerUsing is FluentActionUsingHttpContextDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
-                        } 
-                        else if (handlerUsing is FluentActionUsingModelStateDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Callvirt, modelStateControllerProperty.GetGetMethod());
-                        }
-                        else if (handlerUsing is FluentActionUsingViewBagDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Call, viewBagControllerProperty.GetGetMethod());
-                        }
-                        else if (handlerUsing is FluentActionUsingViewDataDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Call, viewDataControllerProperty.GetGetMethod());
-                        }
-                        else if (handlerUsing is FluentActionUsingTempDataDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Call, tempDataControllerProperty.GetGetMethod());
-                        }
+                        var ilHandle = new IlHandle { Generator = ilGenerator };
+
+                        var usingDefinitionHash = usingDefinition.GetHashCode();
+                        var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ? 
+                            methodParameterIndices[usingDefinitionHash] : -1;
+
+                        usingDefinition.GenerateIl(
+                            ilHandle, 
+                            usingDefinition, 
+                            methodParameterIndex, 
+                            localVariableForPreviousReturnValue);
                     }
 
                     // Push Func.Invoke
@@ -405,40 +374,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                     ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
 
                     // Push arguments for Action
-                    foreach (var handlerUsing in handler.Usings)
+                    foreach (var usingDefinition in handler.Usings)
                     {
-                        if (handlerUsing.IsMethodParameter)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg, methodParameterIndices[handlerUsing.GetHashCode()]);
-                        } 
-                        else if (handlerUsing is FluentActionUsingResultFromHandlerDefinition)
-                        {
-                            if (localVariableForPreviousReturnValue == null)
-                            {
-                                throw new Exception("Cannot use previous result from handler as no previous result exists.");
-                            }
-                            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        }
-                        else if (handlerUsing is FluentActionUsingHttpContextDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Callvirt, httpContextControllerProperty.GetGetMethod());
-                        }
-                        else if (handlerUsing is FluentActionUsingViewBagDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Call, viewBagControllerProperty.GetGetMethod());
-                        }
-                        else if (handlerUsing is FluentActionUsingViewDataDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Callvirt, viewDataControllerProperty.GetGetMethod());
-                        }
-                        else if (handlerUsing is FluentActionUsingTempDataDefinition)
-                        {
-                            ilGenerator.Emit(OpCodes.Ldarg_0);
-                            ilGenerator.Emit(OpCodes.Call, tempDataControllerProperty.GetGetMethod());
-                        }
+                        var ilHandle = new IlHandle { Generator = ilGenerator };
+
+                        var usingDefinitionHash = usingDefinition.GetHashCode();
+                        var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ?
+                            methodParameterIndices[usingDefinitionHash] : -1;
+
+                        usingDefinition.GenerateIl(
+                            ilHandle,
+                            usingDefinition,
+                            methodParameterIndex,
+                            localVariableForPreviousReturnValue);
                     }
 
                     // Push Action.Invoke

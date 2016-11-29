@@ -42,6 +42,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return parameterBuilder;
         }
 
+        public virtual void GenerateIl(
+            IlHandle ilHandle, 
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex, 
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            if (usingDefinition.IsMethodParameter)
+            {
+                ilHandle.Generator.Emit(OpCodes.Ldarg, methodParameterIndex);
+            }
+        }
+
         public override int GetHashCode()
         {
             return Tuple.Create(GetType(), Type).GetHashCode();
@@ -335,16 +347,52 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     public class FluentActionUsingResultFromHandlerDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
+
+        public override void GenerateIl(
+            IlHandle ilHandle,
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex,
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            if (localVariableForPreviousReturnValue == null)
+            {
+                throw new Exception("Cannot use previous result from handler as no previous result exists.");
+            }
+
+            ilHandle.Generator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+        }
     }
-    
+
     public class FluentActionUsingModelStateDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
+
+        public override void GenerateIl(
+            IlHandle ilHandle,
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex,
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
+            ilHandle.Generator.Emit(OpCodes.Callvirt, 
+                typeof(Controller).GetProperty("ModelState").GetGetMethod());
+        }
     }
 
     public class FluentActionUsingHttpContextDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
+
+        public override void GenerateIl(
+            IlHandle ilHandle,
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex,
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
+            ilHandle.Generator.Emit(OpCodes.Callvirt, 
+                typeof(Controller).GetProperty("HttpContext").GetGetMethod());
+        }
     }
 
     public class FluentActionUsingMvcControllerDefinition : FluentActionUsingDefinition
@@ -355,15 +403,48 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     public class FluentActionUsingViewBagDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
+
+        public override void GenerateIl(
+            IlHandle ilHandle,
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex,
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
+            ilHandle.Generator.Emit(OpCodes.Callvirt,
+                typeof(Controller).GetProperty("ViewBag").GetGetMethod());
+        }
     }
 
     public class FluentActionUsingViewDataDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
+
+        public override void GenerateIl(
+            IlHandle ilHandle,
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex,
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
+            ilHandle.Generator.Emit(OpCodes.Callvirt,
+                typeof(Controller).GetProperty("ViewData").GetGetMethod());
+        }
     }
 
     public class FluentActionUsingTempDataDefinition : FluentActionUsingDefinition
     {
         public override bool IsMethodParameter => false;
+
+        public override void GenerateIl(
+            IlHandle ilHandle,
+            FluentActionUsingDefinition usingDefinition,
+            int methodParameterIndex,
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
+            ilHandle.Generator.Emit(OpCodes.Callvirt,
+                typeof(Controller).GetProperty("TempData").GetGetMethod());
+        }
     }
 }
