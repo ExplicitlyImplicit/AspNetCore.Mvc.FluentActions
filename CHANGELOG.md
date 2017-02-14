@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.3 (2016-11-15)
+
+- Added new `Using` statements:
+	- `UsingModelState`
+	- `UsingFormFile`
+	- `UsingFormFiles`
+- Added statement for `ValidateAntiForgeryToken` attribute
+- Renamed `ToController` to `ToMvcController`
+- Renamed `ToAction` to `ToMvcAction`
+
 ## 1.0.2 (2016-09-18)
 
 This release consists mostly of new functionality, both for additional use cases
