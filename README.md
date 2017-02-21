@@ -1,7 +1,8 @@
 # [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions)
-Fluent Actions is a tool to define your web logic in an expressive and typed manner without manually creating any controllers
- or action methods. It focuses on bringing forward the _main flow_ of your web logic, making it more explicit, 
- while you can still use all of the functionality that the MVC framework provides. 
+Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup.
+You may benefit from this tool if you are already working on an existing MVC project or have previous experience with MVC
+as you already know how it works one level deeper. As long as you can wrap your head around the mapping from fluent 
+actions to MVC actions you should be all set.
 
 Usage example:
 
@@ -12,9 +13,7 @@ app.UseMvcWithFluentActions(actions =>
 });
 ```
 
-Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup. You may benefit from this tool if you are already working on an existing MVC project or have previous MVC experience as you already know how it works one level deeper. As long as you can wrap your head around the mapping between fluent actions and MVC actions you should be all set.
-
-The above fluent action is converted into the following MVC action:
+The above fluent action is converted into the following MVC action during startup:
 
 ```
 [HttpGet]
@@ -24,6 +23,11 @@ public string Action()
     return "Hello World!";
 }
 ```
+
+Fluent actions do not limit regular use of ASP.NET Core MVC so you can choose to gradually introduce fluent actions to your 
+existing project or only use fluent actions for a subset of your applications functionality. 
+
+This project does not have any third-party dependencies.
 
 Another example:
 
@@ -43,11 +47,12 @@ See the **How to use** chapter for a better understanding of how fluent actions 
 
 ## Purpose
 
-This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use cases were:
+This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use 
+cases were:
 
 1. We must use .NET MVC
 1. Our web logic is separated into its own layer (database, business logic, etc outside)
-1. We wanted a more _explicit_ way of defining our web layer
+1. We wanted a more _explicit_ way of defining our web layer (explanation below)
 
 If you take a look at the routing definition of a regular template used when creating a .NET MVC app:
 
@@ -60,7 +65,8 @@ app.UseMvc(routes =>
 });
 ```
 
-This kind of routing is fairly implicit and it is pretty hard to know what this web app does without looking in other (implicitly defined) places. We also felt that this is true for the relation between controllers and views:
+This kind of routing is fairly implicit and it is pretty hard to know what this web app does without looking in other 
+(implicitly defined) places. We also felt that this is true for the relation between controllers and views:
 
 ```
 public ActionResult Index() 
@@ -69,13 +75,15 @@ public ActionResult Index()
 }
 ```
 
-You can be more explicit than this using vanilla MVC and this tool is just that, an extension/repackaging of a couple of MVC web app implementations that veered towards the more explicit and direct way. Hopefully its usage will also result in a more clear and maintainable solution as well.
+You can be more explicit than this using vanilla MVC and this tool is just that, an extension/repackaging of a couple of 
+MVC web app implementations that veered towards the more explicit and direct way. Hopefully its usage will also result in 
+a more clear and maintainable solution as well.
 
 See [CHANGELOG.md](CHANGELOG.md) for changes of each published version.
 
-## Installation
+## Getting Started
 
-Add this library to your project using NuGet:
+Add this package to your project using NuGet:
 
 ```
 Install-Package ExplicitlyImpl.AspNetCore.Mvc.FluentActions
@@ -87,13 +95,22 @@ You also need to replace these two lines in your `Startup.cs` file:
 // services.AddMvc(options);
 services.AddMvcWithFluentActions(options);
 
-// app.UseMvc(routes => ...);
-app.UseMvcWithFluentActions(actions => ...); // see usage chapter below 
+// app.UseMvc(routes);
+app.UseMvcWithFluentActions(actions [, routes]); // see usage chapter below 
 ```
 
-## How to use
+## How To Use
 
-Fluent actions are added inside the `Startup.cs` file but the fluent action definitions can be placed in one or many other files. 
+Fluent actions are added inside the `Startup.cs` file in the `UseMvcWithFluentActions` statement:
+
+```
+app.UseMvcWithFluentActions(actions => 
+{
+    actions.RouteGet("/helloWorld").To(() => "Hello World!");
+});
+```
+
+The fluent action definitions can be placed in one or many other files though: 
 
 ```
 app.UseMvcWithFluentActions(actions => 
@@ -133,7 +150,8 @@ actions
 - The first statement `RouteGet` defines the routing, any **GET** requests to **/helloWorld** will be handled by this action.
 - The second statement `To` defines what will happen when someone makes a **GET** request to this url. In this case, a plain text "Hello World!" will be returned by the web app. 
 
-How do we know how the web app writes our output to the HTTP response? The code above is equivalent to an action method in a controller looking like this:
+How do we know how the web app writes our output to the HTTP response? The code 
+above is equivalent to an action method in a controller looking like this:
 
 ```
 [HttpGet]
@@ -144,11 +162,17 @@ public string HelloWorldAction()
 }
 ```
 
-Fluent actions are only wrapping the tools that makes up the framework .NET MVC. We can still use MVC tools and concepts to implement our web app. In fact, `UseMvcWithFluentActions` can also define routes as you normally do in MVC (using `IAction<Route>` as a second parameter) and attribute routing also works together with fluent actions. 
+Fluent actions are only wrapping the tools that makes up the framework .NET MVC. 
+We can still use MVC tools and concepts to implement our web app. 
+In fact, `UseMvcWithFluentActions` can also define routes as you normally do in 
+MVC (using `IAction<Route>` as a second parameter) and attribute routing also 
+works together with fluent actions. 
 
 ### `Using` Statements
 
-If you need to define any kind of input for your action, use a `Using` statement. Each `Using` statement will become a parameter to your delegate in the `To` statement (in the same order as you call them). 
+If you need to define any kind of input for your action, use a `Using` statement. 
+Each `Using` statement will become a parameter to your delegate in the `To` 
+statement (in the same order as you call them). 
 
 ```
 actions
@@ -193,7 +217,7 @@ public string GetUserAction([FromServices]IUserService userService, [FromRoute]i
 }
 ```
 
-#### List of `using` statements
+#### List of `using` Statements
 Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/latest/mvc/models/model-binding.html#customize-model-binding-behavior-with-attributes) for a better understanding of how the equivalent code of most of these `using` statements work.
 
 - UsingBody
@@ -206,7 +230,7 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingModelBinder
 - UsingModelState
 - UsingQueryStringParameter
-- UsingResultFromHandler (for piping multiple handlers)
+- UsingResultFromHandler (for piping multiple `To` statements)
 - UsingRouteParameter
 - UsingService
 - UsingTempData
@@ -575,7 +599,7 @@ public ViewResult Action()
 }
 ```
 
-### Default values in `Using` statements
+### Default Values in `Using` Statements
 
 The following `Using` statements supports default values:
 
@@ -608,7 +632,7 @@ public string Action([FromQuery]string name = "John Doe")
 }
 ```
 
-### Specifying HTTP method
+### Specifying HTTP Method
 
 There is a `Route` statement for each HTTP method, for example:
 
@@ -631,8 +655,6 @@ actions
 ```
 
 ### `ToView`
-
-**(currently not supporting asynchronous handlers)**
 
 To pipe your output from a `To` statement to an MVC view, you can use `ToView`:
 
@@ -658,8 +680,6 @@ public ActionResult Action([FromServices]IUserService userService)
 
 ### `ToPartialView`
 
-**(currently not supporting asynchronous handlers)**
-
 To pipe your output from a `To` statement to an MVC partial view, you can use `ToPartialView`:
 
 ```
@@ -684,8 +704,6 @@ public ActionResult Action([FromServices]IUserService userService)
 
 ### `ToViewComponent`
 
-**(currently not supporting asynchronous handlers)**
-
 To pipe your output from a `To` statement to an MVC view component, you can use `ToViewComponent`:
 
 ```
@@ -708,7 +726,7 @@ public ActionResult Action([FromServices]IUserService userService)
 }
 ```
 
-#### `Do` statement
+#### `Do` Statement
 
 If you want to perform some logic but are not interested in outputting a result, 
 you can use a `Do` statement. A `Do` statement must be accompanied by something 
@@ -736,7 +754,7 @@ public ViewResult Action()
 }
 ```
 
-### Routing to an MVC controller 
+### Routing to an MVC Controller 
 
 You can also use fluent actions for routing only:
 
@@ -748,9 +766,13 @@ actions
     .ToMvcAction((name, controller) => controller.Hello(name));
 ```
 
-Note that the lambda expression in the `ToMvcAction` statement must be a single method call to a controller method.
+This will only add a route to the specified MVC controller and action - it will not create any 
+additional controllers or actions.
 
-### Code block in `To`
+Note that the lambda expression in the `ToMvcAction` statement must be a single method call to a 
+controller method.
+
+### Code Block in `To`
 
 If you want to you can also write code like this:
 
@@ -766,9 +788,7 @@ actions
     });
 ```
 
-### Asynchronous handlers
-
-**(currently not supporting piping output to handlers or views)**
+### Asynchronous Delegates
 
 You can use async/await delegates:
 
@@ -779,9 +799,7 @@ actions
     .To(async userService => await userService.ListAsync());
 ```
 
-### Piping handlers 
-
-**(currently not supporting asynchronous handlers)**
+### Piping multiple `To` Statements
 
 You can use multiple `To` statements for an action:
 
@@ -795,7 +813,9 @@ actions
     .To((name, users) => $"Hello {name}! We got {users.Count} users!");
 ```
 
-Why would you pipe handlers? Well, we are currently using some extension methods on top of our explicitly defined actions that are specific to our project business logic. Those extensions can be implemented using this concept.
+Why would you pipe `To` statements? Well, we are currently using some extension 
+methods on top of our explicitly defined actions that are specific to our project 
+business logic. Those extensions can be implemented using this concept.
 
 ### Validate Anti-Forgery Token
 
@@ -822,7 +842,8 @@ public ActionResult Action()
 
 ### Id of Fluent Action
 
-You can set an id of a fluent action using an optional parameter of any of the `Route` statements. Example:
+You can set an id of a fluent action using an optional parameter of any of the `Route` 
+statements. Example:
 
 ```
 actions
@@ -849,7 +870,7 @@ actions
 
 The title can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Configure` statement to set titles of multiple actions.
+Take a look at the `Configure` statement to set title of multiple actions.
 
 ### Description of Fluent Action
 
@@ -863,9 +884,9 @@ actions
     .To(userService => userService.List());
 ```
 
-The title can be used for generating different kinds of documentation for your project.
+The description can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Configure` statement to set descriptions of multiple actions.
+Take a look at the `Configure` statement to set description of multiple actions.
 
 ### Grouping Fluent Actions
 
