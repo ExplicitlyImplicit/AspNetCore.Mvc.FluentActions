@@ -1,5 +1,6 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
@@ -12,6 +13,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             var action = new FluentAction("/route/url", HttpMethod.Get)
                 .WithDescription("Custom Description")
                 .To(() => "Hello");
+
+            Assert.Equal("Custom Description", action.Definition.Description);
+        }
+
+        [Fact(DisplayName = "Description inside single action async")]
+        public void FluentControllerBuilder_FluentActionWithDescriptionAsync()
+        {
+            var action = new FluentAction("/route/url", HttpMethod.Get)
+                .WithDescription("Custom Description")
+                .To(async () => { await Task.Delay(1); return "Hello"; });
 
             Assert.Equal("Custom Description", action.Definition.Description);
         }

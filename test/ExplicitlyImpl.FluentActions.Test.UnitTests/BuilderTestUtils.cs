@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.Logging;
+using Xunit.Abstractions;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 {
@@ -35,18 +37,25 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             Assert.True(builtControllerTypeInfo.Name.EndsWith("Controller"));
         }
 
-        public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType)
+        public static void BuildActionAndCompareToStaticAction(
+            FluentActionBase fluentAction, 
+            Type staticControllerType,
+            ILogger logger = null)
         {
-            var builtController = BuildAction(fluentAction);
+            var builtController = BuildAction(fluentAction, logger);
 
             AssertConstantValuesOfBuiltController(builtController, fluentAction);
 
             CompareBuiltControllerToStaticController(builtController.TypeInfo.UnderlyingSystemType, staticControllerType);
         }
 
-        public static void BuildActionAndCompareToStaticAction(FluentActionBase fluentAction, Type staticControllerType, object[] actionMethodArguments)
+        public static void BuildActionAndCompareToStaticActionWithResult(
+            FluentActionBase fluentAction, 
+            Type staticControllerType, 
+            object[] actionMethodArguments, 
+            ILogger logger = null)
         {
-            var builtController = BuildAction(fluentAction);
+            var builtController = BuildAction(fluentAction, logger);
 
             AssertConstantValuesOfBuiltController(builtController, fluentAction);
 
@@ -70,19 +79,22 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                 throw new Exception($"Invoked action method returns null of statically defined controller {staticControllerType.Name}.");
             }
 
-            if (!fluentAction.Definition.ReturnType.IsAssignableFrom(resultsFromBuiltController.GetType()))
+            var returnTypeIsAsync = fluentAction.Definition.IsAsync;
+            var returnType = returnTypeIsAsync
+                ? typeof(Task<>).MakeGenericType(fluentAction.Definition.ReturnType)
+                : fluentAction.Definition.ReturnType;
+
+            if (!returnType.IsAssignableFrom(resultsFromBuiltController.GetType()))
             {
                 throw new Exception($"Incorrect return type from invoked action method of built controller {builtController.Name} ({resultsFromBuiltController.GetType().Name} should be {fluentAction.Definition.ReturnType}).");
             }
 
-            if (!fluentAction.Definition.ReturnType.IsAssignableFrom(resultsFromStaticController.GetType()))
+            if (!returnType.IsAssignableFrom(resultsFromStaticController.GetType()))
             {
                 throw new Exception($"Incorrect return type from invoked action method of statically defined controller {staticControllerType.Name} ({resultsFromStaticController.GetType().Name} should be {fluentAction.Definition.ReturnType}).");
             }
 
-            if (
-                fluentAction.Definition.ReturnType.GetTypeInfo().IsGenericType &&
-                typeof(Task).IsAssignableFrom(fluentAction.Definition.ReturnType))
+            if (returnTypeIsAsync)
             {
                 resultsFromBuiltController = GetTaskResult(resultsFromBuiltController);
                 resultsFromStaticController = GetTaskResult(resultsFromStaticController);
@@ -142,6 +154,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                     viewResult1.StatusCode == viewResult2.StatusCode &&
                     viewResult1.ViewName == viewResult2.ViewName;
             } 
+            else if (value1 is ViewComponentResult && value2 is ViewComponentResult)
+            {
+                var viewResult1 = ((ViewComponentResult)value1);
+                var viewResult2 = ((ViewComponentResult)value2);
+
+                return viewResult1.ContentType == viewResult2.ContentType &&
+                    viewResult1.StatusCode == viewResult2.StatusCode &&
+                    viewResult1.ViewComponentName == viewResult2.ViewComponentName &&
+                    viewResult1.ViewComponentType == viewResult2.ViewComponentType;
+            } 
             else
             {
                 return value1 != null && value1.Equals(value2);
@@ -200,10 +222,35 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             }
         }
 
-        public static FluentActionControllerDefinition BuildAction(FluentActionBase fluentAction)
+        public static FluentActionControllerDefinition BuildAction(FluentActionBase fluentAction, ILogger logger = null)
         {
             var controllerBuilder = new FluentActionControllerDefinitionBuilder();
-            return controllerBuilder.Build(fluentAction);
+            return controllerBuilder.Build(fluentAction, logger);
+        }
+    }
+
+    public class TestLogger : ILogger
+    {
+        private readonly ITestOutputHelper TestOutputHelper;
+
+        public TestLogger(ITestOutputHelper testOutputHelper)
+        {
+            TestOutputHelper = testOutputHelper;
+        }
+
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        {
+            TestOutputHelper.WriteLine(formatter(state, exception));
         }
     }
 }

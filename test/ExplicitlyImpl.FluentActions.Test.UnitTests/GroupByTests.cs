@@ -1,5 +1,6 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
@@ -12,6 +13,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             var action = new FluentAction("/route/url", HttpMethod.Get)
                 .GroupBy("CustomGroupName")
                 .To(() => "Hello");
+
+            Assert.Equal("CustomGroupName", action.Definition.GroupName);
+        }
+
+        [Fact(DisplayName = "GroupBy inside single action async")]
+        public void FluentControllerBuilder_FluentActionWithGroupByAsync()
+        {
+            var action = new FluentAction("/route/url", HttpMethod.Get)
+                .GroupBy("CustomGroupName")
+                .To(async () => { await Task.Delay(1); return "Hello"; });
 
             Assert.Equal("CustomGroupName", action.Definition.GroupName);
         }

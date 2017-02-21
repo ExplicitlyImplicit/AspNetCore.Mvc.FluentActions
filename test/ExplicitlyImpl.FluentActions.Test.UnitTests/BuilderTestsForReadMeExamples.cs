@@ -9,7 +9,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         [Fact(DisplayName = "README example 1: HelloWorld")]
         public void FluentControllerBuilder_FluentActionForReadMeExample1()
         {
-            BuilderTestUtils.BuildActionAndCompareToStaticAction(
+            BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/", HttpMethod.Get)
                     .To(() => "Hello World!"),
                 typeof(ControllerForReadMeExample1),
