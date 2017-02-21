@@ -133,6 +133,15 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                     viewResult1.StatusCode == viewResult2.StatusCode &&
                     viewResult1.ViewName == viewResult2.ViewName;
             } 
+            else if (value1 is PartialViewResult && value2 is PartialViewResult)
+            {
+                var viewResult1 = ((PartialViewResult)value1);
+                var viewResult2 = ((PartialViewResult)value2);
+
+                return viewResult1.ContentType == viewResult2.ContentType &&
+                    viewResult1.StatusCode == viewResult2.StatusCode &&
+                    viewResult1.ViewName == viewResult2.ViewName;
+            } 
             else
             {
                 return value1 != null && value1.Equals(value2);
