@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.1.0 (2017-02-21)
+
+This release adds full support for async/await, any number of synchronous delegates can now be used together 
+with any number of asynchronous delegates. See below for an example of an async `To` statement piped to a 
+`ToView` statement.
+
+```
+app.UseMvcWithFluentActions(actions =>
+{
+    actions
+        .RouteGet("/users/{userId}")
+        .UsingService<IUserService>()
+        .UsingRouteParameter<int>("userId")
+        .To(async (userService, userId) => await userService.GetUserByIdAsync(userId))
+        .ToView("~/Views/Users/DisplayUser.cshtml")
+});
+```
+
+Side note: the test suite also now covers:
+
+- `UsingHttpContext`
+- `ToView`
+- `ToPartialView`
+- `ToViewComponent`
+
+As well as async tests of all previously covered functionality.
+
 ## 1.0.3 (2016-11-15)
 
 - Added new `Using` statements:
