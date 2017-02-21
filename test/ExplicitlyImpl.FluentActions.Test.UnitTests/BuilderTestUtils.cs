@@ -124,6 +124,15 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             {
                 return Enumerable.SequenceEqual((IEnumerable<object>)value1, (IEnumerable<object>)value2);
             } 
+            else if (value1 is ViewResult && value2 is ViewResult)
+            {
+                var viewResult1 = ((ViewResult)value1);
+                var viewResult2 = ((ViewResult)value2);
+
+                return viewResult1.ContentType == viewResult2.ContentType &&
+                    viewResult1.StatusCode == viewResult2.StatusCode &&
+                    viewResult1.ViewName == viewResult2.ViewName;
+            } 
             else
             {
                 return value1 != null && value1.Equals(value2);
