@@ -270,9 +270,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithPartialView(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string pathToView)
+        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, pathToView);
+            return new FluentActionWithViewComponent(Definition, viewComponentName);
         }
     }
 
