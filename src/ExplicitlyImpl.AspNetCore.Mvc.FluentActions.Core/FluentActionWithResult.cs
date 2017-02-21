@@ -5,18 +5,21 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionWithResult<TR> : FluentActionBase
     {
-        public FluentActionWithResult(FluentActionDefinition fluentActionDefinition, Delegate handlerFunc) : base(fluentActionDefinition)
+        public FluentActionWithResult(FluentActionDefinition fluentActionDefinition, Delegate handlerFunc, bool async = false) : base(fluentActionDefinition)
         {
             var returnType = typeof(TR);
 
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Func;
-            Definition.CurrentHandler.Delegate = handlerFunc;
-            Definition.CurrentHandler.ReturnType = returnType.IsAnonymous() ? typeof(object) : returnType;
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Func;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerFunc;
+            Definition.ExistingOrNewHandlerDraft.ReturnType = returnType.IsAnonymous() ? typeof(object) : returnType;
+            Definition.ExistingOrNewHandlerDraft.Async = async;
+            Definition.CommitHandlerDraft();
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
@@ -248,20 +251,33 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
         public FluentActionWithView ToView(string pathToView)
         {
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
             return new FluentActionWithView(Definition, pathToView);
         }
 
@@ -280,8 +296,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2> Using<TU2>(FluentActionUsingDefinition usingDefinition)
@@ -513,15 +528,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -529,7 +558,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3> Using<TU3>(FluentActionUsingDefinition usingDefinition)
@@ -761,15 +790,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1, TU2> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -777,7 +820,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4> Using<TU4>(FluentActionUsingDefinition usingDefinition)
@@ -1009,15 +1052,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1, TU2, TU3> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, TU3, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -1025,7 +1082,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5> Using<TU5>(FluentActionUsingDefinition usingDefinition)
@@ -1257,15 +1314,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1, TU2, TU3, TU4> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, TU3, TU4, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -1273,7 +1344,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6> Using<TU6>(FluentActionUsingDefinition usingDefinition)
@@ -1505,15 +1576,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, TU3, TU4, TU5, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -1521,7 +1606,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7> Using<TU7>(FluentActionUsingDefinition usingDefinition)
@@ -1753,15 +1838,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, TU3, TU4, TU5, TU6, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -1769,7 +1868,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> Using<TU8>(FluentActionUsingDefinition usingDefinition)
@@ -2001,15 +2100,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6, TU7> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 
@@ -2017,20 +2130,34 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithResultAndUsing(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentAction Do(Action<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
-        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR2> handlerFuncAsync)
+        public FluentAction DoAsync(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, Task> asyncHandlerAction)
         {
-            return new FluentActionWithResult<TR2>(Definition, handlerFuncAsync);
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR2> handlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR2> To<TR2>(Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, Task<TR2>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR2>(Definition, asyncHandlerFunc, async: true);
         }
     }
 }

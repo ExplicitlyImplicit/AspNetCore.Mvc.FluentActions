@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -30,9 +31,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public Type ReturnType { get; set; }
 
+        public bool Async { get; set; }
+
         public Delegate Delegate { get; set; }
 
-        public string PathToView { get; set; }
+        // Path to view or name of view component
+        public string ViewTarget { get; set; }
 
         public LambdaExpression Expression { get; set; }
 
@@ -61,22 +65,26 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
 
-        internal FluentActionHandlerDefinition CurrentHandler
+        internal FluentActionHandlerDefinition HandlerDraft { get; set; }
+
+        internal FluentActionHandlerDefinition ExistingOrNewHandlerDraft 
         {
             get
             {
-                if (!Handlers.Any())
+                if (HandlerDraft == null)
                 {
-                    Handlers.Add(new FluentActionHandlerDefinition());
+                    HandlerDraft = new FluentActionHandlerDefinition();
                 }
 
-                return Handlers.Last();
+                return HandlerDraft;
             }
         }
 
         public Type ReturnType => Handlers?.LastOrDefault()?.ReturnType;
 
         public bool IsMapRoute => Handlers.Count == 1 && Handlers.First().Type == FluentActionHandlerType.Controller;
+
+        public bool IsAsync => Handlers.Any(handler => handler.Async);
 
         public FluentActionDefinition(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
@@ -90,6 +98,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public override string ToString()
         {
             return $"[{HttpMethod}]/{RouteTemplate ?? "?"}";
+        }
+
+        public void CommitHandlerDraft()
+        {
+            if (HandlerDraft == null)
+            {
+                // Users should not be able to get this
+                throw new Exception("Tried to add an empty fluent action handler (no draft exists).");
+            }
+
+            Handlers.Add(HandlerDraft);
+
+            HandlerDraft = null;
         }
     }
 
@@ -378,9 +399,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Do(Action handlerAction)
         {
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Action;
-            Definition.CurrentHandler.Delegate = handlerAction;
-            Definition.Handlers.Add(new FluentActionHandlerDefinition());
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = handlerAction;
+            Definition.CommitHandlerDraft();
+            return new FluentAction(Definition);
+        }
+
+        public FluentAction DoAsync(Func<Task> asyncHandlerAction)
+        {
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Action;
+            Definition.ExistingOrNewHandlerDraft.Delegate = asyncHandlerAction;
+            Definition.ExistingOrNewHandlerDraft.Async = true;
+            Definition.CommitHandlerDraft();
             return new FluentAction(Definition);
         }
 
@@ -395,6 +425,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentActionWithResult<TR> To<TR>(Func<TR> handlerFunc)
         {
             return new FluentActionWithResult<TR>(Definition, handlerFunc);
+        }
+
+        public FluentActionWithResult<TR> To<TR>(Func<Task<TR>> asyncHandlerFunc)
+        {
+            return new FluentActionWithResult<TR>(Definition, asyncHandlerFunc, async: true);
         }
 
         public FluentActionWithView ToView(string pathToView)

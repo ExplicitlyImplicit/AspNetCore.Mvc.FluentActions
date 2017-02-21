@@ -11,6 +11,7 @@ using SimpleMvcWithViews.Services;
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using SimpleMvcWithViews.Controllers;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SimpleMvcWithViews
 {
@@ -81,6 +82,15 @@ namespace SimpleMvcWithViews
                 actions
                     .Route("/helloWorld", HttpMethod.Get)
                     .To(() => "Hello World!");
+
+                actions
+                    .Route("/helloWorldAsync", HttpMethod.Get)
+                    .To(async () => { await Task.Delay(2000); return "Hello World Async!"; });
+
+                actions
+                    .RouteGet("/helloWorldAsyncWithDo")
+                    .DoAsync(async () => { await Task.Delay(2000); })
+                    .To(() => "Hello World Async (with Do)!");
 
                 actions
                     .Route("/toHome", HttpMethod.Get)

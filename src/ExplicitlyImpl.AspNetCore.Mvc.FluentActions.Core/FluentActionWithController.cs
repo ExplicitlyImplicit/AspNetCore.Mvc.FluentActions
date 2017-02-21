@@ -9,7 +9,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TR>> actionExpression)
@@ -22,7 +22,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TR>> actionExpression)
@@ -35,7 +35,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TR>> actionExpression)
@@ -48,7 +48,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TU4, TR>> actionExpression)
@@ -61,7 +61,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TR>> actionExpression)
@@ -74,7 +74,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TU6, TR>> actionExpression)
@@ -87,7 +87,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR>> actionExpression)
@@ -100,7 +100,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TR>> actionExpression)
@@ -113,7 +113,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
         {
-            Definition.CurrentHandler.Usings.Add(usingDefinition);
+            Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
 
         public FluentActionWithControllerResult<TR> ToMvcAction<TR>(Expression<Func<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TU9, TR>> actionExpression)
@@ -128,9 +128,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             var returnType = typeof(TR);
 
-            Definition.CurrentHandler.Type = FluentActionHandlerType.Controller;
-            Definition.CurrentHandler.Expression = actionExpression;
-            Definition.CurrentHandler.ReturnType = returnType.IsAnonymous() ? typeof(object) : returnType;
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.Controller;
+            Definition.ExistingOrNewHandlerDraft.Expression = actionExpression;
+            Definition.ExistingOrNewHandlerDraft.ReturnType = returnType.IsAnonymous() ? typeof(object) : returnType;
+            Definition.CommitHandlerDraft();
         }
     }
 }
