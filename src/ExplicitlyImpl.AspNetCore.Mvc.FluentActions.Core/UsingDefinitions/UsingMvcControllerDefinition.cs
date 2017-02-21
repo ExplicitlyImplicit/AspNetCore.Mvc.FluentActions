@@ -4,6 +4,5 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public class FluentActionUsingMvcControllerDefinition : FluentActionUsingDefinition
     {
-        public override bool IsMethodParameter => false;
     }
 }

@@ -14,9 +14,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public object DefaultValue { get; set; }
 
-        public abstract bool IsMethodParameter { get; }
+        public virtual bool IsMethodParameter => false;
 
-        public virtual string MethodParameterName { get; }
+        public virtual string MethodParameterName => null;
+
+        public virtual bool IsControllerProperty => false;
+
+        public virtual string ControllerPropertyName => null;
 
         public override bool Equals(object other)
         {
@@ -39,18 +43,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
 
             return parameterBuilder;
-        }
-
-        public virtual void GenerateIl(
-            IlHandle ilHandle, 
-            FluentActionUsingDefinition usingDefinition,
-            int methodParameterIndex, 
-            LocalBuilder localVariableForPreviousReturnValue)
-        {
-            if (usingDefinition.IsMethodParameter)
-            {
-                ilHandle.Generator.Emit(OpCodes.Ldarg, methodParameterIndex);
-            }
         }
 
         public override int GetHashCode()
