@@ -13,6 +13,9 @@ using Xunit;
 using Moq;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 {
@@ -133,9 +136,12 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             {
                 var instance = Activator.CreateInstance(controllerTypeInfo.UnderlyingSystemType);
 
-                var mockedHttpContext = Mock.Of<HttpContext>();
+                var mockedControllerContext = MockControllerContext();
+                var setControllerContextMethod = typeof(Controller).GetProperty("ControllerContext").GetSetMethod();
+                setControllerContextMethod.Invoke(instance, new object[] { mockedControllerContext });
+
                 var mockedTempDataProvider = Mock.Of<ITempDataProvider>();
-                var tempData = new TempDataDictionary(mockedHttpContext, mockedTempDataProvider);
+                var tempData = new TempDataDictionary(mockedControllerContext.HttpContext, mockedTempDataProvider);
                 var setTempDataMethod = typeof(Controller).GetProperty("TempData").GetSetMethod();
                 setTempDataMethod.Invoke(instance, new object[] { tempData });
 
@@ -146,6 +152,14 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             {
                 throw new Exception($"Could not invoke action method for controller type {controllerTypeInfo.Name}.", exception);
             }
+        }
+
+        private static ControllerContext MockControllerContext()
+        {
+            var mockedHttpContext = Mock.Of<HttpContext>();
+            var actionContext = new ActionContext(mockedHttpContext, new RouteData(), new ControllerActionDescriptor());
+
+            return new ControllerContext(actionContext);
         }
 
         public static void CompareBuiltControllerToStaticController(Type builtControllerType, Type staticControllerType)
