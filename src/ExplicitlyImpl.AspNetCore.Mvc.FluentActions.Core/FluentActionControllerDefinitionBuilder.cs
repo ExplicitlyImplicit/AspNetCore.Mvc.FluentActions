@@ -1,13 +1,13 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
+using ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -15,7 +15,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         private const string ActionName = "HandlerAction";
 
-        public FluentActionControllerDefinition Build(FluentActionBase fluentAction)
+        public FluentActionControllerDefinition Build(FluentActionBase fluentAction, ILogger logger = null)
         {
             if (fluentAction == null)
             {
@@ -68,7 +68,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 try
                 {
-                    var controllerTypeInfo = DefineControllerType(fluentAction.Definition);
+                    var controllerTypeInfo = DefineControllerType(fluentAction.Definition, logger);
 
                     return new FluentActionControllerDefinition()
                     {
@@ -117,10 +117,16 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 validationResult.AddValidationError("At least one handler is required.");
             }
 
-            foreach (var handlerWithNoReturnType in handlers
-                .Where(handler => handler.Type != FluentActionHandlerType.Action && handler.ReturnType == null))
+            foreach (var handlerWithNoReturnType in handlers.Where(handler => 
+                handler.Type != FluentActionHandlerType.Action && 
+                handler.ReturnType == null))
             {
                 validationResult.AddValidationError("Missing return type for handler.");
+            }
+
+            if (handlers.Any() && handlers.Last().Type == FluentActionHandlerType.Action)
+            {
+                validationResult.AddValidationError("Cannot end a fluent action with a Do statement.");
             }
 
             return validationResult;
@@ -149,350 +155,33 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
-        public class FluentActionValidationException : Exception
-        {
-            public FluentActionValidationException() : base() { }
-            public FluentActionValidationException(string message) : base(message) { }
-        }
-
         private static TypeInfo DefineControllerType(
-            FluentActionDefinition fluentActionDefinition)
+            FluentActionDefinition fluentActionDefinition,
+            ILogger logger = null)
         {
             if (fluentActionDefinition == null)
             {
                 throw new ArgumentNullException(nameof(fluentActionDefinition));
             }
 
-            var moduleBuilder = DefineModule();
-            var typeBuilder = DefineType(moduleBuilder);
-
-            DefineActionMethod(typeBuilder, fluentActionDefinition);
-
-            return typeBuilder.CreateTypeInfo();
-        }
-
-        private static ModuleBuilder DefineModule()
-        {
-            var assemblyName = new AssemblyName("FluentActionAssembly");
-            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
-                assemblyName, 
-                AssemblyBuilderAccess.Run);
-
-            return assemblyBuilder.DefineDynamicModule("FluentActionModule");
-        }
-
-        private static TypeBuilder DefineType(ModuleBuilder moduleBuilder)
-        {
             var guid = Guid.NewGuid().ToString().Replace("-", "");
-            var name = $"FluentAction{guid}Controller";
+            var typeName = $"FluentAction{guid}Controller";
 
-            var typeBuilder = moduleBuilder.DefineType(
-                    name,
-                    TypeAttributes.Class | TypeAttributes.Public,
-                    typeof(Controller));
+            var controllerTypeBuilder = ControllerTypeBuilder.Create("FluentActionAssembly", "FluentActionModule", typeName);
 
-            typeBuilder.DefineDefaultConstructor(MethodAttributes.Public);
-
-            return typeBuilder;
-        }
-
-        private static Type GetFuncType(FluentActionHandlerDefinition handler)
-        {
-            var argumentTypes = handler.Usings.Select(@using => @using.Type).ToList();
-            argumentTypes.Add(handler.ReturnType);
-
-            var unspecifiedGenericFuncType = GetUnspecifiedGenericFuncType(argumentTypes.Count);
-            var specifiedGenericFuncType = unspecifiedGenericFuncType.MakeGenericType(argumentTypes.ToArray());
-
-            return specifiedGenericFuncType;
-        }
-
-        private static Type GetUnspecifiedGenericFuncType(int arguments)
-        {
-            switch (arguments)
+            ControllerMethodBuilder controllerMethodBuilder;
+            if (fluentActionDefinition.IsAsync)
             {
-                case 1: return typeof(Func<>);
-                case 2: return typeof(Func<,>);
-                case 3: return typeof(Func<,,>);
-                case 4: return typeof(Func<,,,>);
-                case 5: return typeof(Func<,,,,>);
-                case 6: return typeof(Func<,,,,,>);
-                case 7: return typeof(Func<,,,,,,>);
-                case 8: return typeof(Func<,,,,,,,>);
-            }
-
-            throw new Exception($"Fluent actions supports only up to eight arguments.");
-        }
-
-        private static Type GetActionType(FluentActionHandlerDefinition handler)
-        {
-            var argumentTypes = handler.Usings.Select(@using => @using.Type).ToList();
-
-            if (argumentTypes.Count == 0)
-            {
-                return typeof(Action);
-            }
+                controllerMethodBuilder = new ControllerMethodBuilderForFluentActionAsync(fluentActionDefinition, logger);
+            } 
             else
             {
-                var unspecifiedGenericActionType = GetUnspecifiedGenericActionType(argumentTypes.Count);
-                var specifiedGenericActionType = unspecifiedGenericActionType.MakeGenericType(argumentTypes.ToArray());
-
-                return specifiedGenericActionType;
-            }
-        }
-
-        private static Type GetUnspecifiedGenericActionType(int arguments)
-        {
-            switch (arguments)
-            {
-                case 1: return typeof(Action<>);
-                case 2: return typeof(Action<,>);
-                case 3: return typeof(Action<,,>);
-                case 4: return typeof(Action<,,,>);
-                case 5: return typeof(Action<,,,,>);
-                case 6: return typeof(Action<,,,,,>);
-                case 7: return typeof(Action<,,,,,,>);
-                case 8: return typeof(Action<,,,,,,,>);
+                controllerMethodBuilder = new ControllerMethodBuilderForFluentAction(fluentActionDefinition);
             }
 
-            throw new Exception($"Fluent actions supports only up to eight arguments.");
-        }
+            controllerTypeBuilder.BuildMethod(ActionName, controllerMethodBuilder);
 
-        private static Type GetHttpMethodAttribute(HttpMethod httpMethod)
-        {
-            switch (httpMethod)
-            {
-                case HttpMethod.Delete:     return typeof(HttpDeleteAttribute);
-                case HttpMethod.Get:        return typeof(HttpGetAttribute);
-                case HttpMethod.Head:       return typeof(HttpHeadAttribute);
-                case HttpMethod.Options:    return typeof(HttpOptionsAttribute);
-                case HttpMethod.Patch:      return typeof(HttpPatchAttribute);
-                case HttpMethod.Post:       return typeof(HttpPostAttribute);
-                case HttpMethod.Put:        return typeof(HttpPutAttribute);
-            }
-
-            throw new Exception($"Could not get corresponding attribute of {nameof(HttpMethod)} {httpMethod}.");
-        }
-
-        private static void DefineActionMethod(
-            TypeBuilder typeBuilder, 
-            FluentActionDefinition fluentActionDefinition)
-        {
-            var usingsForMethodParameters = fluentActionDefinition.Handlers
-                .SelectMany(handler => handler.Usings)
-                .Where(@using => @using.IsMethodParameter)
-                .Distinct()
-                .ToArray();
-
-            var methodParameterIndices = usingsForMethodParameters
-                .Select((@using, index) => new { Using = @using, Index = index })
-                .ToDictionary(
-                    indexedUsing => indexedUsing.Using.GetHashCode(),
-                    indexedUsing => indexedUsing.Index + 1 // 1-based index
-                );
-
-            var methodParameterTypes = usingsForMethodParameters
-                .Select(@using => @using.Type)
-                .ToArray();
-
-            var returnType = fluentActionDefinition.Handlers.Last().ReturnType;
-
-            var methodBuilder = typeBuilder.DefineMethod(ActionName, MethodAttributes.Public, returnType, methodParameterTypes);
-
-            SetHttpMethodAttribute(methodBuilder, fluentActionDefinition.HttpMethod);
-            SetRouteAttribute(methodBuilder, fluentActionDefinition.RouteTemplate);
-
-            if (fluentActionDefinition.ValidateAntiForgeryToken)
-            {
-                SetValidateAntiForgeryTokenAttribute(methodBuilder);
-            }
-
-            foreach (var usingDefinition in usingsForMethodParameters)
-            {
-                var methodParameterIndex = methodParameterIndices[usingDefinition.GetHashCode()];
-
-                usingDefinition.DefineMethodParameter(methodBuilder, fluentActionDefinition, usingDefinition, methodParameterIndex);
-            }
-
-            var dictionaryField = typeof(FluentActionControllerDefinitionHandlerDelegates)
-                .GetField("All");
-            var dictionaryGetMethod = typeof(ConcurrentDictionary<,>)
-                .MakeGenericType(typeof(string), typeof(Delegate))
-                .GetMethod("get_Item");
-
-            var ilGenerator = methodBuilder.GetILGenerator();
-
-            LocalBuilder localVariableForPreviousReturnValue = null;
-
-            foreach (var handler in fluentActionDefinition.Handlers)
-            {
-                if (handler.Type == FluentActionHandlerType.Func)
-                {
-                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
-
-                    var funcType = GetFuncType(handler);
-                    var delegateKey = FluentActionControllerDefinitionHandlerDelegates.Add(handler.Delegate);
-
-                    // Push Func
-                    ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
-                    ilGenerator.Emit(OpCodes.Ldstr, delegateKey);
-                    ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
-
-                    // Push arguments for Func
-                    foreach (var usingDefinition in handler.Usings)
-                    {
-                        var ilHandle = new IlHandle { Generator = ilGenerator };
-
-                        var usingDefinitionHash = usingDefinition.GetHashCode();
-                        var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ? 
-                            methodParameterIndices[usingDefinitionHash] : -1;
-
-                        usingDefinition.GenerateIl(
-                            ilHandle, 
-                            usingDefinition, 
-                            methodParameterIndex, 
-                            localVariableForPreviousReturnValue);
-                    }
-
-                    // Push Func.Invoke
-                    ilGenerator.Emit(OpCodes.Callvirt, funcType.GetMethod("Invoke"));
-
-                    // Push storing result in local variable
-                    ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
-
-                    // Make sure next handler has access to previous handler's return value
-                    localVariableForPreviousReturnValue = localVariableForReturnValue;
-                } 
-                else if (handler.Type == FluentActionHandlerType.Action)
-                {
-                    var actionType = GetActionType(handler);
-                    var delegateKey = FluentActionControllerDefinitionHandlerDelegates.Add(handler.Delegate);
-
-                    // Push Func
-                    ilGenerator.Emit(OpCodes.Ldsfld, dictionaryField);
-                    ilGenerator.Emit(OpCodes.Ldstr, delegateKey);
-                    ilGenerator.Emit(OpCodes.Callvirt, dictionaryGetMethod);
-
-                    // Push arguments for Action
-                    foreach (var usingDefinition in handler.Usings)
-                    {
-                        var ilHandle = new IlHandle { Generator = ilGenerator };
-
-                        var usingDefinitionHash = usingDefinition.GetHashCode();
-                        var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ?
-                            methodParameterIndices[usingDefinitionHash] : -1;
-
-                        usingDefinition.GenerateIl(
-                            ilHandle,
-                            usingDefinition,
-                            methodParameterIndex,
-                            localVariableForPreviousReturnValue);
-                    }
-
-                    // Push Action.Invoke
-                    ilGenerator.Emit(OpCodes.Callvirt, actionType.GetMethod("Invoke"));
-
-                    // This handler does not produce a result
-                    localVariableForPreviousReturnValue = null;
-                } 
-                else if (handler.Type == FluentActionHandlerType.View 
-                    || handler.Type == FluentActionHandlerType.PartialView
-                    || handler.Type == FluentActionHandlerType.ViewComponent)
-                {
-                    if (handler.PathToView == null)
-                    {
-                        throw new Exception("Must specify a path to a view.");
-                    }
-
-                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
-
-                    // Call one of the following controller methods:
-                    //   Controller.View(string pathName, object model)
-                    //   Controller.PartialView(string pathName, object model)
-                    //   Controller.ViewComponent(string pathName, object arguments)
-
-                    ilGenerator.Emit(OpCodes.Ldarg_0);
-                    ilGenerator.Emit(OpCodes.Ldstr, handler.PathToView);
-
-                    Type[] viewMethodParameterTypes = null;
-                    if (localVariableForPreviousReturnValue != null)
-                    {
-                        ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
-                    } 
-                    else
-                    {
-                        viewMethodParameterTypes = new[] { typeof(string) };
-                    }
-
-                    MethodInfo viewMethod = null;
-                    if (handler.Type == FluentActionHandlerType.View)
-                    {
-                        viewMethod = typeof(Controller).GetMethod("View", viewMethodParameterTypes);
-                    }
-                    else if (handler.Type == FluentActionHandlerType.PartialView)
-                    {
-                        viewMethod = typeof(Controller).GetMethod("PartialView", viewMethodParameterTypes);
-                    }
-                    else if (handler.Type == FluentActionHandlerType.ViewComponent)
-                    {
-                        viewMethod = typeof(Controller).GetMethod("ViewComponent", viewMethodParameterTypes);
-                    }
-
-                    ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
-
-                    // Push storing result in local variable
-                    ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
-
-                    // Make sure next handler has access to previous handler's return value
-                    localVariableForPreviousReturnValue = localVariableForReturnValue;
-                }
-            }
-             
-            // Return last handlers return value
-            ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-            ilGenerator.Emit(OpCodes.Ret);
-        }
-
-        private static void SetHttpMethodAttribute(MethodBuilder methodBuilder, HttpMethod httpMethod)
-        {
-            var attributeConstructorInfo = GetHttpMethodAttribute(httpMethod)
-                .GetConstructor(new Type[0]);
-            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new Type[0]);
-            methodBuilder.SetCustomAttribute(attributeBuilder);
-        }
-
-        private static void SetRouteAttribute(MethodBuilder methodBuilder, string routeTemplate)
-        {
-            var attributeConstructorInfo = typeof(RouteAttribute)
-                .GetConstructor(new Type[] { typeof(string) });
-            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new[] { routeTemplate });
-            methodBuilder.SetCustomAttribute(attributeBuilder);
-        }
-
-        private static void SetValidateAntiForgeryTokenAttribute(MethodBuilder methodBuilder)
-        {
-            var attributeConstructorInfo = typeof(ValidateAntiForgeryTokenAttribute)
-                .GetConstructor(new Type[0]);
-            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new object[0]);
-            methodBuilder.SetCustomAttribute(attributeBuilder);
-        }
-    }
-
-    public static class FluentActionControllerDefinitionHandlerDelegates
-    {
-        public static ConcurrentDictionary<string, Delegate> All = new ConcurrentDictionary<string, Delegate>();
-
-        public static string Add(Delegate value)
-        {
-            var key = Guid.NewGuid().ToString();
-
-            if (!All.TryAdd(key, value))
-            {
-                throw new Exception($"Tried to add a fluent action delegate but key already exists in dictionary ({key}).");
-            }
-
-            return key;
+            return controllerTypeBuilder.CreateTypeInfo();
         }
     }
 }
