@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -35,6 +36,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.ViewComponent;
             Definition.ExistingOrNewHandlerDraft.ViewTarget = viewComponentName;
+            Definition.ExistingOrNewHandlerDraft.ReturnType = typeof(ViewComponentResult);
+            Definition.CommitHandlerDraft();
+        }
+
+        public FluentActionWithViewComponent(FluentActionDefinition fluentActionDefinition, Type viewComponentType)
+            : base(fluentActionDefinition)
+        {
+            Definition.ExistingOrNewHandlerDraft.Type = FluentActionHandlerType.ViewComponent;
+            Definition.ExistingOrNewHandlerDraft.ViewComponentType = viewComponentType;
             Definition.ExistingOrNewHandlerDraft.ReturnType = typeof(ViewComponentResult);
             Definition.CommitHandlerDraft();
         }

@@ -37,6 +37,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         // Path to view or name of view component
         public string ViewTarget { get; set; }
+        public Type ViewComponentType { get; set; }
 
         public LambdaExpression Expression { get; set; }
 
@@ -440,6 +441,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentActionWithPartialView ToPartialView(string pathToView)
         {
             return new FluentActionWithPartialView(Definition, pathToView);
+        }
+
+        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        {
+            return new FluentActionWithViewComponent(Definition, viewComponentType);
         }
 
         public FluentActionWithViewComponent ToViewComponent(string viewComponentName)

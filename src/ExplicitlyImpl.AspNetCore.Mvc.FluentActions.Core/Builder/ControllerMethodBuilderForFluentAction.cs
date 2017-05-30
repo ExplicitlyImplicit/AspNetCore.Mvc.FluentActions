@@ -165,7 +165,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                 } 
                 else if (handler.Type == FluentActionHandlerType.View 
                     || handler.Type == FluentActionHandlerType.PartialView
-                    || handler.Type == FluentActionHandlerType.ViewComponent)
+                    || (handler.Type == FluentActionHandlerType.ViewComponent && handler.ViewComponentType == null))
                 {
                     if (handler.ViewTarget == null)
                     {
@@ -206,6 +206,43 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                     {
                         viewMethod = typeof(Controller).GetMethod("ViewComponent", viewMethodParameterTypes);
                     }
+
+                    ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
+
+                    // Push storing result in local variable
+                    ilGenerator.Emit(OpCodes.Stloc, localVariableForReturnValue);
+
+                    // Make sure next handler has access to previous handler's return value
+                    localVariableForPreviousReturnValue = localVariableForReturnValue;
+                } else if (handler.Type == FluentActionHandlerType.ViewComponent)
+                {
+                    if (handler.ViewComponentType == null)
+                    {
+                        throw new Exception("Must specify a target view component type.");
+                    }
+
+                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
+
+                    // Call the following controller method:
+                    //   Controller.ViewComponent(Type componentType, object arguments)
+
+                    ilGenerator.Emit(OpCodes.Ldarg_0);
+
+                    ilGenerator.Emit(OpCodes.Ldtoken, handler.ViewComponentType);
+                    ilGenerator.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle", new[] { typeof(RuntimeTypeHandle) }));
+
+                    Type[] viewMethodParameterTypes = null;
+                    if (localVariableForPreviousReturnValue != null)
+                    {
+                        ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+                        viewMethodParameterTypes = new[] { typeof(Type), typeof(object) };
+                    } 
+                    else
+                    {
+                        viewMethodParameterTypes = new[] { typeof(Type) };
+                    }
+
+                    var viewMethod = typeof(Controller).GetMethod("ViewComponent", viewMethodParameterTypes);
 
                     ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
 

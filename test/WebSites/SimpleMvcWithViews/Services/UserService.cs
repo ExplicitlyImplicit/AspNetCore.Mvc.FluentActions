@@ -24,6 +24,9 @@ namespace SimpleMvcWithViews
         EntityUpdateResultItem Update(int userId, UserItem user);
         Task<EntityUpdateResultItem> UpdateAsync(int userId, UserItem user);
 
+        EntityUpdateResultItem Update(UserItem user);
+        Task<EntityUpdateResultItem> UpdateAsync(UserItem user);
+
         EntityRemoveResultItem Remove(int userId);
         Task<EntityRemoveResultItem> RemoveAsync(int userId);
     }
@@ -101,6 +104,21 @@ namespace SimpleMvcWithViews
         {
             await Task.Delay(200);
             return Update(userId, user);
+        }
+
+        public EntityUpdateResultItem Update(UserItem user)
+        {
+            return new EntityUpdateResultItem
+            {
+                Id = user.Id,
+                Timestamp = DateTimeOffset.Now
+            };
+        }
+
+        public async Task<EntityUpdateResultItem> UpdateAsync(UserItem user)
+        {
+            await Task.Delay(200);
+            return Update(user.Id, user);
         }
 
         public EntityRemoveResultItem Remove(int userId)
