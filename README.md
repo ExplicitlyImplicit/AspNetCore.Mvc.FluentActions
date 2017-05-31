@@ -726,6 +726,28 @@ public ActionResult Action([FromServices]IUserService userService)
 }
 ```
 
+`ToViewComponent` can also take a `Type` as input:
+
+```
+actions
+    .RouteGet("/users")
+    .UsingService<IUserService>()
+    .To(userService => userService.List()))
+    .ToViewComponent(typeof(ListUsersViewComponent));
+```
+
+This is equivalent to:
+
+```
+[HttpGet]
+[Route("/users")]
+public ActionResult Action([FromServices]IUserService userService)
+{
+    var users = userService.List();
+    return ViewComponent(typeof(ListUsersViewComponent), users);
+}
+```
+
 #### `Do` Statement
 
 If you want to perform some logic but are not interested in outputting a result, 
