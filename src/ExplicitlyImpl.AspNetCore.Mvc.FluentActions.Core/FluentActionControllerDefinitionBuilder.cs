@@ -170,7 +170,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var controllerTypeBuilder = ControllerTypeBuilder.Create("FluentActionAssembly", "FluentActionModule", typeName);
 
             ControllerMethodBuilder controllerMethodBuilder;
-            if (fluentActionDefinition.IsAsync)
+            if (AsyncStateMachineBuilderIsNeeded(fluentActionDefinition))
             {
                 controllerMethodBuilder = new ControllerMethodBuilderForFluentActionAsync(fluentActionDefinition, logger);
             } 
@@ -183,6 +183,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             return controllerTypeBuilder.CreateTypeInfo();
         }
+
+        public static bool AsyncStateMachineBuilderIsNeeded(FluentActionDefinition fluentActionDefinition)
+        {
+            // An AsyncStateMachineBuilder is not needed when there is only one handler invoking an async func
+            return fluentActionDefinition.IsAsync &&
+                (fluentActionDefinition.Handlers.Count() > 1 ||
+                (fluentActionDefinition.Handlers.Count() == 1 && fluentActionDefinition.Handlers.First().Type != FluentActionHandlerType.Func));
+        } 
     }
 }
 

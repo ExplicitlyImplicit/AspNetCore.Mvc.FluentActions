@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading.Tasks;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 {
@@ -38,6 +39,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                 .ToArray();
 
             var returnType = FluentActionDefinition.Handlers.Last().ReturnType;
+            if (FluentActionDefinition.IsAsync)
+            {
+                returnType = typeof(Task<>).MakeGenericType(returnType);
+            }
 
             MethodBuilder.SetReturnType(returnType);
             MethodBuilder.SetParameters(methodParameterTypes);
@@ -65,7 +70,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             {
                 if (handler.Type == FluentActionHandlerType.Func)
                 {
-                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handler.ReturnType);
+
+                    var handlerReturnType = BuilderHelper.GetReturnTypeOrTaskType(handler);
+                    var localVariableForReturnValue = ilGenerator.DeclareLocal(handlerReturnType);
 
                     var funcType = BuilderHelper.GetFuncType(handler);
                     var delegateKey = FluentActionDelegates.Add(handler.Delegate);
