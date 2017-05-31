@@ -536,7 +536,7 @@ actions
     .RouteGet("/users")
     .UsingTempData()
     .Do(tempData => tempData["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml");
+    .ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -546,7 +546,7 @@ Is equivalent to the following action method in a controller:
 [Route("/users")]
 public ViewResult Action()
 {
-	TempData["Title"] = "List of Users";
+    TempData["Title"] = "List of Users";
     return View("~/Views/Users/ListUsers.cshtml");
 }
 ```
@@ -560,7 +560,7 @@ actions
     .RouteGet("/users")
     .UsingViewBag()
     .Do(viewBag => viewBag["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml");
+    .ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -570,7 +570,7 @@ Is equivalent to the following action method in a controller:
 [Route("/users")]
 public ViewResult Action()
 {
-	ViewBag["Title"] = "List of Users";
+    ViewBag["Title"] = "List of Users";
     return View("~/Views/Users/ListUsers.cshtml");
 }
 ```
@@ -584,7 +584,7 @@ actions
     .RouteGet("/users")
     .UsingViewData()
     .Do(viewData => viewData["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml");
+    .ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -594,7 +594,7 @@ Is equivalent to the following action method in a controller:
 [Route("/users")]
 public ViewResult Action()
 {
-	ViewData["Title"] = "List of Users";
+    ViewData["Title"] = "List of Users";
     return View("~/Views/Users/ListUsers.cshtml");
 }
 ```
@@ -761,7 +761,7 @@ actions
     .RouteGet("/users")
     .UsingViewData()
     .Do(viewData => viewData["Title"] = "List of Users")
-	.ToView("~/Views/Users/ListUsers.cshtml");
+    .ToView("~/Views/Users/ListUsers.cshtml");
 ```
 
 Is equivalent to the following action method in a controller:
@@ -771,7 +771,7 @@ Is equivalent to the following action method in a controller:
 [Route("/users")]
 public ViewResult Action()
 {
-	ViewData["Title"] = "List of Users";
+    ViewData["Title"] = "List of Users";
     return View("~/Views/Users/ListUsers.cshtml");
 }
 ```
@@ -846,7 +846,7 @@ The following fluent action:
 ```
 actions
     .RoutePost("/submit")
-	.ValidateAntiForgeryToken()
+    .ValidateAntiForgeryToken()
     .To(() => "Anti-forgery token validated!");
 ```
 
@@ -885,7 +885,7 @@ You can set a title of a fluent action using the statement `WithTitle`. Example:
 ```
 actions
     .RouteGet("/users")
-	.WithTitle("List Users")
+    .WithTitle("List Users")
     .UsingService<IUserService>()
     .To(userService => userService.List());
 ```
@@ -901,7 +901,7 @@ You can set a description of a fluent action using the statement `WithDescriptio
 ```
 actions
     .RouteGet("/users")
-	.WithDescription("Description of an endpoint that list users.")
+    .WithDescription("Description of an endpoint that list users.")
     .UsingService<IUserService>()
     .To(userService => userService.List());
 ```
@@ -917,7 +917,7 @@ You can group multiple actions by setting a common group name on each action:
 ```
 actions
     .RouteGet("/users")
-	.GroupBy("UserActions")
+    .GroupBy("UserActions")
     .UsingService<IUserService>()
     .To(userService => userService.List());
 ```
