@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 {
@@ -85,33 +86,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                     // Push arguments for Func
                     foreach (var usingDefinition in handler.Usings)
                     {
-                        var ilHandle = new IlHandle { Generator = ilGenerator };
-
-                        var usingDefinitionHash = usingDefinition.GetHashCode();
-                        var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ? 
-                            methodParameterIndices[usingDefinitionHash] : -1;
-
-
-                        if (usingDefinition.IsMethodParameter)
-                        {
-                            ilHandle.Generator.Emit(OpCodes.Ldarg, methodParameterIndex);
-                        } else if (usingDefinition.IsControllerProperty)
-                        {
-                            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
-                            ilHandle.Generator.Emit(OpCodes.Callvirt,
-                                typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-                        } else if (usingDefinition is FluentActionUsingResultFromHandlerDefinition)
-                        {
-                            if (localVariableForPreviousReturnValue == null)
-                            {
-                                throw new Exception("Cannot use previous result from handler as no previous result exists.");
-                            }
-
-                            ilHandle.Generator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        } else
-                        {
-                            throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
-                        }
+                        EmitUsingDefinitionValue(ilGenerator, usingDefinition, methodParameterIndices, localVariableForPreviousReturnValue);
                     }
 
                     // Push Func.Invoke
@@ -136,32 +111,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                     // Push arguments for Action
                     foreach (var usingDefinition in handler.Usings)
                     {
-                        var ilHandle = new IlHandle { Generator = ilGenerator };
-
-                        var usingDefinitionHash = usingDefinition.GetHashCode();
-                        var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ?
-                            methodParameterIndices[usingDefinitionHash] : -1;
-
-                        if (usingDefinition.IsMethodParameter)
-                        {
-                            ilHandle.Generator.Emit(OpCodes.Ldarg, methodParameterIndex);
-                        } else if (usingDefinition.IsControllerProperty)
-                        {
-                            ilHandle.Generator.Emit(OpCodes.Ldarg_0);
-                            ilHandle.Generator.Emit(OpCodes.Callvirt,
-                                typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-                        } else if (usingDefinition is FluentActionUsingResultFromHandlerDefinition)
-                        {
-                            if (localVariableForPreviousReturnValue == null)
-                            {
-                                throw new Exception("Cannot use previous result from handler as no previous result exists.");
-                            }
-
-                            ilHandle.Generator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
-                        } else
-                        {
-                            throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
-                        }
+                        EmitUsingDefinitionValue(ilGenerator, usingDefinition, methodParameterIndices, localVariableForPreviousReturnValue);
                     }
 
                     // Push Action.Invoke
@@ -264,6 +214,40 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             // Return last handlers return value
             ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
             ilGenerator.Emit(OpCodes.Ret);
+        }
+
+        private void EmitUsingDefinitionValue(
+            ILGenerator ilGenerator, 
+            FluentActionUsingDefinition usingDefinition, 
+            Dictionary<int, int> methodParameterIndices, 
+            LocalBuilder localVariableForPreviousReturnValue)
+        {
+            var ilHandle = new IlHandle { Generator = ilGenerator };
+
+            var usingDefinitionHash = usingDefinition.GetHashCode();
+            var methodParameterIndex = methodParameterIndices.ContainsKey(usingDefinitionHash) ?
+                methodParameterIndices[usingDefinitionHash] : -1;
+
+            if (usingDefinition.IsMethodParameter)
+            {
+                ilHandle.Generator.Emit(OpCodes.Ldarg, methodParameterIndex);
+            } else if (usingDefinition.IsControllerProperty)
+            {
+                ilHandle.Generator.Emit(OpCodes.Ldarg_0);
+                ilHandle.Generator.Emit(OpCodes.Callvirt,
+                    typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
+            } else if (usingDefinition is FluentActionUsingResultFromHandlerDefinition)
+            {
+                if (localVariableForPreviousReturnValue == null)
+                {
+                    throw new Exception("Cannot use previous result from handler as no previous result exists.");
+                }
+
+                ilHandle.Generator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+            } else
+            {
+                throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
+            }
         }
     }
 }
