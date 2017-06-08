@@ -16,6 +16,29 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                 null);
         }
 
+        [Fact(DisplayName = "1 body (string), no To, returns ViewResult")]
+        public void FluentControllerBuilder_FluentAction1BodyNoToReturnsView()
+        {
+            BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
+                new FluentAction("/route/url", HttpMethod.Get)
+                    .UsingBody<string>()
+                    .ToView("~/Path/To/ViewWithStringModel.cshtml"),
+                typeof(ControllerPassing1BodyReturnsView),
+                new object[] { "Text" });
+        }
+
+        [Fact(DisplayName = "1 body (string), 1 route param (string), no To, returns ViewResult")]
+        public void FluentControllerBuilder_FluentAction1Body1RouteParamNoToReturnsView()
+        {
+            BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
+                new FluentAction("/route/url/{unused}", HttpMethod.Get)
+                    .UsingBody<string>()
+                    .UsingRouteParameter<string>("unused")
+                    .ToView("~/Path/To/ViewWithStringModel.cshtml"),
+                typeof(ControllerWith1Body1RouteParamPassing1BodyReturnsView),
+                new object[] { "Text", "Unused" });
+        }
+
         [Fact(DisplayName = "no usings, 1 To, returns ViewResult")]
         public void FluentControllerBuilder_FluentActionNoUsings1ToReturnsView()
         {

@@ -53,6 +53,26 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
+    public class ControllerPassing1BodyReturnsView : Controller
+    {
+        [HttpGet]
+        [Route("/route/url")]
+        public ViewResult HandlerAction([FromBody]string model)
+        {
+            return View("~/Path/To/ViewWithStringModel.cshtml", model);
+        }
+    }
+
+    public class ControllerWith1Body1RouteParamPassing1BodyReturnsView : Controller
+    {
+        [HttpGet]
+        [Route("/route/url/{unused}")]
+        public ViewResult HandlerAction([FromBody]string model, [FromRoute]string unused)
+        {
+            return View("~/Path/To/ViewWithStringModel.cshtml", model);
+        }
+    }
+
     public class ControllerWith1Body1RouteParamReturnsView : Controller
     {
         [HttpGet]

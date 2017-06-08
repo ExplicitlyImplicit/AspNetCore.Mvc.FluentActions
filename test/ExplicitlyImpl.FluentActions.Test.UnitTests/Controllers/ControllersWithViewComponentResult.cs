@@ -13,6 +13,26 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
+    public class ControllerPassing1BodyReturnsViewComponent : Controller
+    {
+        [HttpGet]
+        [Route("/route/url")]
+        public ViewComponentResult HandlerAction([FromBody]string model)
+        {
+            return ViewComponent("ViewComponentWithStringModel", model);
+        }
+    }
+
+    public class ControllerWith1Body1RouteParamPassing1BodyReturnsViewComponent : Controller
+    {
+        [HttpGet]
+        [Route("/route/url/{unused}")]
+        public ViewComponentResult HandlerAction([FromBody]string model, [FromRoute]string unused)
+        {
+            return ViewComponent("ViewComponentWithStringModel", model);
+        }
+    }
+
     public class ControllerWithNoUsingsXToReturnsViewComponent : Controller
     {
         [HttpGet]

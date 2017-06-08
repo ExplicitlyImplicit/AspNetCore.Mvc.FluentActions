@@ -13,6 +13,26 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
+    public class ControllerPassing1BodyReturnsPartialView : Controller
+    {
+        [HttpGet]
+        [Route("/route/url")]
+        public PartialViewResult HandlerAction([FromBody]string model)
+        {
+            return PartialView("~/Path/To/PartialViewWithStringModel.cshtml", model);
+        }
+    }
+
+    public class ControllerWith1Body1RouteParamPassing1BodyReturnsPartialView : Controller
+    {
+        [HttpGet]
+        [Route("/route/url/{unused}")]
+        public PartialViewResult HandlerAction([FromBody]string model, [FromRoute]string unused)
+        {
+            return PartialView("~/Path/To/PartialViewWithStringModel.cshtml", model);
+        }
+    }
+
     public class ControllerWithNoUsingsXToReturnsPartialView : Controller
     {
         [HttpGet]

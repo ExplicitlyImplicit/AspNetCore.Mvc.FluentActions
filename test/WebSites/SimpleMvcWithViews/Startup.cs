@@ -93,6 +93,11 @@ namespace SimpleMvcWithViews
                     .To(() => "Hello World Async (with Do)!");
 
                 actions
+                    .RouteGet("/hello")
+                    .UsingQueryStringParameter<string>("name")
+                    .ToView("~/Views/Plain/Hello.cshtml");
+
+                actions
                     .Route("/toHome", HttpMethod.Get)
                     .ToMvcController<HomeController>()
                     .ToMvcAction(homeController => homeController.Index());
@@ -102,7 +107,7 @@ namespace SimpleMvcWithViews
                     .UsingViewBag()
                     .UsingViewData()
                     .UsingTempData()
-                    .Do((viewBag, viewData, tempData) => 
+                    .Do((viewBag, viewData, tempData) =>
                     {
                         viewData["ViewDataMessage"] = "ViewData message from fluent action.";
                         tempData["TempDataMessage"] = "TempData message from fluent action.";

@@ -16,6 +16,29 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                 null);
         }
 
+        [Fact(DisplayName = "1 body (string), no To, returns PartialViewResult")]
+        public void FluentControllerBuilder_FluentAction1BodyNoToReturnsPartialView()
+        {
+            BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
+                new FluentAction("/route/url", HttpMethod.Get)
+                    .UsingBody<string>()
+                    .ToPartialView("~/Path/To/PartialViewWithStringModel.cshtml"),
+                typeof(ControllerPassing1BodyReturnsPartialView),
+                new object[] { "Text" });
+        }
+
+        [Fact(DisplayName = "1 body (string), 1 route param (string), no To, returns PartialViewResult")]
+        public void FluentControllerBuilder_FluentAction1Body1RouteParamNoToReturnsPartialView()
+        {
+            BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
+                new FluentAction("/route/url/{unused}", HttpMethod.Get)
+                    .UsingBody<string>()
+                    .UsingRouteParameter<string>("unused")
+                    .ToPartialView("~/Path/To/PartialViewWithStringModel.cshtml"),
+                typeof(ControllerWith1Body1RouteParamPassing1BodyReturnsPartialView),
+                new object[] { "Text", "Unused" });
+        }
+
         [Fact(DisplayName = "no usings, 1 To, returns PartialViewResult")]
         public void FluentControllerBuilder_FluentActionNoUsings1ToReturnsPartialView()
         {

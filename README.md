@@ -678,6 +678,10 @@ public ActionResult Action([FromServices]IUserService userService)
 }
 ```
 
+You can also skip the `To` statement and only use a `Using` statement with the `ToView` statement to
+pipe input directly to a view (if multiple `Using` statements are used, only the last one will be piped
+to the view). 
+
 ### `ToPartialView`
 
 To pipe your output from a `To` statement to an MVC partial view, you can use `ToPartialView`:
@@ -701,6 +705,10 @@ public ActionResult Action([FromServices]IUserService userService)
     return PartialView("~/Views/Users/ListUsers.cshtml", users);
 }
 ```
+
+You can also skip the `To` statement and only use a `Using` statement with the `ToPartialView` statement to
+pipe input directly to a partial view (if multiple `Using` statements are used, only the last one will be piped
+to the partial view). 
 
 ### `ToViewComponent`
 
@@ -747,6 +755,10 @@ public ActionResult Action([FromServices]IUserService userService)
     return ViewComponent(typeof(ListUsersViewComponent), users);
 }
 ```
+
+You can also skip the `To` statement and only use a `Using` statement with the `ToViewComponent` statement to
+pipe input directly to a view component(if multiple `Using` statements are used, only the last one will be piped
+to the view component). 
 
 #### `Do` Statement
 

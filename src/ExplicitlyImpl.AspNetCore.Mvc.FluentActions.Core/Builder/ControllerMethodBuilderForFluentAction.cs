@@ -140,7 +140,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                     ilGenerator.Emit(OpCodes.Ldstr, handler.ViewTarget);
 
                     Type[] viewMethodParameterTypes = null;
-                    if (localVariableForPreviousReturnValue != null)
+                    if (handler.Usings.Any())
+                    {
+                        EmitUsingDefinitionValue(ilGenerator, handler.Usings.Last(), methodParameterIndices, localVariableForPreviousReturnValue);
+                        viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
+                    }
+                    else if (localVariableForPreviousReturnValue != null)
                     {
                         ilGenerator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
                         viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
