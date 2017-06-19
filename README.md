@@ -874,6 +874,41 @@ public ActionResult Action()
 }
 ```
 
+### Custom Attributes
+
+Fluent actions support adding custom attributes:
+
+```
+actions
+    .RouteGet("/url")
+    .WithAttribute<MyCustomAttribute>()
+    .To(() => "Hello!");
+```
+
+Above fluent action is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/url")]
+[MyCustomAttribute]
+public ActionResult Action()
+{
+    return "Hello!");
+}
+```
+
+The following syntaxes are supported:
+
+```
+WithAttribute<T>()
+WithAttribute<T>(Type[] constructorArgTypes, object[] constructorArgs)
+WithAttribute<T>(Type[] constructorArgTypes, object[] constructorArgs, string[] namedProperties, object[] propertyValues)
+WithAttribute<T>(ConstructorInfo con, object[] constructorArgs)
+WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, FieldInfo[] namedFields, object[] fieldValues)
+WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues)
+WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
+```
+
 ### Id of Fluent Action
 
 You can set an id of a fluent action using an optional parameter of any of the `Route` 

@@ -41,6 +41,38 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             MethodBuilder.SetCustomAttribute(attributeBuilder);
         }
 
+        public void SetCustomAttribute(FluentActionCustomAttribute customAttribute)
+        {
+            SetCustomAttribute(
+                customAttribute.Constructor,
+                customAttribute.ConstructorArgs,
+                customAttribute.NamedProperties,
+                customAttribute.PropertyValues,
+                customAttribute.NamedFields,
+                customAttribute.FieldValues
+            );
+        }
+
+        public void SetCustomAttribute(
+            ConstructorInfo constructor, 
+            object[] constructorArgs, 
+            PropertyInfo[] namedProperties, 
+            object[] propertyValues, 
+            FieldInfo[] namedFields, 
+            object[] fieldValues)
+        {
+            var attributeBuilder = new CustomAttributeBuilder(
+                constructor, 
+                constructorArgs, 
+                namedProperties, 
+                propertyValues,
+                namedFields,
+                fieldValues
+            );
+
+            MethodBuilder.SetCustomAttribute(attributeBuilder);
+        }
+
         private static Type GetHttpMethodAttribute(HttpMethod httpMethod)
         {
             switch (httpMethod)

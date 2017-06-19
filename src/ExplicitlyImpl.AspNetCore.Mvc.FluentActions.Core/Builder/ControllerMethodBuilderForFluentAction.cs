@@ -56,6 +56,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                 SetValidateAntiForgeryTokenAttribute();
             }
 
+            foreach (var customAttribute in FluentActionDefinition.CustomAttributes)
+            {
+                SetCustomAttribute(customAttribute);
+            }
+
             foreach (var usingDefinition in usingsForMethodParameters)
             {
                 var methodParameterIndex = methodParameterIndices[usingDefinition.GetHashCode()];

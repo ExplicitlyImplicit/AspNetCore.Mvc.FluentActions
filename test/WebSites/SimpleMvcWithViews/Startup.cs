@@ -12,6 +12,8 @@ using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using SimpleMvcWithViews.Controllers;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace SimpleMvcWithViews
 {
@@ -96,6 +98,11 @@ namespace SimpleMvcWithViews
                     .RouteGet("/hello")
                     .UsingQueryStringParameter<string>("name")
                     .ToView("~/Views/Plain/Hello.cshtml");
+
+                actions
+                    .Route("/helloWithAttributes", HttpMethod.Get)
+                    .WithCustomAttribute<AuthorizeAttribute>()
+                    .To(() => "Hello With Attributes!");
 
                 actions
                     .Route("/toHome", HttpMethod.Get)

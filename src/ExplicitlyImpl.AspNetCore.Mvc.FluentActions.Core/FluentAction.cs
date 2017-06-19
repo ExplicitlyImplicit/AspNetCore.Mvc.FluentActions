@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
@@ -65,7 +66,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public bool ValidateAntiForgeryToken { get; internal set; }
 
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
-
+        
         internal FluentActionHandlerDefinition HandlerDraft { get; set; }
 
         internal FluentActionHandlerDefinition ExistingOrNewHandlerDraft 
@@ -81,6 +82,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
+        public IList<FluentActionCustomAttribute> CustomAttributes { get; internal set; }
+
         public Type ReturnType => Handlers?.LastOrDefault()?.ReturnType;
 
         public bool IsMapRoute => Handlers.Count == 1 && Handlers.First().Type == FluentActionHandlerType.Controller;
@@ -94,6 +97,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Id = id;
 
             Handlers = new List<FluentActionHandlerDefinition>();
+            CustomAttributes = new List<FluentActionCustomAttribute>();
         }
 
         public override string ToString()
@@ -170,6 +174,76 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction WithDescription(string description)
         {
             Definition.Description = description;
+            return this;
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>()
+        {
+            return WithCustomAttribute<T>(new Type[0], new object[0]);
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>(Type[] constructorArgTypes, object[] constructorArgs)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+            return WithCustomAttribute<T>(attributeConstructorInfo, constructorArgs);
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>(Type[] constructorArgTypes, object[] constructorArgs, string[] namedProperties, object[] propertyValues)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+
+            return WithCustomAttribute<T>(
+                attributeConstructorInfo, 
+                constructorArgs, 
+                namedProperties.Select(propertyName => typeof(T).GetProperty(propertyName)).ToArray(), 
+                propertyValues);
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs)
+        {
+            return WithCustomAttribute<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            return WithCustomAttribute<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                namedFields,
+                fieldValues);
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues)
+        {
+            return WithCustomAttribute<T>(
+                constructor,
+                constructorArgs,
+                namedProperties,
+                propertyValues,
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public virtual FluentAction WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            Definition.CustomAttributes.Add(new FluentActionCustomAttribute()
+            {
+                Type = typeof(T),
+                Constructor = constructor,
+                ConstructorArgs = constructorArgs,
+                NamedProperties = namedProperties,
+                PropertyValues = propertyValues,
+                NamedFields = namedFields,
+                FieldValues = fieldValues,
+            });
             return this;
         }
 
