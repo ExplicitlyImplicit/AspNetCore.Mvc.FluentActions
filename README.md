@@ -897,7 +897,34 @@ public ActionResult Action()
 }
 ```
 
-The `Authorize` statement has optional parameters for policy, roles and activeAuthenticationSchemes.
+The `Authorize` statement has optional parameters for policy, roles and 
+activeAuthenticationSchemes.
+
+The `Authorize` statement can also be added in the configure statement 
+which can be used to apply `Authorize` to multiple actions at once.
+
+### AllowAnonymous
+
+The following fluent action:
+
+```
+actions
+    .RouteGet("/Hello")
+    .AllowAnonymous()
+    .To(() => "Hello!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/Hello")]
+[AllowAnonymous]
+public ActionResult Action()
+{
+    return "Hello!");
+}
+```
 
 ### Custom Attributes
 

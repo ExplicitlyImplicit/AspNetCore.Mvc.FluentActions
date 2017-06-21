@@ -264,6 +264,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 new object[] { roles, activeAuthenticationSchemes });
         }
 
+        public virtual FluentAction AllowAnonymous()
+        {
+            return WithCustomAttribute<AllowAnonymousAttribute>();
+        }
+
         public virtual FluentActionWithUsing<TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentActionWithUsing<TU1>(Definition, usingDefinition);
