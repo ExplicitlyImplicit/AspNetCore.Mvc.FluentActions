@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.1.0",
+  "version": "1.2.0",
 
   "title": "Fluent Actions for ASP.NET Core MVC",
   "description": "Fluent Actions for ASP.NET Core MVC is a tool to define your web logic in an expressive and typed manner without manually creating any controllers or action methods.",
@@ -20,7 +20,7 @@
   },
 
   "dependencies": {
-    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": "1.1.0",
+    "ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core": "1.2.0",
 
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Mvc.Core": "1.0.0",

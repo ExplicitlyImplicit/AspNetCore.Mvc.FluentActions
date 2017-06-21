@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.0 (2017-06-22)
+
+The majority of this release is focused on the ability to add custom attributes to actions.
+
+- Added `ToViewComponent` with a type parameter
+- An AsyncStateMachine is no longer used if action only contains one async `To` statement
+- `ToView`, `ToPartialView`, `ToViewComponent` can now be passed input from a `Using` statement
+- Added `WithCustomAttribute` statement (also in config)
+- Added `Authorize` statement (also in config)
+- Added `AllowAnonymous` statement
+- Renamed `UsingResultFromHandler` to `UsingResult`
+
 ## 1.1.0 (2017-02-21)
 
 This release adds full support for async/await, any number of synchronous delegates can now be used together 
