@@ -1,4 +1,5 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 
 namespace SimpleWebApi
@@ -10,6 +11,7 @@ namespace SimpleWebApi
             actions.Configure(config =>
             {
                 config.GroupBy("NoteActions");
+                config.WithCustomAttribute<AuthorizeAttribute>();
             });
 
             actions

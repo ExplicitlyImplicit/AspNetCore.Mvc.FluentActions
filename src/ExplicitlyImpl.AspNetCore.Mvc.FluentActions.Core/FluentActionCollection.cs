@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Resources;
 using System.Threading;
 
@@ -120,6 +122,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 fluentAction.Definition.Description = Config.GetDescriptionFunc(fluentAction.Definition);
             }
+
+            foreach (var customAttribute in Config.CustomAttributes)
+            {
+                fluentAction.Definition.CustomAttributes.Add(customAttribute);
+            }
         }
 
         public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
@@ -209,6 +216,76 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+
+        public void WithCustomAttribute<T>()
+        {
+            WithCustomAttribute<T>(new Type[0], new object[0]);
+        }
+
+        public void WithCustomAttribute<T>(Type[] constructorArgTypes, object[] constructorArgs)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+            WithCustomAttribute<T>(attributeConstructorInfo, constructorArgs);
+        }
+
+        public void WithCustomAttribute<T>(Type[] constructorArgTypes, object[] constructorArgs, string[] namedProperties, object[] propertyValues)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+
+            WithCustomAttribute<T>(
+                attributeConstructorInfo,
+                constructorArgs,
+                namedProperties.Select(propertyName => typeof(T).GetProperty(propertyName)).ToArray(),
+                propertyValues);
+        }
+
+        public void WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs)
+        {
+            WithCustomAttribute<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public void WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            WithCustomAttribute<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                namedFields,
+                fieldValues);
+        }
+
+        public void WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues)
+        {
+            WithCustomAttribute<T>(
+                constructor,
+                constructorArgs,
+                namedProperties,
+                propertyValues,
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public void WithCustomAttribute<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            Config.CustomAttributes.Add(new FluentActionCustomAttribute()
+            {
+                Type = typeof(T),
+                Constructor = constructor,
+                ConstructorArgs = constructorArgs,
+                NamedProperties = namedProperties,
+                PropertyValues = propertyValues,
+                NamedFields = namedFields,
+                FieldValues = fieldValues,
+            });
+        }
+
         private static string GetResourceValue(Type resourceSourceType, string resourceName, CultureInfo culture, bool ignoreMissingValues = false)
         {
 
@@ -231,13 +308,21 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public Func<FluentActionDefinition, string> GetDescriptionFunc { get; internal set; }
 
+        public IList<FluentActionCustomAttribute> CustomAttributes { get; internal set; }
+
+        public FluentActionCollectionConfig()
+        {
+            CustomAttributes = new List<FluentActionCustomAttribute>();
+        }
+
         internal FluentActionCollectionConfig Clone()
         {
             return new FluentActionCollectionConfig
             {
                 GroupName = GroupName,
                 GetTitleFunc = GetTitleFunc,
-                GetDescriptionFunc = GetDescriptionFunc
+                GetDescriptionFunc = GetDescriptionFunc,
+                CustomAttributes = new List<FluentActionCustomAttribute>(CustomAttributes)
             };
         }
     }

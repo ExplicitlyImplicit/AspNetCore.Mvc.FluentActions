@@ -993,6 +993,7 @@ The following settings are available with the `Configure` statement:
 - SetTitleFromResource
 - SetDescription
 - SetDescriptionFromResource
+- WithCustomAttribute
 
 ## License
 

@@ -1,4 +1,5 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SimpleWebApi
 {
@@ -11,6 +12,7 @@ namespace SimpleWebApi
                 config.GroupBy("UserActions");
                 config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
                 config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
+                config.WithCustomAttribute<AuthorizeAttribute>();
             });
 
             actions
