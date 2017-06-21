@@ -874,6 +874,31 @@ public ActionResult Action()
 }
 ```
 
+### Authorize
+
+The following fluent action:
+
+```
+actions
+    .RoutePost("/submit")
+    .Authorize()
+    .To(() => "You must be logged in first!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpPost]
+[Route("/submit")]
+[Authorize]
+public ActionResult Action()
+{
+    return "You must be logged in first!");
+}
+```
+
+The `Authorize` statement has optional parameters for policy, roles and activeAuthenticationSchemes.
+
 ### Custom Attributes
 
 Fluent actions support adding custom attributes:

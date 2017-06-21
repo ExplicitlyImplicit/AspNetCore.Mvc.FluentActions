@@ -1,5 +1,6 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -252,6 +253,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction ValidateAntiForgeryToken()
         {
             return WithCustomAttribute<ValidateAntiForgeryTokenAttribute>();
+        }
+
+        public virtual FluentAction Authorize(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
+        {
+            return WithCustomAttribute<AuthorizeAttribute>(
+                new Type[] { typeof(string) },
+                new object[] { policy },
+                new string[] { "Roles", "ActiveAuthenticationSchemes" },
+                new object[] { roles, activeAuthenticationSchemes });
         }
 
         public virtual FluentActionWithUsing<TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
