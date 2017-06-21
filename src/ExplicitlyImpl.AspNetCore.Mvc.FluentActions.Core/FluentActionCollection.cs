@@ -1,5 +1,6 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -216,7 +217,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
-
         public void WithCustomAttribute<T>()
         {
             WithCustomAttribute<T>(new Type[0], new object[0]);
@@ -284,6 +284,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 NamedFields = namedFields,
                 FieldValues = fieldValues,
             });
+        }
+
+        public void Authorize(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
+        {
+            WithCustomAttribute<AuthorizeAttribute>(
+                new Type[] { typeof(string) },
+                new object[] { policy },
+                new string[] { "Roles", "ActiveAuthenticationSchemes" },
+                new object[] { roles, activeAuthenticationSchemes });
         }
 
         private static string GetResourceValue(Type resourceSourceType, string resourceName, CultureInfo culture, bool ignoreMissingValues = false)

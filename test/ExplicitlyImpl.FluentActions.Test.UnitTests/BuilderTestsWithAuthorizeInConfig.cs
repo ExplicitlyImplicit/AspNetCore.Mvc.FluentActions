@@ -5,16 +5,16 @@ using Xunit;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 {
-    public class BuilderTestsWithCustomAttributesInConfig
+    public class BuilderTestsWithAuthorizeInConfig
     {
-        [Fact(DisplayName = "Custom attributes (empty) in config")]
-        public void FluentControllerBuilder_FluentActionWithCustomAttributesInConfig()
+        [Fact(DisplayName = "Authorize (empty) in config")]
+        public void FluentControllerBuilder_FluentActionWith1AuthorizeInConfig()
         {
             var actionCollection = FluentActionCollection.DefineActions(actions =>
             {
                 actions.Configure(config =>
                 {
-                    config.WithCustomAttribute<MyCustomAttribute>();
+                    config.Authorize();
                 });
 
                 actions
