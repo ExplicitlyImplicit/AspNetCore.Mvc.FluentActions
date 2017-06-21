@@ -2,7 +2,7 @@
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
-    public class FluentActionUsingResultFromHandlerDefinition : FluentActionUsingDefinition
+    public class FluentActionUsingResultDefinition : FluentActionUsingDefinition
     {
     }
 }

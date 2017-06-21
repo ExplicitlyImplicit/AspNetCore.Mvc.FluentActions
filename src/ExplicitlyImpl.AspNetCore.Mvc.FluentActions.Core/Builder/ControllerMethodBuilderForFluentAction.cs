@@ -246,7 +246,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                 ilHandle.Generator.Emit(OpCodes.Ldarg_0);
                 ilHandle.Generator.Emit(OpCodes.Callvirt,
                     typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-            } else if (usingDefinition is FluentActionUsingResultFromHandlerDefinition)
+            } else if (usingDefinition is FluentActionUsingResultDefinition)
             {
                 if (localVariableForPreviousReturnValue == null)
                 {

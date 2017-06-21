@@ -168,7 +168,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => { text += "To"; return "He"; })
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(he => { text += "To"; return $"{he}llo"; }),
                 typeof(ControllerForOrderTestsReturnsString),
                 null,
@@ -185,7 +185,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => { text += "To"; return "He"; })
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(async he => { await Task.Delay(1); text += "ToA"; return $"{he}llo"; }),
                 typeof(ControllerForOrderTestsReturnsStringAsync),
                 null,
@@ -228,7 +228,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(async () => { await Task.Delay(1); text += "ToA"; return "He"; })
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(he => { text += "To"; return $"{he}llo"; }),
                 typeof(ControllerForOrderTestsReturnsStringAsync),
                 null,
@@ -245,7 +245,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(async () => { await Task.Delay(1); text += "ToA"; return "He"; })
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(async he => { await Task.Delay(1); text += "ToA"; return $"{he}llo"; }),
                 typeof(ControllerForOrderTestsReturnsStringAsync),
                 null,

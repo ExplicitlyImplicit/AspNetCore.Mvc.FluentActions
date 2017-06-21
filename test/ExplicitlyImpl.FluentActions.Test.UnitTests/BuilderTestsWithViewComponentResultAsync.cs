@@ -24,9 +24,9 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(async () => { await Task.Delay(1); return "Hello"; })
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(async text => { await Task.Delay(1); return $"{text} World"; })
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(async text => { await Task.Delay(1); return $"{text}!"; })
                     .ToViewComponent("ViewComponentWithStringModel"),
                 typeof(ControllerWithNoUsingsXToReturnsViewComponentAsync),

@@ -365,7 +365,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                                 ilGenerator.Emit(OpCodes.Ldfld, ParentField);
                                 ilGenerator.Emit(OpCodes.Callvirt,
                                     typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-                            } else if (usingDefinition is FluentActionUsingResultFromHandlerDefinition)
+                            } else if (usingDefinition is FluentActionUsingResultDefinition)
                             {
                                 if (handlerInStateIndex > 0)
                                 {
@@ -481,7 +481,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                                 ilGenerator.Emit(OpCodes.Ldfld, ParentField);
                                 ilGenerator.Emit(OpCodes.Callvirt,
                                     typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-                            } else if (usingDefinition is FluentActionUsingResultFromHandlerDefinition)
+                            } else if (usingDefinition is FluentActionUsingResultDefinition)
                             {
                                 if (handlerInStateIndex > 0)
                                 {

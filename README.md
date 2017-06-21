@@ -230,7 +230,7 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingModelBinder
 - UsingModelState
 - UsingQueryStringParameter
-- UsingResultFromHandler (for piping multiple `To` statements)
+- UsingResult (for piping multiple `To` statements)
 - UsingRouteParameter
 - UsingService
 - UsingTempData
@@ -458,7 +458,7 @@ public string Action([FromQuery]string name)
 }
 ```
 
-#### UsingResultFromHandler
+#### UsingResult
 
 This fluent action:
 
@@ -466,7 +466,7 @@ This fluent action:
 actions
     .RouteGet("/hello")
     .To(() => "Hello"))
-    .UsingResultFromHandler()
+    .UsingResult()
     .To(hello => hello + " World!");
 ```
 
@@ -843,7 +843,7 @@ actions
     .UsingService<IUserService>()
     .To(userService => userService.List())
     .UsingQueryStringParameter<string>("name")
-    .UsingResultFromHandler()
+    .UsingResult()
     .To((name, users) => $"Hello {name}! We got {users.Count} users!");
 ```
 

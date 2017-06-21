@@ -56,9 +56,9 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .To(() => "Hello")
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(text => $"{text} World")
-                    .UsingResultFromHandler()
+                    .UsingResult()
                     .To(text => $"{text}!")
                     .ToPartialView("~/Path/To/PartialViewWithStringModel.cshtml"),
                 typeof(ControllerWithNoUsingsXToReturnsPartialView),

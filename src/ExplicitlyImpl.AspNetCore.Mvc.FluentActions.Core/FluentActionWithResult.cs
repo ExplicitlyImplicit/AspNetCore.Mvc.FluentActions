@@ -27,9 +27,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -309,9 +318,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -571,9 +589,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -833,9 +860,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -1095,9 +1131,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -1357,9 +1402,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -1619,9 +1673,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
@@ -1881,9 +1944,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(Definition, usingDefinition);
         }
 
+        public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR> UsingResult()
+        {
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        [Obsolete("This method will be removed in next major version. Please use UsingResult instead.")]
         public virtual FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR> UsingResultFromHandler()
         {
-            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR>(Definition, new FluentActionUsingResultFromHandlerDefinition
+            return new FluentActionWithResultAndUsing<TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
             });
