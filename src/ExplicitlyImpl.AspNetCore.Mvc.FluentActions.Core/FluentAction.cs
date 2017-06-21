@@ -63,7 +63,9 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string GroupName { get; internal set; }
 
-        public bool ValidateAntiForgeryToken { get; internal set; }
+        [Obsolete("This property will be removed in next major version. Please use CustomAttributes property instead.")]
+        public bool ValidateAntiForgeryToken =>
+            CustomAttributes.Any(attr => attr.Type == typeof(ValidateAntiForgeryTokenAttribute));
 
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
         
@@ -249,8 +251,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public virtual FluentAction ValidateAntiForgeryToken()
         {
-            Definition.ValidateAntiForgeryToken = true;
-            return this;
+            return WithCustomAttribute<ValidateAntiForgeryTokenAttribute>();
         }
 
         public virtual FluentActionWithUsing<TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)

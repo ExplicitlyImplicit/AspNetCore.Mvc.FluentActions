@@ -51,11 +51,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             SetHttpMethodAttribute(FluentActionDefinition.HttpMethod);
             SetRouteAttribute(FluentActionDefinition.RouteTemplate);
 
-            if (FluentActionDefinition.ValidateAntiForgeryToken)
-            {
-                SetValidateAntiForgeryTokenAttribute();
-            }
-
             foreach (var customAttribute in FluentActionDefinition.CustomAttributes)
             {
                 SetCustomAttribute(customAttribute);

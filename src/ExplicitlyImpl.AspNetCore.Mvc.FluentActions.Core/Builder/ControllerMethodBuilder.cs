@@ -33,14 +33,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             MethodBuilder.SetCustomAttribute(attributeBuilder);
         }
 
-        public void SetValidateAntiForgeryTokenAttribute()
-        {
-            var attributeConstructorInfo = typeof(ValidateAntiForgeryTokenAttribute)
-                .GetConstructor(new Type[0]);
-            var attributeBuilder = new CustomAttributeBuilder(attributeConstructorInfo, new object[0]);
-            MethodBuilder.SetCustomAttribute(attributeBuilder);
-        }
-
         public void SetCustomAttribute(FluentActionCustomAttribute customAttribute)
         {
             SetCustomAttribute(
