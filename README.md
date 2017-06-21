@@ -1,8 +1,5 @@
 # [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions)
 Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup.
-You may benefit from this tool if you are already working on an existing MVC project or have previous experience with MVC
-as you already know how it works one level deeper. As long as you can wrap your head around the mapping from fluent 
-actions to MVC actions you should be all set.
 
 Usage example:
 
@@ -23,6 +20,10 @@ public string Action()
     return "Hello World!";
 }
 ```
+
+You may benefit from this tool if you are already working on an existing MVC project or have previous experience with MVC
+as you already know how it works one level deeper. As long as you can wrap your head around the mapping from fluent 
+actions to MVC actions you should be all set.
 
 Fluent actions do not limit regular use of ASP.NET Core MVC so you can choose to gradually introduce fluent actions to your 
 existing project or only use fluent actions for a subset of your applications functionality. 
