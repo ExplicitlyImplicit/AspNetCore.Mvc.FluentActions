@@ -10,44 +10,45 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         [Fact(DisplayName = "Custom attributes (empty) in config")]
         public void FluentControllerBuilder_FluentActionWithCustomAttributesInConfig()
         {
-            var actionCollection = FluentActionCollection.DefineActions(actions =>
-            {
-                actions.Configure(config =>
+            var actionCollection = FluentActionCollection.DefineActions(
+                config =>
                 {
                     config.WithCustomAttribute<MyCustomAttribute>();
-                });
+                },
+                actions =>
+                {
+                    actions
+                        .RouteGet("/users", "ListUsers")
+                        .WithCustomAttribute<MySecondCustomAttribute>()
+                        .UsingService<IUserService>()
+                        .To(userService => userService.ListUsers());
 
-                actions
-                    .RouteGet("/users", "ListUsers")
-                    .WithCustomAttribute<MySecondCustomAttribute>()
-                    .UsingService<IUserService>()
-                    .To(userService => userService.ListUsers());
+                    actions
+                        .RoutePost("/users", "AddUser")
+                        .UsingService<IUserService>()
+                        .UsingBody<UserItem>()
+                        .To((userService, user) => userService.AddUser(user));
 
-                actions
-                    .RoutePost("/users", "AddUser")
-                    .UsingService<IUserService>()
-                    .UsingBody<UserItem>()
-                    .To((userService, user) => userService.AddUser(user));
+                    actions
+                        .RouteGet("/users/{userId}", "GetUser")
+                        .UsingService<IUserService>()
+                        .UsingRouteParameter<int>("userId")
+                        .To((userService, userId) => userService.GetUserById(userId));
 
-                actions
-                    .RouteGet("/users/{userId}", "GetUser")
-                    .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .To((userService, userId) => userService.GetUserById(userId));
+                    actions
+                        .RoutePut("/users/{userId}", "UpdateUser")
+                        .UsingService<IUserService>()
+                        .UsingRouteParameter<int>("userId")
+                        .UsingBody<UserItem>()
+                        .To((userService, userId, user) => userService.UpdateUser(userId, user));
 
-                actions
-                    .RoutePut("/users/{userId}", "UpdateUser")
-                    .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .UsingBody<UserItem>()
-                    .To((userService, userId, user) => userService.UpdateUser(userId, user));
-
-                actions
-                    .RouteDelete("/users/{userId}", "RemoveUser")
-                    .UsingService<IUserService>()
-                    .UsingRouteParameter<int>("userId")
-                    .To((userService, userId) => userService.RemoveUser(userId));
-            });
+                    actions
+                        .RouteDelete("/users/{userId}", "RemoveUser")
+                        .UsingService<IUserService>()
+                        .UsingRouteParameter<int>("userId")
+                        .To((userService, userId) => userService.RemoveUser(userId));
+                }
+            );
 
             foreach (var action in actionCollection.Where(action => action.Id != "ListUsers"))
             {

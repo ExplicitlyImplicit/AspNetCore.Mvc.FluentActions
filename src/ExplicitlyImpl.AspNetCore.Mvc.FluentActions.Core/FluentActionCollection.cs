@@ -18,10 +18,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentActionCollectionConfig Config { get; internal set; }
 
-        internal FluentActionCollection()
+        internal FluentActionCollection(FluentActionCollectionConfig config)
         {
             FluentActions = new List<FluentActionBase>();
-            Config = new FluentActionCollectionConfig();
+            Config = config ?? new FluentActionCollectionConfig();
         }
 
         public FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
@@ -82,21 +82,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
-        public void Configure(Action<FluentActionCollectionConfigurator> configureActions)
-        {
-            var config = Config.Clone();
-            var configurator = new FluentActionCollectionConfigurator(config);
-
-            configureActions(configurator);
-
-            Config = config;
-
-            foreach (var fluentAction in FluentActions)
-            {
-                ConfigureAction(fluentAction);
-            }
-        }
-
         public IEnumerator<FluentActionBase> GetEnumerator()
         {
             return FluentActions.GetEnumerator();
@@ -130,19 +115,29 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
-        public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
+        public static FluentActionCollection DefineActions(
+            Action<FluentActionCollectionConfigurator> configureFluentActions, 
+            Action<FluentActionCollection> addFluentActions)
         {
-            var actionCollection = new FluentActionCollection();
+            var configurator = new FluentActionCollectionConfigurator(new FluentActionCollectionConfig());
+            configureFluentActions(configurator);
+
+            var actionCollection = new FluentActionCollection(configurator.Config);
 
             addFluentActions(actionCollection);
 
             return actionCollection;
         }
+
+        public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
+        {
+            return DefineActions(config => { }, addFluentActions);
+        }
     }
 
     public class FluentActionCollectionConfigurator
     {
-        private FluentActionCollectionConfig Config { get; set; }
+        internal FluentActionCollectionConfig Config { get; set; }
 
         public FluentActionCollectionConfigurator(FluentActionCollectionConfig config)
         {
