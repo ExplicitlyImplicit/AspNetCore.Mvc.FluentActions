@@ -206,7 +206,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             var comparer = new TypeComparer(new TypeComparisonFeature[]
             {
-                TypeComparisonFeature.HandlerActionMethod
+                TypeComparisonFeature.ParentType,
+                TypeComparisonFeature.HandlerActionMethod,
             }, new TypeComparerOptions());
 
             var comparisonResult = comparer.Compare(builtControllerType, staticControllerType);

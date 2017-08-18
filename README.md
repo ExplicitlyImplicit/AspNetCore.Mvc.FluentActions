@@ -823,6 +823,31 @@ actions
     });
 ```
 
+### InheritingFrom
+
+If you want to use a sub class of `Controller` for your fluent action, use `InheritingFrom`, for example:
+
+```
+actions
+    .RouteGet("/hello")
+    .InheritingFrom<MyBaseController>()
+    .To(() => "Hello!");
+```
+
+The above fluent action is equivalent to the following action method in a controller:
+
+```
+public class FluentActionController : MyBaseController 
+{
+	[HttpGet]
+	[Route("/hello")]
+	public ActionResult FluentAction()
+	{
+		return "Hello!");
+	}
+}
+```
+
 ### Asynchronous Delegates
 
 You can use async/await delegates:

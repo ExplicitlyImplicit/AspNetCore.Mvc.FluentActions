@@ -64,6 +64,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string GroupName { get; internal set; }
 
+        public Type InheritingFrom { get; internal set; }
+
         [Obsolete("This property will be removed in next major version. Please use CustomAttributes property instead.")]
         public bool ValidateAntiForgeryToken =>
             CustomAttributes.Any(attr => attr.Type == typeof(ValidateAntiForgeryTokenAttribute));
@@ -161,6 +163,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction(FluentActionDefinition fluentActionDefinition)
             : base(fluentActionDefinition) { }
+
+        public virtual FluentAction InheritingFrom<T>() where T : Controller
+        {
+            Definition.InheritingFrom = typeof(T);
+            return this;
+        }
 
         public virtual FluentAction GroupBy(string groupName)
         {

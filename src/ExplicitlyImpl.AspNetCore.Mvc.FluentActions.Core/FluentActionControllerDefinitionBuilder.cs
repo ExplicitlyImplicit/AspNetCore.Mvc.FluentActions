@@ -167,7 +167,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             var guid = Guid.NewGuid().ToString().Replace("-", "");
             var typeName = $"FluentAction{guid}Controller";
 
-            var controllerTypeBuilder = ControllerTypeBuilder.Create("FluentActionAssembly", "FluentActionModule", typeName);
+            var controllerTypeBuilder = ControllerTypeBuilder.Create(
+                "FluentActionAssembly", 
+                "FluentActionModule", 
+                typeName, 
+                fluentActionDefinition.InheritingFrom);
 
             ControllerMethodBuilder controllerMethodBuilder;
             if (AsyncStateMachineBuilderIsNeeded(fluentActionDefinition))

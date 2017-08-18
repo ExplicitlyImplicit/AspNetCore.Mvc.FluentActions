@@ -14,6 +14,7 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
     public enum TypeComparisonFeature
     {
         Name,
+        ParentType,
         HandlerActionMethod
     }
 
@@ -34,6 +35,22 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                     TypeComparisonFeature.Name,
                     namesMatch,
                     namesMatch ? "Names match." : "Names do not match.")
+            };
+        }
+    }
+
+    public class ParentTypeComparer : TypeFeatureComparer
+    {
+        public IEnumerable<TypeFeatureComparisonResult> Compare(Type type1, Type type2, TypeComparerOptions options)
+        {
+            var parentTypesMatch = type1.GetTypeInfo().BaseType == type2.GetTypeInfo().BaseType;
+
+            return new[]
+            {
+                new TypeFeatureComparisonResult(
+                    TypeComparisonFeature.ParentType,
+                    parentTypesMatch,
+                    parentTypesMatch ? "Parent types match." : "Parent types do not match.")
             };
         }
     }
@@ -206,7 +223,8 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
         public static Dictionary<TypeComparisonFeature, TypeFeatureComparer> All = new Dictionary<TypeComparisonFeature, TypeFeatureComparer> 
         {
             { TypeComparisonFeature.Name , new TypeNameComparer() },
-            { TypeComparisonFeature.HandlerActionMethod , new HandlerActionMethodComparer() }
+            { TypeComparisonFeature.ParentType , new ParentTypeComparer() },
+            { TypeComparisonFeature.HandlerActionMethod , new HandlerActionMethodComparer() },
         };
     }
 }

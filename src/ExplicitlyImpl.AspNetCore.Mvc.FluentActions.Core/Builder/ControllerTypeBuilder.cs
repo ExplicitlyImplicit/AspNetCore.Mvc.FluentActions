@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -40,7 +41,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             return typeInfo;
         }
 
-        public static ControllerTypeBuilder Create(ModuleBuilder moduleBuilder, string typeName)
+        public static ControllerTypeBuilder Create(ModuleBuilder moduleBuilder, string typeName, Type parentType = null)
         {
             var typeBuilder = moduleBuilder.DefineType(
                     typeName,
@@ -49,7 +50,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                     TypeAttributes.AutoClass | 
                     TypeAttributes.AnsiClass | 
                     TypeAttributes.BeforeFieldInit,
-                    typeof(Controller));
+                    parentType ?? typeof(Controller));
 
             typeBuilder.DefineDefaultConstructor(MethodAttributes.Public);
 
@@ -60,7 +61,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             };
         }
 
-        public static ControllerTypeBuilder Create(string assemblyName, string moduleName, string typeName)
+        public static ControllerTypeBuilder Create(string assemblyName, string moduleName, string typeName, Type parentType = null)
         {
             var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
                 new AssemblyName(assemblyName),
@@ -68,7 +69,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 
             var moduleBuilder = assemblyBuilder.DefineDynamicModule(moduleName);
 
-            return Create(moduleBuilder, typeName);
+            return Create(moduleBuilder, typeName, parentType);
         }
     }
 }
