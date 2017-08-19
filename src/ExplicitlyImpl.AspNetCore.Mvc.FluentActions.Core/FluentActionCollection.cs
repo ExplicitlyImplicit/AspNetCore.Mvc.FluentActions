@@ -1,6 +1,7 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -99,6 +100,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 fluentAction.Definition.GroupName = Config.GroupName;
             }
 
+            if (Config.ParentType != null && fluentAction.Definition.ParentType == null)
+            {
+                fluentAction.Definition.ParentType = Config.ParentType;
+            }
+
             if (Config.GetTitleFunc != null && fluentAction.Definition.Title == null)
             {
                 fluentAction.Definition.Title = Config.GetTitleFunc(fluentAction.Definition);
@@ -147,6 +153,21 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public void GroupBy(string groupName)
         {
             Config.GroupName = groupName;
+        }
+
+        public void InheritingFrom(Type parentType)
+        {
+            if (parentType != typeof(Controller) && !parentType.GetTypeInfo().IsSubclassOf(typeof(Controller)))
+            {
+                throw new Exception($"Cannot make fluent action controller inherit from a class that is not derived from the Controller class (${parentType.FullName}).");
+            }
+
+            Config.ParentType = parentType;
+        }
+
+        public void InheritingFrom<T>() where T : Controller
+        {
+            Config.ParentType = typeof(T);
         }
 
         public void SetTitle(Func<FluentActionDefinition, string> getTitleFunc)
@@ -308,6 +329,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public string GroupName { get; internal set; }
 
+        public Type ParentType { get; internal set; }
+
         public Func<FluentActionDefinition, string> GetTitleFunc { get; internal set; }
 
         public Func<FluentActionDefinition, string> GetDescriptionFunc { get; internal set; }
@@ -324,6 +347,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionCollectionConfig
             {
                 GroupName = GroupName,
+                ParentType = ParentType,
                 GetTitleFunc = GetTitleFunc,
                 GetDescriptionFunc = GetDescriptionFunc,
                 CustomAttributes = new List<FluentActionCustomAttribute>(CustomAttributes)

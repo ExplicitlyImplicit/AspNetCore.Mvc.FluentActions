@@ -171,7 +171,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 "FluentActionAssembly", 
                 "FluentActionModule", 
                 typeName, 
-                fluentActionDefinition.InheritingFrom);
+                fluentActionDefinition.ParentType);
 
             ControllerMethodBuilder controllerMethodBuilder;
             if (AsyncStateMachineBuilderIsNeeded(fluentActionDefinition))

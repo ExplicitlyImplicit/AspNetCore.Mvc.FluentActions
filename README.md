@@ -848,6 +848,8 @@ public class FluentActionController : MyBaseController
 }
 ```
 
+Take a look at the `Configure` statement to set a parent type for multiple actions.
+
 ### Asynchronous Delegates
 
 You can use async/await delegates:
@@ -1067,6 +1069,7 @@ This will apply the group name to all actions in the collection.
 The following settings are available with the `Configure` statement:
 
 - GroupBy
+- InheritingFrom
 - SetTitle
 - SetTitleFromResource
 - SetDescription

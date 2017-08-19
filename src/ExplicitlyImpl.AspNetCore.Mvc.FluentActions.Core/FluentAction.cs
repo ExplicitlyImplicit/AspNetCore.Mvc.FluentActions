@@ -64,7 +64,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string GroupName { get; internal set; }
 
-        public Type InheritingFrom { get; internal set; }
+        public Type ParentType { get; internal set; }
 
         [Obsolete("This property will be removed in next major version. Please use CustomAttributes property instead.")]
         public bool ValidateAntiForgeryToken =>
@@ -164,9 +164,21 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentAction(FluentActionDefinition fluentActionDefinition)
             : base(fluentActionDefinition) { }
 
+
+        public virtual FluentAction InheritingFrom(Type parentType)
+        {
+            if (parentType != typeof(Controller) && !parentType.GetTypeInfo().IsSubclassOf(typeof(Controller)))
+            {
+                throw new Exception($"Cannot make fluent action controller inherit from a class that is not derived from the Controller class (${parentType.FullName}).");
+            }
+
+            Definition.ParentType = parentType;
+            return this;
+        }
+
         public virtual FluentAction InheritingFrom<T>() where T : Controller
         {
-            Definition.InheritingFrom = typeof(T);
+            Definition.ParentType = typeof(T);
             return this;
         }
 
