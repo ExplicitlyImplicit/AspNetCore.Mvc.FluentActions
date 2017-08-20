@@ -848,7 +848,7 @@ public class FluentActionController : MyBaseController
 }
 ```
 
-Take a look at the `Configure` statement to set a parent type for multiple actions.
+Take a look at the `Config` parameter to set a parent type for multiple actions.
 
 ### Asynchronous Delegates
 
@@ -928,7 +928,7 @@ public ActionResult Action()
 The `Authorize` statement has optional parameters for policy, roles and 
 activeAuthenticationSchemes.
 
-The `Authorize` statement can also be added in the configure statement 
+The `Authorize` statement can also be added in the `Config` parameter
 which can be used to apply `Authorize` to multiple actions at once.
 
 ### AllowAnonymous
@@ -1019,7 +1019,7 @@ actions
 
 The title can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Configure` statement to set title of multiple actions.
+Take a look at the `Config` parameter to set title of multiple actions.
 
 ### Description of Fluent Action
 
@@ -1035,7 +1035,7 @@ actions
 
 The description can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Configure` statement to set description of multiple actions.
+Take a look at the `Config` parameter to set description of multiple actions.
 
 ### Grouping Fluent Actions
 
@@ -1051,22 +1051,28 @@ actions
 
 The group can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Configure` statement to group multiple actions all at once.
+Take a look at the `Config` parameter to group multiple actions all at once.
 
-### `Configure`
+### `Config` parameter
 
-You can use the `Configure` statement to apply settings among multiple actions. For example:
+The `Config` parameter is an optional parameter that can be used to apply settings among multiple actions.
 
 ```
-actions.Configure(config => 
-{
-    config.GroupBy("GroupName");
-});
+app.UseMvcWithFluentActions(
+	config => 
+	{
+		config.GroupBy("GroupName");
+	}, 
+	actions =>
+	{
+		actions.RouteGet("/").To(() => "Hello World!");
+	}
+);
 ```
 
-This will apply the group name to all actions in the collection. 
+Above config, defined in the first parameter, will add the group name to all actions defined in the second parameter. 
 
-The following settings are available with the `Configure` statement:
+The following settings are available with the `Config` parameter:
 
 - GroupBy
 - InheritingFrom
