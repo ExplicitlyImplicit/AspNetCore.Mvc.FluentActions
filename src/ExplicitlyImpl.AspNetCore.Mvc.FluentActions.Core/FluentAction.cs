@@ -422,45 +422,5 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             return new FluentActionWithViewComponent(Definition, viewComponentName);
         }
-
-        public static FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
-        {
-            return new FluentAction(httpMethod, routeTemplate, id);
-        }
-
-        public static FluentAction RouteDelete(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Delete, id);
-        }
-
-        public static FluentAction RouteGet(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Get, id);
-        }
-
-        public static FluentAction RouteHead(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Head, id);
-        }
-
-        public static FluentAction RouteOptions(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Options, id);
-        }
-
-        public static FluentAction RoutePatch(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Patch, id);
-        }
-
-        public static FluentAction RoutePost(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Post, id);
-        }
-
-        public static FluentAction RoutePut(string routeTemplate, string id = null)
-        {
-            return Route(routeTemplate, HttpMethod.Put, id);
-        }
     }
 }
