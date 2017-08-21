@@ -96,9 +96,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> : FluentAction
+    public class FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> : FluentActionBase
     {
-        public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
+        public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) 
+            : base(fluentActionDefinition)
         {
             Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
@@ -109,9 +110,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
     }
 
-    public class FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TU9> : FluentAction
+    public class FluentActionWithMvcController<TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8, TU9> : FluentActionBase
     {
-        public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition) : base(fluentActionDefinition)
+        public FluentActionWithMvcController(FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition)
+            : base(fluentActionDefinition)
         {
             Definition.ExistingOrNewHandlerDraft.Usings.Add(usingDefinition);
         }
@@ -124,7 +126,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
     public class FluentActionWithControllerResult<TR> : FluentActionBase
     {
-        public FluentActionWithControllerResult(FluentActionDefinition fluentActionDefinition, LambdaExpression actionExpression) : base(fluentActionDefinition)
+        public FluentActionWithControllerResult(FluentActionDefinition fluentActionDefinition, LambdaExpression actionExpression)
+            : base(fluentActionDefinition)
         {
             var returnType = typeof(TR);
 

@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Threading;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -27,7 +26,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
-            var fluentAction = new FluentAction(httpMethod, routeTemplate, id);
+            var fluentAction = new FluentAction(routeTemplate, httpMethod, id);
             ConfigureAction(fluentAction);
             FluentActions.Add(fluentAction);
             return fluentAction;
