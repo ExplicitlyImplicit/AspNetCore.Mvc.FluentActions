@@ -66,10 +66,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public Type ParentType { get; internal set; }
 
-        [Obsolete("This property will be removed in next major version. Please use CustomAttributes property instead.")]
-        public bool ValidateAntiForgeryToken =>
-            CustomAttributes.Any(attr => attr.Type == typeof(ValidateAntiForgeryTokenAttribute));
-
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }
         
         internal FluentActionHandlerDefinition HandlerDraft { get; set; }
