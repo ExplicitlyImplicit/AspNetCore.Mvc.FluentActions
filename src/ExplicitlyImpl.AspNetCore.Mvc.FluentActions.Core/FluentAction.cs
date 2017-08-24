@@ -42,14 +42,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Definition.CommitHandlerDraft();
         }
 
-        public virtual FluentAction<TP, TR, TR> UsingResult()
-        {
-            return new FluentAction<TP, TR, TR>(Definition, new FluentActionUsingResultDefinition
-            {
-                Type = typeof(TR)
-            });
-        }
-
         public virtual FluentAction<TP2, TR> InheritingFrom<TP2>() where TP2 : Controller
         {
             Definition.ParentType = typeof(TP2);
@@ -166,6 +158,30 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR, TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentAction<TP, TR, TU1>(Definition, usingDefinition);
+        }
+
+        public virtual FluentAction<TP, TR, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TR> UsingResult()
+        {
+            return new FluentAction<TP, TR, TR>(Definition, new FluentActionUsingResultDefinition
+            {
+                Type = typeof(TR)
+            });
         }
 
         public virtual FluentAction<TP, TR, TU1> UsingService<TU1>()
@@ -449,6 +465,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR, TU1, TU2> Using<TU2>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentAction<TP, TR, TU1, TU2>(Definition, usingDefinition);
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
         }
 
         public virtual FluentAction<TP, TR, TU1, TR> UsingResult()
@@ -739,6 +771,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR, TU1, TU2, TU3> Using<TU3>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3>(Definition, usingDefinition);
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
         }
 
         public virtual FluentAction<TP, TR, TU1, TU2, TR> UsingResult()
@@ -1040,6 +1088,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TR>(Definition, new FluentActionUsingResultDefinition
@@ -1321,6 +1385,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5> Using<TU5>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5>(Definition, usingDefinition);
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
         }
 
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TR> UsingResult()
@@ -1613,6 +1693,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6>(Definition, usingDefinition);
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TR>(Definition, new FluentActionUsingResultDefinition
@@ -1903,6 +1999,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7>(Definition, usingDefinition);
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TR>(Definition, new FluentActionUsingResultDefinition
@@ -2191,6 +2303,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8> Using<TU8>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TU8>(Definition, usingDefinition);
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TP> UsingParent()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TP>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TP2> UsingParent<TP2>()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TP2>(Definition, new FluentActionUsingParentDefinition
+            {
+                Type = typeof(TP2)
+            });
         }
 
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR> UsingResult()

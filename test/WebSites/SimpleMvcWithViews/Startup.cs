@@ -95,6 +95,18 @@ namespace SimpleMvcWithViews
                     .To(() => "Hello World Async (with Do)!");
 
                 actions
+                    .RouteGet("/helloWorldFromParent")
+                    .InheritingFrom<HelloWorldController>()
+                    .UsingParent()
+                    .To(parent => parent.HelloWorld());
+
+                actions
+                    .RouteGet("/helloWorldFromParentAsync")
+                    .InheritingFrom<HelloWorldController>()
+                    .UsingParent()
+                    .To(async parent => await parent.HelloWorldAsync());
+
+                actions
                     .RouteGet("/hello")
                     .UsingQueryStringParameter<string>("name")
                     .ToView("~/Views/Plain/Hello.cshtml");

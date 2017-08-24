@@ -230,6 +230,7 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingHttpContext
 - UsingModelBinder
 - UsingModelState
+- UsingParent
 - UsingQueryStringParameter
 - UsingResult (for piping multiple `To` statements)
 - UsingRouteParameter
@@ -435,6 +436,42 @@ public string Action([FromForm]MyModel myModel)
 {
     return ModelState.IsValid ? "Model is valid! :)" : "Model is invalid :(";
 }
+```
+
+#### UsingParent
+
+If there exists a sub-class to Controller, called HelloController, that has a method 
+called `Hello`, then this fluent action:
+
+```
+actions
+    .RouteGet("/hello")
+	.InheritingFrom<HelloController>()
+    .UsingParent()
+    .To(parent => parent.Hello());
+```
+
+Is equivalent to the following fluent action in the following controller:
+
+```
+public class FluentActionController : HelloController 
+{
+	[HttpGet]
+	[Route("/hello")]
+	public string Action()
+	{
+		return Hello();
+	}	
+}
+```
+
+If the parent type is set in the config, the following statement can be used instead:
+
+```
+actions
+    .RouteGet("/hello")
+    .UsingParent<HelloController>()
+    .To(parent => parent.Hello());
 ```
 
 #### UsingQueryStringParameter
