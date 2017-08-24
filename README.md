@@ -21,12 +21,12 @@ public string Action()
 }
 ```
 
-You may benefit from this tool if you are already working on an existing MVC project or have previous experience with MVC
+This tool targets those of you who are already working on an existing MVC project or have previous experience with MVC
 as you already know how it works one level deeper. As long as you can wrap your head around the mapping from fluent 
 actions to MVC actions you should be all set.
 
-Fluent actions do not limit regular use of ASP.NET Core MVC so you can choose to gradually introduce fluent actions to your 
-existing project or only use fluent actions for a subset of your applications functionality. 
+Fluent actions do not limit regular use of ASP.NET Core MVC so you can gradually introduce fluent actions to your 
+existing project and only use fluent actions for a subset of your applications functionality. 
 
 This project does not have any third-party dependencies.
 
@@ -46,48 +46,18 @@ app.UseMvcWithFluentActions(actions =>
 
 See the **How to use** chapter for a better understanding of how fluent actions are mapped to MVC actions.
 
-## Purpose
-
-This tool was created to solve a couple of issues me and my team faced at a couple of projects. Relevant issues of our use 
-cases were:
-
-1. We must use .NET MVC
-1. Our web logic is separated into its own layer (database, business logic, etc outside)
-1. We wanted a more _explicit_ way of defining our web layer (explanation below)
-
-If you take a look at the routing definition of a regular template used when creating a .NET MVC app:
-
-```
-app.UseMvc(routes =>
-{
-    routes.MapRoute(
-        name: "default",
-        template: "{controller=Home}/{action=Index}/{id?}");
-});
-```
-
-This kind of routing is fairly implicit and it is pretty hard to know what this web app does without looking in other 
-(implicitly defined) places. We also felt that this is true for the relation between controllers and views:
-
-```
-public ActionResult Index() 
-{
-    return View();
-}
-```
-
-You can be more explicit than this using vanilla MVC and this tool is just that, an extension/repackaging of a couple of 
-MVC web app implementations that veered towards the more explicit and direct way. Hopefully its usage will also result in 
-a more clear and maintainable solution as well.
-
-See [CHANGELOG.md](CHANGELOG.md) for changes of each published version.
-
 ## Getting Started
 
-Add this package to your project using NuGet:
+Add this package to your project using the NuGet Package Manager Console:
 
 ```
 Install-Package ExplicitlyImpl.AspNetCore.Mvc.FluentActions
+```
+
+Or using the dotnet CLI:
+
+```
+dotnet add package ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 ```
 
 You also need to replace these two lines in your `Startup.cs` file:
