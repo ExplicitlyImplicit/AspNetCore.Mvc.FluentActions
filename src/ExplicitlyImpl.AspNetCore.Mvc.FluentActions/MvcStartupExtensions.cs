@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,20 +13,28 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseMvcWithFluentActions(
+        public static IApplicationBuilder UseFluentActions(
             this IApplicationBuilder app,
-            Action<FluentActionCollection> addFluentActions,
-            Action<IRouteBuilder> configureRoutes = null)
+            Action<FluentActionCollection> addFluentActions)
         {
             var fluentActions = FluentActionCollection.DefineActions(addFluentActions);
 
-            return app.UseMvcWithFluentActions(fluentActions, configureRoutes);
+            return app.UseFluentActions(fluentActions);
         }
 
-        public static IApplicationBuilder UseMvcWithFluentActions(
+        public static IApplicationBuilder UseFluentActions(
             this IApplicationBuilder app,
-            FluentActionCollection fluentActions,
-            Action<IRouteBuilder> configureRoutes = null)
+            Action<FluentActionCollectionConfigurator> configureFluentActions,
+            Action<FluentActionCollection> addFluentActions)
+        {
+            var fluentActions = FluentActionCollection.DefineActions(configureFluentActions, addFluentActions);
+
+            return app.UseFluentActions(fluentActions);
+        }
+
+        public static IApplicationBuilder UseFluentActions(
+            this IApplicationBuilder app,
+            FluentActionCollection fluentActions)
         {
             var controllerDefinitionBuilder = new FluentActionControllerDefinitionBuilder();
 
@@ -37,60 +46,53 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 .ApplicationServices
                 .GetService(typeof(FluentActionControllerFeatureProviderContext));
 
+            if (context == null)
+            {
+                throw new Exception("Could not find a feature provider for fluent actions, did you remember to call app.AddMvc().AddFluentActions()?");
+            }
+
             context.ControllerDefinitions = controllerDefinitions;
 
-            return app.UseMvc(routes =>
+            var routes = new RouteBuilder(app)
             {
-                foreach (var controllerDefinition in controllerDefinitions
-                    .Where(controllerDefinition => controllerDefinition.FluentAction.Definition.IsMapRoute))
-                {
-                    routes.MapRoute(
-                        controllerDefinition.Id,
-                        controllerDefinition.RouteTemplate.WithoutLeading("/"),
-                        new
-                        {
-                            controller = controllerDefinition.Name.WithoutTrailing("Controller"),
-                            action = controllerDefinition.ActionName
-                        });
-                }
+                DefaultHandler = app.ApplicationServices.GetRequiredService<MvcRouteHandler>(),
+            };
 
-                configureRoutes?.Invoke(routes);
-            });
+            foreach (var controllerDefinition in controllerDefinitions
+                .Where(controllerDefinition => controllerDefinition.FluentAction.Definition.IsMapRoute))
+            {
+                routes.MapRoute(
+                    controllerDefinition.Id,
+                    controllerDefinition.RouteTemplate.WithoutLeading("/"),
+                    new
+                    {
+                        controller = controllerDefinition.Name.WithoutTrailing("Controller"),
+                        action = controllerDefinition.ActionName
+                    });
+            }
+
+            return app.UseRouter(routes.Build());
         }
     }
 
-    public static class ApplicationServiceCollectionExtensions
+    public static class IMvcBuilderExtensions
     {
-        public static IMvcBuilder AddMvcWithFluentActions(this IServiceCollection services)
+        public static IMvcBuilder AddFluentActions(this IMvcBuilder builder)
         {
-            if (services == null)
+            if (builder == null)
             {
-                throw new ArgumentNullException(nameof(services));
+                throw new ArgumentNullException(nameof(builder));
             }
 
             var context = new FluentActionControllerFeatureProviderContext();
-            services.TryAddSingleton(context);
+            builder.Services.TryAddSingleton(context);
 
             var fluentActionControllerFeatureProvider = new FluentActionControllerFeatureProvider(context);
 
-            return services
-                .AddMvc()
-                .ConfigureApplicationPartManager(manager =>
-                {
-                    manager.FeatureProviders.Add(fluentActionControllerFeatureProvider);
-                });
-        }
-
-        public static IMvcBuilder AddMvcWithFluentActions(
-            this IServiceCollection services, 
-            Action<MvcOptions> setupAction)
-        {
-            if (services == null)
+            return builder.ConfigureApplicationPartManager(manager =>
             {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            return services.AddMvc(setupAction);
+                manager.FeatureProviders.Add(fluentActionControllerFeatureProvider);
+            });
         }
     }
 }

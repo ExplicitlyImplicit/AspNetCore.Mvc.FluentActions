@@ -23,18 +23,20 @@ namespace SimpleWebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcWithFluentActions();
+            services.AddMvc().AddFluentActions();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
         }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvcWithFluentActions(actions =>
+            app.UseMvc();
+            app.UseFluentActions(actions =>
             {
                 actions.Add(UserActions.All);
                 actions.Add(NoteActions.All);

@@ -4,7 +4,7 @@ Fluent actions are abstractions of regular MVC actions that are converted into M
 Usage example:
 
 ```
-app.UseMvcWithFluentActions(actions =>
+app.UseFluentActions(actions =>
 {
     actions.RouteGet("/").To(() => "Hello World!");
 });
@@ -33,7 +33,7 @@ This project does not have any third-party dependencies.
 Another example:
 
 ```
-app.UseMvcWithFluentActions(actions =>
+app.UseFluentActions(actions =>
 {
     actions
         .RouteGet("/users/{userId}")
@@ -60,22 +60,26 @@ Or using the dotnet CLI:
 dotnet add package ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 ```
 
-You also need to replace these two lines in your `Startup.cs` file:
+You also need to add these two calls in your `Startup.cs` file:
 
-```
-// services.AddMvc(options);
-services.AddMvcWithFluentActions(options);
+<pre>
+services.AddMvc()<b>.AddFluentActions();</b>
+ .
+ .
+ .
+app.UseMvc(routes);
+<b>app.UseFluentActions(actions);</b> // see usage chapter below 
+</pre>
 
-// app.UseMvc(routes);
-app.UseMvcWithFluentActions(actions [, routes]); // see usage chapter below 
-```
+There is also `UseFluentActions(config, actions)` to apply initial settings on all 
+of the fluent actions you define, take a look at the `Config` parameter further down for more info. 
 
 ## How To Use
 
-Fluent actions are added inside the `Startup.cs` file in the `UseMvcWithFluentActions` statement:
+Fluent actions are added inside the `Startup.cs` file in the `UseFluentActions` statement:
 
 ```
-app.UseMvcWithFluentActions(actions => 
+app.UseFluentActions(actions => 
 {
     actions.RouteGet("/helloWorld").To(() => "Hello World!");
 });
@@ -84,7 +88,7 @@ app.UseMvcWithFluentActions(actions =>
 The fluent action definitions can be placed in one or many other files though: 
 
 ```
-app.UseMvcWithFluentActions(actions => 
+app.UseFluentActions(actions => 
 {
     actions.RouteGet("/helloWorld").To(() => "Hello World!");
     actions.Add(FluentActions.UserActions);
@@ -135,9 +139,6 @@ public string HelloWorldAction()
 
 Fluent actions are only wrapping the tools that makes up the framework .NET MVC. 
 We can still use MVC tools and concepts to implement our web app. 
-In fact, `UseMvcWithFluentActions` can also define routes as you normally do in 
-MVC (using `IAction<Route>` as a second parameter) and attribute routing also 
-works together with fluent actions. 
 
 ### `Using` Statements
 
@@ -416,7 +417,7 @@ called `Hello`, then this fluent action:
 ```
 actions
     .RouteGet("/hello")
-	.InheritingFrom<HelloController>()
+    .InheritingFrom<HelloController>()
     .UsingParent()
     .To(parent => parent.Hello());
 ```
@@ -426,12 +427,12 @@ Is equivalent to the following fluent action in the following controller:
 ```
 public class FluentActionController : HelloController 
 {
-	[HttpGet]
-	[Route("/hello")]
-	public string Action()
-	{
-		return Hello();
-	}	
+    [HttpGet]
+    [Route("/hello")]
+    public string Action()
+    {
+        return Hello();
+    }    
 }
 ```
 
@@ -846,12 +847,12 @@ The above fluent action is equivalent to the following action method in a contro
 ```
 public class FluentActionController : MyBaseController 
 {
-	[HttpGet]
-	[Route("/hello")]
-	public ActionResult FluentAction()
-	{
-		return "Hello!");
-	}
+    [HttpGet]
+    [Route("/hello")]
+    public ActionResult FluentAction()
+    {
+        return "Hello!");
+    }
 }
 ```
 
@@ -1065,15 +1066,15 @@ Take a look at the `Config` parameter to group multiple actions all at once.
 The `Config` parameter is an optional parameter that can be used to apply settings among multiple actions.
 
 ```
-app.UseMvcWithFluentActions(
-	config => 
-	{
-		config.GroupBy("GroupName");
-	}, 
-	actions =>
-	{
-		actions.RouteGet("/").To(() => "Hello World!");
-	}
+app.UseFluentActions(
+    config => 
+    {
+        config.InheritingFrom<BaseController>();
+    }, 
+    actions =>
+    {
+        actions.RouteGet("/").To(() => "Hello World!");
+    }
 );
 ```
 

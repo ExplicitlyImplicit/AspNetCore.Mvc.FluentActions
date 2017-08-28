@@ -8,12 +8,13 @@ namespace HelloWorld
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcWithFluentActions();
+            services.AddMvc().AddFluentActions();
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMvcWithFluentActions(actions =>
+            app.UseMvc();
+            app.UseFluentActions(actions =>
             {
                 actions.RouteGet("/").To(() => "Hello World!");
             });

@@ -29,7 +29,7 @@ namespace MvcTemplate
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvcWithFluentActions();
+            services.AddMvc().AddFluentActions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +50,8 @@ namespace MvcTemplate
 
             app.UseStaticFiles();
 
-            app.UseMvcWithFluentActions(actions =>
+            app.UseMvc();
+            app.UseFluentActions(actions =>
             {
                 actions
                     .RouteGet("/")
