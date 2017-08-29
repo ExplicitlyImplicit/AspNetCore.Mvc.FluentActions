@@ -68,7 +68,7 @@ services.AddMvc()<b>.AddFluentActions();</b>
  .
  .
 app.UseMvc(routes);
-<b>app.UseFluentActions(actions);</b> // see usage chapter below 
+<b>app.UseFluentActions(actions);</b>
 </pre>
 
 There is also `UseFluentActions(config, actions)` to apply initial settings on all 
@@ -1074,11 +1074,12 @@ app.UseFluentActions(
     actions =>
     {
         actions.RouteGet("/").To(() => "Hello World!");
+        actions.RouteGet("/bye").To(() => "Bye bye!");
     }
 );
 ```
 
-Above config, defined in the first parameter, will add the group name to all actions defined in the second parameter. 
+Above config will add the parent type to the actions defined in the second parameter. 
 
 The following settings are available with the `Config` parameter:
 
