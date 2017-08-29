@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 
 namespace MvcTemplate
 {
@@ -29,7 +28,7 @@ namespace MvcTemplate
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc().AddFluentActions();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,28 +49,11 @@ namespace MvcTemplate
 
             app.UseStaticFiles();
 
-            app.UseMvc();
-            app.UseFluentActions(actions =>
+            app.UseMvc(routes =>
             {
-                actions
-                    .RouteGet("/")
-                    .ToView("~/Views/Home/Index.cshtml");
-
-                actions
-                    .RouteGet("/Home/About")
-                    .UsingViewData()
-                    .Do(viewData => viewData["Message"] = "Your application description page.")
-                    .ToView("~/Views/Home/About.cshtml");
-
-                actions
-                    .RouteGet("/Home/Contact")
-                    .UsingViewData()
-                    .Do(viewData => viewData["Message"] = "Your contact page.")
-                    .ToView("~/Views/Home/Contact.cshtml");
-
-                actions
-                    .RouteGet("/Home/Error")
-                    .ToView("~/Views/Shared/Error.cshtml");
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
