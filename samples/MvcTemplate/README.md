@@ -1,6 +1,6 @@
 # MVC Template Sample With Fluent Actions
 
-This project demonstrates an MCV template project that has been changed to work with Fluent Actions.
+This project demonstrates an MCV template project that has integrated fluent actions.
 
-See [this commit](https://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions/commit/78954199d21e9b5f5cd8a987a769f09d79edd01e) 
+See [this commit](https://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions/commit/68415086cc913ff73593771e615124f4eaa426b7) 
 to view the changes that were made to the original template.
