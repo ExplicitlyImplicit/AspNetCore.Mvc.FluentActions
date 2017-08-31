@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -172,6 +173,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 "FluentActionModule", 
                 typeName, 
                 fluentActionDefinition.ParentType);
+
+            foreach (var customAttributeOnClass in fluentActionDefinition.CustomAttributesOnClass)
+            {
+                controllerTypeBuilder.SetCustomAttribute(
+                    customAttributeOnClass.Constructor,
+                    customAttributeOnClass.ConstructorArgs,
+                    customAttributeOnClass.NamedProperties,
+                    customAttributeOnClass.PropertyValues,
+                    customAttributeOnClass.NamedFields,
+                    customAttributeOnClass.FieldValues
+                );
+            }
 
             ControllerMethodBuilder controllerMethodBuilder;
             if (AsyncStateMachineBuilderIsNeeded(fluentActionDefinition))

@@ -118,6 +118,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             {
                 fluentAction.Definition.CustomAttributes.Add(customAttribute);
             }
+
+            foreach (var customAttributeOnClass in Config.CustomAttributesOnClass)
+            {
+                fluentAction.Definition.CustomAttributesOnClass.Add(customAttributeOnClass);
+            }
         }
 
         public static FluentActionCollection DefineActions(
@@ -301,9 +306,95 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public void WithCustomAttributeOnClass<T>()
+        {
+            WithCustomAttributeOnClass<T>(new Type[0], new object[0]);
+        }
+
+        public void WithCustomAttributeOnClass<T>(Type[] constructorArgTypes, object[] constructorArgs)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+            WithCustomAttributeOnClass<T>(attributeConstructorInfo, constructorArgs);
+        }
+
+        public void WithCustomAttributeOnClass<T>(
+            Type[] constructorArgTypes, 
+            object[] constructorArgs, 
+            string[] namedProperties, 
+            object[] propertyValues)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+
+            WithCustomAttributeOnClass<T>(
+                attributeConstructorInfo,
+                constructorArgs,
+                namedProperties.Select(propertyName => typeof(T).GetProperty(propertyName)).ToArray(),
+                propertyValues);
+        }
+
+        public void WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs)
+        {
+            WithCustomAttributeOnClass<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public void WithCustomAttributeOnClass<T>(
+            ConstructorInfo constructor, 
+            object[] constructorArgs, 
+            FieldInfo[] namedFields, 
+            object[] fieldValues)
+        {
+            WithCustomAttributeOnClass<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                namedFields,
+                fieldValues);
+        }
+
+        public void WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues)
+        {
+            WithCustomAttributeOnClass<T>(
+                constructor,
+                constructorArgs,
+                namedProperties,
+                propertyValues,
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public void WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            Config.CustomAttributesOnClass.Add(new FluentActionCustomAttribute()
+            {
+                Type = typeof(T),
+                Constructor = constructor,
+                ConstructorArgs = constructorArgs,
+                NamedProperties = namedProperties,
+                PropertyValues = propertyValues,
+                NamedFields = namedFields,
+                FieldValues = fieldValues,
+            });
+        }
+
         public void Authorize(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
         {
             WithCustomAttribute<AuthorizeAttribute>(
+                new Type[] { typeof(string) },
+                new object[] { policy },
+                new string[] { "Roles", "ActiveAuthenticationSchemes" },
+                new object[] { roles, activeAuthenticationSchemes });
+        }
+
+        public void AuthorizeClass(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
+        {
+            WithCustomAttributeOnClass<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
                 new string[] { "Roles", "ActiveAuthenticationSchemes" },
@@ -336,9 +427,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public IList<FluentActionCustomAttribute> CustomAttributes { get; internal set; }
 
+        public IList<FluentActionCustomAttribute> CustomAttributesOnClass { get; internal set; }
+
         public FluentActionCollectionConfig()
         {
             CustomAttributes = new List<FluentActionCustomAttribute>();
+            CustomAttributesOnClass = new List<FluentActionCustomAttribute>();
         }
 
         internal FluentActionCollectionConfig Clone()
@@ -349,7 +443,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 ParentType = ParentType,
                 GetTitleFunc = GetTitleFunc,
                 GetDescriptionFunc = GetDescriptionFunc,
-                CustomAttributes = new List<FluentActionCustomAttribute>(CustomAttributes)
+                CustomAttributes = new List<FluentActionCustomAttribute>(CustomAttributes),
+                CustomAttributesOnClass = new List<FluentActionCustomAttribute>(CustomAttributesOnClass)
             };
         }
     }

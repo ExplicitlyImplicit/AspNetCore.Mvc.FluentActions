@@ -1,16 +1,9 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
@@ -85,6 +78,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public IList<FluentActionCustomAttribute> CustomAttributes { get; internal set; }
 
+        public IList<FluentActionCustomAttribute> CustomAttributesOnClass { get; internal set; }
+
         public Type ReturnType => Handlers?.LastOrDefault()?.ReturnType;
 
         public bool IsMapRoute => Handlers.Count == 1 && Handlers.First().Type == FluentActionHandlerType.Controller;
@@ -99,6 +94,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
             Handlers = new List<FluentActionHandlerDefinition>();
             CustomAttributes = new List<FluentActionCustomAttribute>();
+            CustomAttributesOnClass = new List<FluentActionCustomAttribute>();
         }
 
         public override string ToString()

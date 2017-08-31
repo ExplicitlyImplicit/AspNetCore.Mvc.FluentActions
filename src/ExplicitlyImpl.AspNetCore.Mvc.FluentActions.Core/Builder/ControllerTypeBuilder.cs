@@ -29,6 +29,26 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             NestedTypes = controllerMethodBuilder.NestedTypes;
         }
 
+        public void SetCustomAttribute(
+            ConstructorInfo constructor,
+            object[] constructorArgs,
+            PropertyInfo[] namedProperties,
+            object[] propertyValues,
+            FieldInfo[] namedFields,
+            object[] fieldValues)
+        {
+            var attributeBuilder = new CustomAttributeBuilder(
+                constructor,
+                constructorArgs,
+                namedProperties,
+                propertyValues,
+                namedFields,
+                fieldValues
+            );
+
+            TypeBuilder.SetCustomAttribute(attributeBuilder);
+        }
+
         public TypeInfo CreateTypeInfo()
         {
             var typeInfo = TypeBuilder.CreateTypeInfo();

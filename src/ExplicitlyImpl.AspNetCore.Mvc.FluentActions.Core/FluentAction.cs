@@ -136,6 +136,76 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return this;
         }
 
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>()
+        {
+            return WithCustomAttributeOnClass<T>(new Type[0], new object[0]);
+        }
+
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>(Type[] constructorArgTypes, object[] constructorArgs)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+            return WithCustomAttributeOnClass<T>(attributeConstructorInfo, constructorArgs);
+        }
+
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>(Type[] constructorArgTypes, object[] constructorArgs, string[] namedProperties, object[] propertyValues)
+        {
+            var attributeConstructorInfo = typeof(T).GetConstructor(constructorArgTypes);
+
+            return WithCustomAttributeOnClass<T>(
+                attributeConstructorInfo,
+                constructorArgs,
+                namedProperties.Select(propertyName => typeof(T).GetProperty(propertyName)).ToArray(),
+                propertyValues);
+        }
+
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs)
+        {
+            return WithCustomAttributeOnClass<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            return WithCustomAttributeOnClass<T>(
+                constructor,
+                constructorArgs,
+                new PropertyInfo[0],
+                new object[0],
+                namedFields,
+                fieldValues);
+        }
+
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues)
+        {
+            return WithCustomAttributeOnClass<T>(
+                constructor,
+                constructorArgs,
+                namedProperties,
+                propertyValues,
+                new FieldInfo[0],
+                new object[0]);
+        }
+
+        public virtual FluentAction<TP, TR> WithCustomAttributeOnClass<T>(ConstructorInfo constructor, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
+        {
+            Definition.CustomAttributesOnClass.Add(new FluentActionCustomAttribute()
+            {
+                Type = typeof(T),
+                Constructor = constructor,
+                ConstructorArgs = constructorArgs,
+                NamedProperties = namedProperties,
+                PropertyValues = propertyValues,
+                NamedFields = namedFields,
+                FieldValues = fieldValues,
+            });
+            return this;
+        }
+
         public virtual FluentAction<TP, TR> ValidateAntiForgeryToken()
         {
             return WithCustomAttribute<ValidateAntiForgeryTokenAttribute>();
@@ -144,6 +214,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR> Authorize(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
         {
             return WithCustomAttribute<AuthorizeAttribute>(
+                new Type[] { typeof(string) },
+                new object[] { policy },
+                new string[] { "Roles", "ActiveAuthenticationSchemes" },
+                new object[] { roles, activeAuthenticationSchemes });
+        }
+
+        public virtual FluentAction<TP, TR> AuthorizeClass(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
+        {
+            return WithCustomAttributeOnClass<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
                 new string[] { "Roles", "ActiveAuthenticationSchemes" },

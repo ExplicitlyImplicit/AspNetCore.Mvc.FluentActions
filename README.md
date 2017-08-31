@@ -939,6 +939,21 @@ activeAuthenticationSchemes.
 The `Authorize` statement can also be added in the `Config` parameter
 which can be used to apply `Authorize` to multiple actions at once.
 
+
+### AuthorizeClass
+
+The `Authorize` attribute can also be added to the fluent action class like this:
+
+```
+actions
+    .RoutePost("/submit")
+    .AuthorizeClass()
+    .To(() => "You must be logged in first!");
+```
+
+The `AuthorizeClass` statement can also be added in the `Config` parameter
+which can be used to apply `Authorize` to multiple actions classes at once.
+
 ### AllowAnonymous
 
 The following fluent action:
@@ -996,6 +1011,25 @@ WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, FieldInfo[] name
 WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues)
 WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
 ```
+
+The `WithAttribute` statement can also be added in the `Config` parameter
+which can be used to add custom attributes to multiple actions at once.
+
+### Custom Attributes on Class
+
+Custom attributes can also be added to a fluent action class like this:
+
+```
+actions
+    .RouteGet("/url")
+    .WithAttributeOnClass<MyCustomAttribute>()
+    .To(() => "Hello!");
+```
+
+With the same syntax as `WithAttribute` described above.
+
+The `WithAttributeOnClass` statement can also be added in the `Config` parameter
+which can be used to add custom attributes to multiple actions classes at once.
 
 ### Id of Fluent Action
 
@@ -1090,7 +1124,9 @@ The following settings are available with the `Config` parameter:
 - SetDescription
 - SetDescriptionFromResource
 - Authorize
+- AuthorizeClass
 - WithCustomAttribute
+- WithCustomAttributeOnClass
 
 ## License
 

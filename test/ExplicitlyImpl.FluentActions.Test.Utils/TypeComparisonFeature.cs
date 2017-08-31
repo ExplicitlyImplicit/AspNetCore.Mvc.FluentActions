@@ -43,15 +43,33 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
     {
         public IEnumerable<TypeFeatureComparisonResult> Compare(Type type1, Type type2, TypeComparerOptions options)
         {
+            var comparisonResults = new List<TypeFeatureComparisonResult>();
+
             var parentTypesMatch = type1.GetTypeInfo().BaseType == type2.GetTypeInfo().BaseType;
 
-            return new[]
+            comparisonResults.Add(new TypeFeatureComparisonResult(
+                TypeComparisonFeature.ParentType,
+                parentTypesMatch,
+                parentTypesMatch ? "Parent types match." : "Parent types do not match."
+            ));
+
+            var attributesForType1 = type1.GetTypeInfo().GetCustomAttributes()
+                .ToArray();
+            var attributesForType2 = type2.GetTypeInfo().GetCustomAttributes()
+                .ToArray();
+
+            for (var attributeIndex = 0; attributeIndex < attributesForType1.Length; attributeIndex++)
             {
-                new TypeFeatureComparisonResult(
-                    TypeComparisonFeature.ParentType,
-                    parentTypesMatch,
-                    parentTypesMatch ? "Parent types match." : "Parent types do not match.")
-            };
+                if (attributesForType1[attributeIndex].GetType() != attributesForType2[attributeIndex].GetType())
+                {
+                    comparisonResults.Add(new TypeFeatureComparisonResult(
+                        TypeComparisonFeature.HandlerActionMethod,
+                        false,
+                        $"Attribute types do not match between action methods (attribute index: {attributeIndex})."));
+                }
+            }
+
+            return comparisonResults;
         }
     }
 
@@ -166,34 +184,34 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                     $"Return type does not match between action methods ({actionMethodForType1.ReturnType.Name} vs {actionMethodForType2.ReturnType.Name})."));
             }
 
-            var attributesForActionMethod1 = actionMethodForType1.GetCustomAttributes()
+            var attributesForType1 = actionMethodForType1.GetCustomAttributes()
                 .ToArray();
-            var attributesForActionMethod2 = actionMethodForType2.GetCustomAttributes()
+            var attributesForType2 = actionMethodForType2.GetCustomAttributes()
                 .Where(attribute => !(attribute is AsyncStateMachineAttribute) && !(attribute is DebuggerStepThroughAttribute))
                 .ToArray();
 
-            if (attributesForActionMethod1.Count() != attributesForActionMethod2.Count())
+            if (attributesForType1.Count() != attributesForType2.Count())
             {
                 comparisonResults.Add(new TypeFeatureComparisonResult(
                     TypeComparisonFeature.HandlerActionMethod,
                     false,
-                    $"Custom attribute count does not match between action methods ({attributesForActionMethod1.Count()} vs {attributesForActionMethod2.Count()})."));
+                    $"Custom attribute count does not match between action methods ({attributesForType1.Count()} vs {attributesForType2.Count()})."));
             } 
             else
             {
-                for(var attributeIndex = 0; attributeIndex < attributesForActionMethod1.Length; attributeIndex++)
+                for(var attributeIndex = 0; attributeIndex < attributesForType1.Length; attributeIndex++)
                 {
-                    if (attributesForActionMethod1[attributeIndex].GetType() != attributesForActionMethod2[attributeIndex].GetType())
+                    if (attributesForType1[attributeIndex].GetType() != attributesForType2[attributeIndex].GetType())
                     {
                         comparisonResults.Add(new TypeFeatureComparisonResult(
                             TypeComparisonFeature.HandlerActionMethod,
                             false,
                             $"Attribute types do not match between action methods (attribute index: {attributeIndex})."));
                     } 
-                    else if (attributesForActionMethod1[attributeIndex] is RouteAttribute)
+                    else if (attributesForType1[attributeIndex] is RouteAttribute)
                     {
-                        var routeTemplate1 = ((RouteAttribute)attributesForActionMethod1[attributeIndex]).Template;
-                        var routeTemplate2 = ((RouteAttribute)attributesForActionMethod2[attributeIndex]).Template;
+                        var routeTemplate1 = ((RouteAttribute)attributesForType1[attributeIndex]).Template;
+                        var routeTemplate2 = ((RouteAttribute)attributesForType2[attributeIndex]).Template;
 
                         if (routeTemplate1 != routeTemplate2)
                         {
