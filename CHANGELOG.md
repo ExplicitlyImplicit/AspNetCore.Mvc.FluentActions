@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.0 (2017-08-31)
+
+This release comes with a new API for using fluent actions in your MVC project. New functionality in this release
+focuses on the classes for the fluent actions.
+
+- Instead of calling `AddMvcWithFluentActions()` call `AddMvc().AddFluentActions()`
+- Instead of calling `UseMvcWithFluentActions()` call `UseMvc()` then `UseFluentActions()` separately
+- Config is now added as a separate parameter in `UseFluentActions`
+- Added `InheritingFrom` to define another class (deriving from Controller) for the fluent action
+- Added `UsingParent` so the fluent action may use public methods from the derived class
+- Added `WithCustomAttributeOnClass` to set attributes on the class for the fluent action
+- Added `AuthorizeClass` to set the authorize attribute on the class for the fluent action
+- Removed deprecated `UsingResultFromHandler` (renamed to `UsingResult` in 1.2.0)
+- Removed deprecated `FluentActionDefinition.ValidateAntiForgeryToken` (Check custom attributes instead)
+
 ## 1.2.0 (2017-06-22)
 
 The majority of this release is focused on the ability to add custom attributes to actions.
