@@ -82,7 +82,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             var asyncTaskMethodBuilderType = typeof(AsyncTaskMethodBuilder<>).MakeGenericType(returnType);
 
             // Declare local variables
-            var stateMachineLocalVariable = ilGenerator.DeclareLocal(StateMachineBuilder.Type.AsType());
+            var stateMachineLocalVariable = ilGenerator.DeclareLocal(StateMachineBuilder.Type);
 
             // Create a StateMachine and store it locally
             ilGenerator.Emit(OpCodes.Newobj, StateMachineBuilder.Constructor);
@@ -137,7 +137,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             ilGenerator.Emit(OpCodes.Ldloc, stateMachineLocalVariable);
             ilGenerator.Emit(OpCodes.Ldflda, StateMachineBuilder.AsyncTaskMethodBuilderField);
             ilGenerator.Emit(OpCodes.Ldloca, stateMachineLocalVariable);
-            ilGenerator.Emit(OpCodes.Call, asyncTaskMethodBuilderType.GetMethod("Start").MakeGenericMethod(StateMachineBuilder.Type.AsType()));
+            ilGenerator.Emit(OpCodes.Call, asyncTaskMethodBuilderType.GetMethod("Start").MakeGenericMethod(StateMachineBuilder.Type));
 
             // Return the Task of AsyncTaskMethodBuilder
             ilGenerator.Emit(OpCodes.Ldloc, stateMachineLocalVariable);

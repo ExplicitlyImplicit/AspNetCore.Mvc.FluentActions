@@ -84,7 +84,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
         {
             var asyncTaskMethodBuilderType = typeof(AsyncTaskMethodBuilder<>).MakeGenericType(ReturnType);
 
-            ParentField = Type.DefineField("Parent", ParentType.AsType(), FieldAttributes.Public);
+            ParentField = Type.DefineField("Parent", ParentType, FieldAttributes.Public);
             AsyncTaskMethodBuilderField = Type.DefineField("AsyncTaskMethodBuilder", asyncTaskMethodBuilderType, FieldAttributes.Public);
             StateField = Type.DefineField("State", typeof(int), FieldAttributes.Public);
 
@@ -265,7 +265,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             var statesStartLabels = States.Select(state => state.StartLabel).ToArray();
             var leaveLabel = ilGenerator.DefineLabel();
 
-            var localVariableForThis = ilGenerator.DeclareLocal(Type.AsType());
+            var localVariableForThis = ilGenerator.DeclareLocal(Type);
             var exceptionLocalVariable = ilGenerator.DeclareLocal(typeof(Exception));
 
             var exceptionBlock = ilGenerator.BeginExceptionBlock();
@@ -434,7 +434,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                             ilGenerator.Emit(OpCodes.Ldloca, localVariableForThis);
                             ilGenerator.Emit(OpCodes.Call, asyncTaskMethodBuilderType
                                 .GetMethod("AwaitUnsafeOnCompleted")
-                                .MakeGenericMethod(state.TaskAwaiterType, Type.AsType()));
+                                .MakeGenericMethod(state.TaskAwaiterType, Type));
 
                             EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::Called AwaitUnsafeOnCompleted.");
                         } 
@@ -554,7 +554,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                             ilGenerator.Emit(OpCodes.Ldloca, localVariableForThis);
                             ilGenerator.Emit(OpCodes.Call, asyncTaskMethodBuilderType
                                 .GetMethod("AwaitUnsafeOnCompleted")
-                                .MakeGenericMethod(state.TaskAwaiterType, Type.AsType()));
+                                .MakeGenericMethod(state.TaskAwaiterType, Type));
 
                             EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::Called AwaitUnsafeOnCompleted.");
                         } 
