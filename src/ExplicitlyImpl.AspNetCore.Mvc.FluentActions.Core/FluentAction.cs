@@ -407,6 +407,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TR>(Definition, new FluentActionUsingResultDefinition

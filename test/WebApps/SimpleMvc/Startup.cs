@@ -158,6 +158,11 @@ namespace SimpleMvc
                         .UsingModelState()
                         .UsingForm<ModelStateFormModel>()
                         .To((modelState, model) => modelState.IsValid ? "Model valid! :)" : "Model invalid :(");
+
+                    actions
+                        .RouteGet("/201")
+                        .UsingResponse()
+                        .To(response => { response.StatusCode = 201; return "Hello from 201!"; });
                 }
             );
         }
