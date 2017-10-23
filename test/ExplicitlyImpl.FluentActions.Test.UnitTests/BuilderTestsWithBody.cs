@@ -25,7 +25,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .UsingBody<string>()
-                    .To(async name => { await Task.Delay(1);  return $"Hello {name}!"; }),
+                    .To(async name => { await Task.Delay(1); return $"Hello {name}!"; }),
                 typeof(ControllerWithBodyReturnsStringAsync),
                 new object[] { "Charlie" });
         }

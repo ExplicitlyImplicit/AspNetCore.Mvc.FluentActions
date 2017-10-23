@@ -32,6 +32,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
+                    .DoAsync(async () => { await Task.Delay(1); })
                     .UsingHttpContext()
                     .To(async httpContext =>
                     {

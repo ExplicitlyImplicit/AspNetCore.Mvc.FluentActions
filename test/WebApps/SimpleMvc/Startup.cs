@@ -8,6 +8,8 @@ using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using SimpleMvc.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using SimpleMvc.Models;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 
 namespace SimpleMvc
 {
@@ -165,9 +167,19 @@ namespace SimpleMvc
                         .To(response => { response.StatusCode = 201; return "Hello from 201!"; });
 
                     actions
+                        .RouteGet("/203")
+                        .UsingProperty<HttpResponse>("Response")
+                        .To(response => { response.StatusCode = 203; return "Hello from 203!"; });
+
+                    actions
                         .RouteGet("/request")
                         .UsingRequest()
                         .To(request => $"Hello from {request.Path}!");
+
+                    actions
+                        .RouteGet("/helloProp")
+                        .UsingProperty<string>("HelloProp")
+                        .To(helloProp => helloProp);
                 }
             );
         }

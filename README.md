@@ -202,6 +202,7 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingModelBinder
 - UsingModelState
 - UsingParent
+- UsingProperty
 - UsingQueryStringParameter
 - UsingResponse
 - UsingResult (for piping multiple `To` statements)
@@ -445,6 +446,28 @@ actions
     .RouteGet("/hello")
     .UsingParent<HelloController>()
     .To(parent => parent.Hello());
+```
+
+#### UsingProperty
+
+This fluent action:
+
+```
+actions
+    .RouteGet("/hello")
+    .UsingProperty<Request>("Request")
+    .To(request => $"Hello from {request.Path}!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/hello")]
+public string Action()
+{
+    return $"Hello from {Request.Path}!";
+}
 ```
 
 #### UsingQueryStringParameter

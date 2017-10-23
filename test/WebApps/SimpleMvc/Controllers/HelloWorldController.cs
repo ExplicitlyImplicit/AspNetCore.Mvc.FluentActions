@@ -5,6 +5,8 @@ namespace SimpleMvc.Controllers
 {
     public class HelloWorldController : Controller
     {
+        public string HelloProp => "Hello from hello prop!";
+
         public string HelloWorld()
         {
             return "Hello World!";

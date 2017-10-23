@@ -1,19 +1,20 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 {
-    public class BuilderTestsWithResponse
+    public class BuilderTestsWithProperty
     {
-        [Fact(DisplayName = "1 Response, returns string")]
-        public void FluentControllerBuilder_FluentActionWithResponseReturnsString()
+        [Fact(DisplayName = "1 Property (Response), returns string")]
+        public void FluentControllerBuilder_FluentActionWithPropertyReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
-                    .UsingResponse()
+                    .UsingProperty<HttpResponse>("Response")
                     .To(response =>
                     {
                         if (response == null)
@@ -23,17 +24,17 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
                         return "Hello";
                     }),
-                typeof(ControllerWithResponseReturnsString),
+                typeof(ControllerWithPropertyReturnsString),
                 null);
         }
 
-        [Fact(DisplayName = "1 Response, returns string async")]
-        public void FluentControllerBuilder_FluentActionWithResponseReturnsStringAsync()
+        [Fact(DisplayName = "1 Property (Response), returns string async")]
+        public void FluentControllerBuilder_FluentActionWithPropertyReturnsStringAsync()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .DoAsync(async () => { await Task.Delay(1); })
-                    .UsingResponse()
+                    .UsingProperty<HttpResponse>("Response")
                     .To(async response =>
                     {
                         await Task.Delay(1);
@@ -44,7 +45,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
                         return "Hello";
                     }),
-                typeof(ControllerWithResponseReturnsStringAsync),
+                typeof(ControllerWithPropertyReturnsStringAsync),
                 null);
         }
     }

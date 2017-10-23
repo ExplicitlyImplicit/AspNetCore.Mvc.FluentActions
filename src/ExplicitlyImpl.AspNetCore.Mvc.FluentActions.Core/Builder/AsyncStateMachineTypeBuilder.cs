@@ -365,6 +365,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                                 ilGenerator.Emit(OpCodes.Ldfld, ParentField);
                                 ilGenerator.Emit(OpCodes.Callvirt,
                                     typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
+                            } else if (usingDefinition is FluentActionUsingPropertyDefinition)
+                            {
+                                var propertyName = ((FluentActionUsingPropertyDefinition)usingDefinition).PropertyName;
+                                var parentType = fluentActionDefinition.ParentType ?? typeof(Controller);
+                                var property = parentType.GetProperty(propertyName);
+                                if (property == null)
+                                {
+                                    throw new Exception($"Could not find property {propertyName} on type {parentType.FullName}.");
+                                }
+
+                                var propertyGetMethod = property.GetGetMethod();
+                                if (propertyGetMethod == null)
+                                {
+                                    throw new Exception($"Missing public get method on property {propertyName} on type {parentType.FullName}.");
+                                }
+
+                                ilGenerator.Emit(OpCodes.Ldarg_0);
+                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
+                                ilGenerator.Emit(OpCodes.Callvirt, propertyGetMethod);
                             } else if (usingDefinition is FluentActionUsingParentDefinition)
                             {
                                 ilGenerator.Emit(OpCodes.Ldarg_0);
@@ -485,6 +504,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                                 ilGenerator.Emit(OpCodes.Ldfld, ParentField);
                                 ilGenerator.Emit(OpCodes.Callvirt,
                                     typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
+                            } else if (usingDefinition is FluentActionUsingPropertyDefinition)
+                            {
+                                var propertyName = ((FluentActionUsingPropertyDefinition)usingDefinition).PropertyName;
+                                var parentType = fluentActionDefinition.ParentType ?? typeof(Controller);
+                                var property = parentType.GetProperty(propertyName);
+                                if (property == null)
+                                {
+                                    throw new Exception($"Could not find property {propertyName} on type {parentType.FullName}.");
+                                }
+
+                                var propertyGetMethod = property.GetGetMethod();
+                                if (propertyGetMethod == null)
+                                {
+                                    throw new Exception($"Missing public get method on property {propertyName} on type {parentType.FullName}.");
+                                }
+
+                                ilGenerator.Emit(OpCodes.Ldarg_0);
+                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
+                                ilGenerator.Emit(OpCodes.Callvirt, propertyGetMethod);
                             } else if (usingDefinition is FluentActionUsingParentDefinition)
                             {
                                 ilGenerator.Emit(OpCodes.Ldarg_0);

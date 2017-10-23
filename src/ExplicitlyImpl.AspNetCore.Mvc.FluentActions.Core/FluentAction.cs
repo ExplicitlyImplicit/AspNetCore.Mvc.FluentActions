@@ -387,6 +387,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(HttpRequest),
+                PropertyName = name
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1> UsingQueryStringParameter<TU1>(string name)
         {
             return new FluentAction<TP, TR, TU1>(Definition, new FluentActionUsingQueryStringParameterDefinition
