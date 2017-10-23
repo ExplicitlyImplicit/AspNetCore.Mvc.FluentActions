@@ -423,6 +423,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1> UsingRouteParameter<TU1>(string name)
         {
             return new FluentAction<TP, TR, TU1>(Definition, new FluentActionUsingRouteParameterDefinition

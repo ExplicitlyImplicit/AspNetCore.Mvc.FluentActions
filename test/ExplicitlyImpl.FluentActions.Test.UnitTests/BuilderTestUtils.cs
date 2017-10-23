@@ -196,12 +196,15 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
         private static ControllerContext MockControllerContext()
         {
+            var request = new Mock<HttpRequest>();
+
             var headerDictionary = new HeaderDictionary();
             var response = new Mock<HttpResponse>();
             response.SetupGet(r => r.Headers).Returns(headerDictionary);
 
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
+            httpContext.SetupGet(a => a.Request).Returns(request.Object);
 
             var actionContext = new ActionContext(httpContext.Object, new RouteData(), new ControllerActionDescriptor());
 

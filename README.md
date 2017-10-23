@@ -205,6 +205,7 @@ Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/lates
 - UsingQueryStringParameter
 - UsingResponse
 - UsingResult (for piping multiple `To` statements)
+- UsingRequest
 - UsingRouteParameter
 - UsingService
 - UsingTempData
@@ -511,6 +512,28 @@ Is equivalent to the following action method in a controller:
 public string Action()
 {
     return $"Hello World!";
+}
+```
+
+#### UsingRequest
+
+This fluent action:
+
+```
+actions
+    .RouteGet("/hello")
+    .UsingRequest()
+    .To(request => $"Hello from {request.Path}!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/hello")]
+public string Action()
+{
+    return $"Hello from {Request.Path}!";
 }
 ```
 

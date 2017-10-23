@@ -163,6 +163,11 @@ namespace SimpleMvc
                         .RouteGet("/201")
                         .UsingResponse()
                         .To(response => { response.StatusCode = 201; return "Hello from 201!"; });
+
+                    actions
+                        .RouteGet("/request")
+                        .UsingRequest()
+                        .To(request => $"Hello from {request.Path}!");
                 }
             );
         }
