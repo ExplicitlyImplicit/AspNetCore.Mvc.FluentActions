@@ -391,7 +391,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             return new FluentAction<TP, TR, TPr>(Definition, new FluentActionUsingPropertyDefinition
             {
-                Type = typeof(HttpRequest),
+                Type = typeof(TPr),
                 PropertyName = name
             });
         }
@@ -587,11 +587,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
@@ -893,11 +918,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
@@ -1208,11 +1258,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
@@ -1507,11 +1582,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
@@ -1813,11 +1913,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
@@ -2119,11 +2244,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
@@ -2425,11 +2575,36 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             });
         }
 
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TPr> UsingProperty<TPr>(string name)
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TPr>(Definition, new FluentActionUsingPropertyDefinition
+            {
+                Type = typeof(TPr),
+                PropertyName = name
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpResponse> UsingResponse()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpResponse>(Definition, new FluentActionUsingResponseDefinition
+            {
+                Type = typeof(HttpResponse)
+            });
+        }
+
         public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR> UsingResult()
         {
             return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, TR>(Definition, new FluentActionUsingResultDefinition
             {
                 Type = typeof(TR)
+            });
+        }
+
+        public virtual FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpRequest> UsingRequest()
+        {
+            return new FluentAction<TP, TR, TU1, TU2, TU3, TU4, TU5, TU6, TU7, HttpRequest>(Definition, new FluentActionUsingRequestDefinition
+            {
+                Type = typeof(HttpRequest)
             });
         }
 
