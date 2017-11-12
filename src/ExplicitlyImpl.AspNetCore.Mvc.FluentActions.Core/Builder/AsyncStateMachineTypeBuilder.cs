@@ -165,6 +165,16 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                             BuilderHelper.GetDelegateType(handlerDefinition),
                             FieldAttributes.Public);
                     }
+                    else if (
+                        handlerDefinition.Type == FluentActionHandlerType.View ||
+                        handlerDefinition.Type == FluentActionHandlerType.PartialView ||
+                        handlerDefinition.Type == FluentActionHandlerType.ViewComponent)
+                    {
+                        state.Handlers[handlerIndex].ResultField = Type.DefineField(
+                            $"State{stateIndex}Handler{handlerIndex}Result",
+                            handlerDefinition.ReturnType,
+                            FieldAttributes.Public);
+                    }
                 }
 
                 var lastHandlerInState = handlersInState.Last();
@@ -390,14 +400,22 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                                 ilGenerator.Emit(OpCodes.Ldfld, ParentField);
                             } else if (usingDefinition is FluentActionUsingResultDefinition)
                             {
+                                FieldBuilder resultFieldToLoad;
                                 if (handlerInStateIndex > 0)
                                 {
-                                    ilGenerator.Emit(OpCodes.Ldarg_0);
-                                    ilGenerator.Emit(OpCodes.Ldfld, state.Handlers[handlerInStateIndex - 1].ResultField);
-                                } else
+                                    resultFieldToLoad = state.Handlers[handlerInStateIndex - 1].ResultField;
+                                }
+                                else
                                 {
-                                    ilGenerator.Emit(OpCodes.Ldarg_0);
-                                    ilGenerator.Emit(OpCodes.Ldfld, States[stateIndex - 1].ResultField);
+                                    resultFieldToLoad = States[stateIndex - 1].ResultField;
+                                }
+
+                                ilGenerator.Emit(OpCodes.Ldarg_0);
+                                ilGenerator.Emit(OpCodes.Ldfld, resultFieldToLoad);
+
+                                if (resultFieldToLoad.FieldType.IsValueType)
+                                {
+                                    ilGenerator.Emit(OpCodes.Box, resultFieldToLoad.FieldType);
                                 }
                             } else
                             {
@@ -529,14 +547,21 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                                 ilGenerator.Emit(OpCodes.Ldfld, ParentField);
                             } else if (usingDefinition is FluentActionUsingResultDefinition)
                             {
+                                FieldBuilder resultFieldToLoad;
                                 if (handlerInStateIndex > 0)
                                 {
-                                    ilGenerator.Emit(OpCodes.Ldarg_0);
-                                    ilGenerator.Emit(OpCodes.Ldfld, state.Handlers[handlerInStateIndex - 1].ResultField);
+                                    resultFieldToLoad = state.Handlers[handlerInStateIndex - 1].ResultField;
                                 } else
                                 {
-                                    ilGenerator.Emit(OpCodes.Ldarg_0);
-                                    ilGenerator.Emit(OpCodes.Ldfld, States[stateIndex - 1].ResultField);
+                                    resultFieldToLoad = States[stateIndex - 1].ResultField;
+                                }
+
+                                ilGenerator.Emit(OpCodes.Ldarg_0);
+                                ilGenerator.Emit(OpCodes.Ldfld, resultFieldToLoad);
+
+                                if (resultFieldToLoad.FieldType.IsValueType)
+                                {
+                                    ilGenerator.Emit(OpCodes.Box, resultFieldToLoad.FieldType);
                                 }
                             } else
                             {
@@ -648,9 +673,15 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 
                         ilGenerator.Emit(OpCodes.Callvirt, viewMethod);
 
-                        ilGenerator.Emit(OpCodes.Stfld, state.ResultField);
-
-                        ilGenerator.Emit(OpCodes.Br, state.FinishLabel);
+                        if (handlerInStateIndex == state.Handlers.Length - 1)
+                        {
+                            ilGenerator.Emit(OpCodes.Stfld, state.ResultField);
+                            ilGenerator.Emit(OpCodes.Br, state.FinishLabel);
+                        }
+                        else
+                        {
+                            ilGenerator.Emit(OpCodes.Stfld, handlerInState.ResultField);
+                        }
                     }
                 }
 

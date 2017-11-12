@@ -27,8 +27,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
             var fluentAction = new FluentAction(routeTemplate, httpMethod, id);
-            ConfigureAction(fluentAction);
+
+            PreConfigureAction(fluentAction);
             FluentActions.Add(fluentAction);
+
             return fluentAction;
         }
 
@@ -69,7 +71,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public void Add(FluentActionBase fluentAction)
         {
-            ConfigureAction(fluentAction);
+            PreConfigureAction(fluentAction);
             FluentActions.Add(fluentAction);
         }
 
@@ -77,7 +79,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         {
             foreach (var fluentAction in fluentActions)
             {
-                ConfigureAction(fluentAction);
+                PreConfigureAction(fluentAction);
                 FluentActions.Add(fluentAction);
             }
         }
@@ -92,7 +94,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return GetEnumerator();
         }
 
-        private void ConfigureAction(FluentActionBase fluentAction)
+        private void PreConfigureAction(FluentActionBase fluentAction)
         {
             if (Config.GroupName != null && fluentAction.Definition.GroupName == null)
             {
@@ -125,16 +127,38 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             }
         }
 
+        internal void PostConfigureActions()
+        {
+            FluentActions = FluentActions
+                .Select(PostConfigureAction)
+                .ToList();
+        }
+
+        private FluentActionBase PostConfigureAction(FluentActionBase fluentAction)
+        {
+            if (fluentAction.Definition.IsMapRoute)
+            {
+                return fluentAction;
+            }
+
+            return Config.Appenders.Aggregate(
+                fluentAction, 
+                (result, appender) => appender(new FluentAction(result.Definition))
+            );
+        }
+
         public static FluentActionCollection DefineActions(
             Action<FluentActionCollectionConfigurator> configureFluentActions, 
             Action<FluentActionCollection> addFluentActions)
         {
             var configurator = new FluentActionCollectionConfigurator(new FluentActionCollectionConfig());
             configureFluentActions(configurator);
+            var config = configurator.Config;
 
-            var actionCollection = new FluentActionCollection(configurator.Config);
-
+            var actionCollection = new FluentActionCollection(config);
             addFluentActions(actionCollection);
+
+            actionCollection.PostConfigureActions();
 
             return actionCollection;
         }
@@ -152,6 +176,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public FluentActionCollectionConfigurator(FluentActionCollectionConfig config)
         {
             Config = config;
+        }
+
+        public void Append(Func<FluentAction<object, object>, FluentActionBase> appender)
+        {
+            Config.Appenders.Add(appender);
         }
 
         public void GroupBy(string groupName)
@@ -429,10 +458,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public IList<FluentActionCustomAttribute> CustomAttributesOnClass { get; internal set; }
 
+        public IList<Func<FluentAction<object, object>, FluentActionBase>> Appenders { get; internal set; }
+
         public FluentActionCollectionConfig()
         {
             CustomAttributes = new List<FluentActionCustomAttribute>();
             CustomAttributesOnClass = new List<FluentActionCustomAttribute>();
+            Appenders = new List<Func<FluentAction<object, object>, FluentActionBase>>();
         }
 
         internal FluentActionCollectionConfig Clone()
@@ -444,7 +476,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 GetTitleFunc = GetTitleFunc,
                 GetDescriptionFunc = GetDescriptionFunc,
                 CustomAttributes = new List<FluentActionCustomAttribute>(CustomAttributes),
-                CustomAttributesOnClass = new List<FluentActionCustomAttribute>(CustomAttributesOnClass)
+                CustomAttributesOnClass = new List<FluentActionCustomAttribute>(CustomAttributesOnClass),
+                Appenders = new List<Func<FluentAction<object, object>, FluentActionBase>>(Appenders),
             };
         }
     }

@@ -21,10 +21,6 @@ public string Action()
 }
 ```
 
-This tool targets those of you who are already working on an existing MVC project or have previous experience with MVC
-as you already know how it works one level deeper. As long as you can wrap your head around the mapping from fluent 
-actions to MVC actions you should be all set.
-
 Fluent actions do not limit regular use of ASP.NET Core MVC so you can gradually introduce fluent actions to your 
 existing project and only use fluent actions for a subset of your applications functionality. 
 
@@ -510,7 +506,7 @@ Is equivalent to the following action method in a controller:
 [Route("/hello")]
 public string Action()
 {
-	Response.StatusCode = 201;
+    Response.StatusCode = 201;
     return "Hello from 201!";
 }
 ```
@@ -1187,6 +1183,7 @@ Above config will add the parent type to the actions defined in the second param
 
 The following settings are available with the `Config` parameter:
 
+- Append
 - GroupBy
 - InheritingFrom
 - SetTitle
@@ -1197,6 +1194,34 @@ The following settings are available with the `Config` parameter:
 - AuthorizeClass
 - WithCustomAttribute
 - WithCustomAttributeOnClass
+
+The `Append` statement is explained below.
+
+#### `Append` in `Config`
+
+The `Append` statement can be used to add functionality to the end of all fluent actions 
+inside the collection.
+
+```
+app.UseFluentActions(
+    config => 
+    {
+        config.Append(action => action
+            .UsingResult()
+            .To(result => result.ToUpper())
+        );
+    }, 
+    actions =>
+    {
+        actions.RouteGet("/").To(() => "Hello World!");
+        actions.RouteGet("/bye").To(() => "Bye bye!");
+    }
+);
+```
+
+The above actions will return "HELLO WORLD!" and "BYE BYE!".
+
+Note: the `Append` statement will not work on routing only actions (those that use `ToMvcController`).
 
 ## License
 

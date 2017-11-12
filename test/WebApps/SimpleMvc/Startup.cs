@@ -26,6 +26,8 @@ namespace SimpleMvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddFluentActions();
+
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +56,17 @@ namespace SimpleMvc
                 config =>
                 {
                     config.InheritingFrom<HelloWorldController>();
+                    config.Append(action => action
+                        .UsingResult()
+                        .UsingResponse()
+                        .To(async (result, response) => {
+                            await Task.Delay(1);
+                            response.StatusCode = 418;
+                            return result is string ?
+                                $">> {result}" :
+                                result;
+                        })
+                    );
                 },
                 actions =>
                 {

@@ -271,6 +271,10 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                 }
 
                 ilHandle.Generator.Emit(OpCodes.Ldloc, localVariableForPreviousReturnValue);
+                if (localVariableForPreviousReturnValue.LocalType.IsValueType)
+                {
+                    ilHandle.Generator.Emit(OpCodes.Box, localVariableForPreviousReturnValue.LocalType);
+                }
             } else
             {
                 throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
