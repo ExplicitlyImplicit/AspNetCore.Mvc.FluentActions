@@ -24,6 +24,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Config = config ?? new FluentActionCollectionConfig();
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action to this collection.
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction Route(string routeTemplate, HttpMethod httpMethod, string id = null)
         {
             var fluentAction = new FluentAction(routeTemplate, httpMethod, id);
@@ -34,36 +39,71 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return fluentAction;
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a DELETE route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RouteDelete(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Delete, id);
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a GET route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RouteGet(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Get, id);
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a HEAD route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RouteHead(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Head, id);
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a OPTIONS route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RouteOptions(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Options, id);
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a PATCH route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RoutePatch(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Patch, id);
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a POST route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RoutePost(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Post, id);
         }
 
+        /// <summary>
+        /// Creates and adds a fluent action with a PUT route to this collection. 
+        /// </summary>
+        /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
+        /// programming (such as generating docs or APIs).</param>
         public FluentAction RoutePut(string routeTemplate, string id = null)
         {
             return Route(routeTemplate, HttpMethod.Put, id);
