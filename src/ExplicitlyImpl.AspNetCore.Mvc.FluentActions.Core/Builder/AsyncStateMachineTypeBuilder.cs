@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 {
@@ -362,65 +363,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                         // Push arguments for Delegate
                         foreach (var usingDefinition in handler.Usings)
                         {
-                            if (usingDefinition.IsMethodParameter)
-                            {
-                                var usingDefinitionHash = usingDefinition.GetHashCode();
-                                var methodParameterIndex = methodParameterIndices[usingDefinitionHash];
-
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, MethodParameterFields[methodParameterIndex - 1]);
-                            } else if (usingDefinition.IsControllerProperty)
-                            {
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
-                                ilGenerator.Emit(OpCodes.Callvirt,
-                                    typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-                            } else if (usingDefinition is FluentActionUsingPropertyDefinition)
-                            {
-                                var propertyName = ((FluentActionUsingPropertyDefinition)usingDefinition).PropertyName;
-                                var parentType = fluentActionDefinition.ParentType ?? typeof(Controller);
-                                var property = parentType.GetProperty(propertyName);
-                                if (property == null)
-                                {
-                                    throw new Exception($"Could not find property {propertyName} on type {parentType.FullName}.");
-                                }
-
-                                var propertyGetMethod = property.GetGetMethod();
-                                if (propertyGetMethod == null)
-                                {
-                                    throw new Exception($"Missing public get method on property {propertyName} on type {parentType.FullName}.");
-                                }
-
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
-                                ilGenerator.Emit(OpCodes.Callvirt, propertyGetMethod);
-                            } else if (usingDefinition is FluentActionUsingParentDefinition)
-                            {
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
-                            } else if (usingDefinition is FluentActionUsingResultDefinition)
-                            {
-                                FieldBuilder resultFieldToLoad;
-                                if (handlerInStateIndex > 0)
-                                {
-                                    resultFieldToLoad = state.Handlers[handlerInStateIndex - 1].ResultField;
-                                }
-                                else
-                                {
-                                    resultFieldToLoad = States[stateIndex - 1].ResultField;
-                                }
-
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, resultFieldToLoad);
-
-                                if (resultFieldToLoad.FieldType.IsValueType)
-                                {
-                                    ilGenerator.Emit(OpCodes.Box, resultFieldToLoad.FieldType);
-                                }
-                            } else
-                            {
-                                throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
-                            }
+                            EmitUsingDefinitionValue(ilGenerator, fluentActionDefinition, usingDefinition, methodParameterIndices, state, stateIndex, handlerInStateIndex);
                         }
 
                         EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::Invoking Delegate");
@@ -509,64 +452,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                         // Push arguments for Delegate
                         foreach (var usingDefinition in handler.Usings)
                         {
-                            if (usingDefinition.IsMethodParameter)
-                            {
-                                var usingDefinitionHash = usingDefinition.GetHashCode();
-                                var methodParameterIndex = methodParameterIndices[usingDefinitionHash];
-
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, MethodParameterFields[methodParameterIndex - 1]);
-                            } else if (usingDefinition.IsControllerProperty)
-                            {
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
-                                ilGenerator.Emit(OpCodes.Callvirt,
-                                    typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
-                            } else if (usingDefinition is FluentActionUsingPropertyDefinition)
-                            {
-                                var propertyName = ((FluentActionUsingPropertyDefinition)usingDefinition).PropertyName;
-                                var parentType = fluentActionDefinition.ParentType ?? typeof(Controller);
-                                var property = parentType.GetProperty(propertyName);
-                                if (property == null)
-                                {
-                                    throw new Exception($"Could not find property {propertyName} on type {parentType.FullName}.");
-                                }
-
-                                var propertyGetMethod = property.GetGetMethod();
-                                if (propertyGetMethod == null)
-                                {
-                                    throw new Exception($"Missing public get method on property {propertyName} on type {parentType.FullName}.");
-                                }
-
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
-                                ilGenerator.Emit(OpCodes.Callvirt, propertyGetMethod);
-                            } else if (usingDefinition is FluentActionUsingParentDefinition)
-                            {
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
-                            } else if (usingDefinition is FluentActionUsingResultDefinition)
-                            {
-                                FieldBuilder resultFieldToLoad;
-                                if (handlerInStateIndex > 0)
-                                {
-                                    resultFieldToLoad = state.Handlers[handlerInStateIndex - 1].ResultField;
-                                } else
-                                {
-                                    resultFieldToLoad = States[stateIndex - 1].ResultField;
-                                }
-
-                                ilGenerator.Emit(OpCodes.Ldarg_0);
-                                ilGenerator.Emit(OpCodes.Ldfld, resultFieldToLoad);
-
-                                if (resultFieldToLoad.FieldType.IsValueType)
-                                {
-                                    ilGenerator.Emit(OpCodes.Box, resultFieldToLoad.FieldType);
-                                }
-                            } else
-                            {
-                                throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
-                            }
+                            EmitUsingDefinitionValue(ilGenerator, fluentActionDefinition, usingDefinition, methodParameterIndices, state, stateIndex, handlerInStateIndex);
                         }
 
                         EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::Invoking Delegate");
@@ -771,6 +657,74 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
             EmitDebugLog(ilGenerator, $"Returning...");
 
             ilGenerator.Emit(OpCodes.Ret);
+        }
+
+        private void EmitUsingDefinitionValue(ILGenerator ilGenerator, FluentActionDefinition fluentActionDefinition, FluentActionUsingDefinition usingDefinition, Dictionary<int, int> methodParameterIndices, StateMachineState state, int stateIndex, int handlerInStateIndex)
+        {
+            if (usingDefinition.IsMethodParameter)
+            {
+                var usingDefinitionHash = usingDefinition.GetHashCode();
+                var methodParameterIndex = methodParameterIndices[usingDefinitionHash];
+
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldfld, MethodParameterFields[methodParameterIndex - 1]);
+            }
+            else if (usingDefinition.IsControllerProperty)
+            {
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
+                ilGenerator.Emit(OpCodes.Callvirt,
+                    typeof(Controller).GetProperty(usingDefinition.ControllerPropertyName).GetGetMethod());
+            }
+            else if (usingDefinition is FluentActionUsingPropertyDefinition)
+            {
+                var propertyName = ((FluentActionUsingPropertyDefinition)usingDefinition).PropertyName;
+                var parentType = fluentActionDefinition.ParentType ?? typeof(Controller);
+                var property = parentType.GetProperty(propertyName);
+                if (property == null)
+                {
+                    throw new Exception($"Could not find property {propertyName} on type {parentType.FullName}.");
+                }
+
+                var propertyGetMethod = property.GetGetMethod();
+                if (propertyGetMethod == null)
+                {
+                    throw new Exception($"Missing public get method on property {propertyName} on type {parentType.FullName}.");
+                }
+
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
+                ilGenerator.Emit(OpCodes.Callvirt, propertyGetMethod);
+            }
+            else if (usingDefinition is FluentActionUsingParentDefinition)
+            {
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldfld, ParentField);
+            }
+            else if (usingDefinition is FluentActionUsingResultDefinition)
+            {
+                FieldBuilder resultFieldToLoad;
+                if (handlerInStateIndex > 0)
+                {
+                    resultFieldToLoad = state.Handlers[handlerInStateIndex - 1].ResultField;
+                }
+                else
+                {
+                    resultFieldToLoad = States[stateIndex - 1].ResultField;
+                }
+
+                ilGenerator.Emit(OpCodes.Ldarg_0);
+                ilGenerator.Emit(OpCodes.Ldfld, resultFieldToLoad);
+
+                if (resultFieldToLoad.FieldType.IsValueType)
+                {
+                    ilGenerator.Emit(OpCodes.Box, resultFieldToLoad.FieldType);
+                }
+            }
+            else
+            {
+                throw new Exception($"Got unknown using definition: {usingDefinition.GetType()}");
+            }
         }
 
         private void DefineSetStateMachineMethod()
