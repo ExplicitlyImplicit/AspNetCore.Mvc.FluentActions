@@ -534,13 +534,26 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                         ilGenerator.Emit(OpCodes.Ldstr, handler.ViewTarget);
 
                         Type[] viewMethodParameterTypes = null;
-                        if (stateIndex > 0 && States[stateIndex - 1].ResultField != null)
+                        if (handler.Usings.Any())
+                        {
+                            EmitUsingDefinitionValue(ilGenerator, fluentActionDefinition, handler.Usings.Last(), methodParameterIndices, state, stateIndex, handlerInStateIndex);
+                            viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
+                        }
+                        else if (handlerInStateIndex > 0 && state.Handlers[handlerInStateIndex - 1].ResultField != null)
+                        {
+                            ilGenerator.Emit(OpCodes.Ldarg_0);
+                            ilGenerator.Emit(OpCodes.Ldfld, state.Handlers[handlerInStateIndex - 1].ResultField);
+
+                            viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
+                        }
+                        else if (handlerInStateIndex == 0 && stateIndex > 0 && States[stateIndex - 1].ResultField != null)
                         {
                             ilGenerator.Emit(OpCodes.Ldarg_0);
                             ilGenerator.Emit(OpCodes.Ldfld, States[stateIndex - 1].ResultField);
 
                             viewMethodParameterTypes = new[] { typeof(string), typeof(object) };
-                        } else
+                        }
+                        else
                         {
                             viewMethodParameterTypes = new[] { typeof(string) };
                         }

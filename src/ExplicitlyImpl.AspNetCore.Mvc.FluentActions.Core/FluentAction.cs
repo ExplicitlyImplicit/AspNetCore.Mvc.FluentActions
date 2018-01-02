@@ -537,24 +537,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -869,24 +869,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -1200,24 +1200,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -1532,24 +1532,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -1864,24 +1864,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -2195,24 +2195,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -2526,24 +2526,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -2857,24 +2857,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 
@@ -2920,24 +2920,24 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentAction<TP, TR2>(Definition, asyncHandlerFunc, async: true);
         }
 
-        public FluentActionWithView ToView(string pathToView)
+        public FluentActionWithView<TP> ToView(string pathToView)
         {
-            return new FluentActionWithView(Definition, pathToView);
+            return new FluentActionWithView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithPartialView ToPartialView(string pathToView)
+        public FluentActionWithPartialView<TP> ToPartialView(string pathToView)
         {
-            return new FluentActionWithPartialView(Definition, pathToView);
+            return new FluentActionWithPartialView<TP>(Definition, pathToView);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(Type viewComponentType)
+        public FluentActionWithViewComponent<TP> ToViewComponent(Type viewComponentType)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentType);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentType);
         }
 
-        public FluentActionWithViewComponent ToViewComponent(string viewComponentName)
+        public FluentActionWithViewComponent<TP> ToViewComponent(string viewComponentName)
         {
-            return new FluentActionWithViewComponent(Definition, viewComponentName);
+            return new FluentActionWithViewComponent<TP>(Definition, viewComponentName);
         }
     }
 }
