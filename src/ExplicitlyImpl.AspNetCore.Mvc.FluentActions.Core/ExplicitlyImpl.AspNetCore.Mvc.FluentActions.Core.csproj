@@ -4,7 +4,7 @@
     <Description>Contains core functionality of Fluent Actions for ASP.NET Core MVC.</Description>
     <AssemblyTitle>Core components of Fluent Actions for ASP.NET Core MVC</AssemblyTitle>
     <NeutralLanguage>English (en-US)</NeutralLanguage>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.1.0</VersionPrefix>
     <Authors>https://github.com/ExplicitlyImplicit</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core</AssemblyName>

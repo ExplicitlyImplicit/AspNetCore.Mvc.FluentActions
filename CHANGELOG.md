@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.0 (2018-01-02)
+
+- Upgraded to netstandard2.0 
+- Migrated xproj project files to the latest csproj xml format
+- Updated core dependencies
+- Made ToView, ToPartialView and ToViewComponent chainable
+- Added `Append` statement to the config parameter
+- Added new using statements:
+	- UsingRequest
+	- UsingResponse
+	- UsingProperty
+
+The `Append` statement can be used to append functionality to many actions at once, see the README for more info.
+	
 ## 2.0.0 (2017-08-31)
 
 This release comes with a new API for using fluent actions in your MVC project. New functionality in this release
