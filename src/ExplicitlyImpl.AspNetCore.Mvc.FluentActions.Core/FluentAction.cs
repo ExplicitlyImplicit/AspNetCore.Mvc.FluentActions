@@ -211,22 +211,30 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return WithCustomAttribute<ValidateAntiForgeryTokenAttribute>();
         }
 
-        public virtual FluentAction<TP, TR> Authorize(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
+        public virtual FluentAction<TP, TR> Authorize(
+            string policy = null, 
+            string roles = null, 
+            string activeAuthenticationSchemes = null, 
+            string authenticationSchemes = null)
         {
             return WithCustomAttribute<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
-                new string[] { "Roles", "ActiveAuthenticationSchemes" },
-                new object[] { roles, activeAuthenticationSchemes });
+                new string[] { "Roles", "AuthenticationSchemes", "ActiveAuthenticationSchemes" },
+                new object[] { roles, authenticationSchemes, activeAuthenticationSchemes });
         }
 
-        public virtual FluentAction<TP, TR> AuthorizeClass(string policy = null, string roles = null, string activeAuthenticationSchemes = null)
+        public virtual FluentAction<TP, TR> AuthorizeClass(
+            string policy = null, 
+            string roles = null, 
+            string activeAuthenticationSchemes = null,
+            string authenticationSchemes = null)
         {
             return WithCustomAttributeOnClass<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
-                new string[] { "Roles", "ActiveAuthenticationSchemes" },
-                new object[] { roles, activeAuthenticationSchemes });
+                new string[] { "Roles", "AuthenticationSchemes", "ActiveAuthenticationSchemes" },
+                new object[] { roles, authenticationSchemes, activeAuthenticationSchemes });
         }
 
         public virtual FluentAction<TP, TR> AllowAnonymous()
