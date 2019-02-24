@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 
 namespace HelloWorld
 {
