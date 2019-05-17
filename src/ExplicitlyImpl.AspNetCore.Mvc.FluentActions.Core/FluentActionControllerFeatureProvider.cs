@@ -17,6 +17,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
         {
+            if (Context.ControllerDefinitions == null)
+            {
+                return;
+            }
+
             foreach (var controllerDefinition in Context.ControllerDefinitions)
             {
                 if (!feature.Controllers.Contains(controllerDefinition.TypeInfo))

@@ -17,6 +17,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             this IApplicationBuilder app,
             Action<FluentActionCollection> addFluentActions)
         {
+            if (addFluentActions == null)
+            {
+                throw new ArgumentNullException(nameof(addFluentActions));
+            }
+
             var fluentActions = FluentActionCollection.DefineActions(addFluentActions);
 
             return app.UseFluentActions(fluentActions);
@@ -27,6 +32,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             Action<FluentActionCollectionConfigurator> configureFluentActions,
             Action<FluentActionCollection> addFluentActions)
         {
+            if (addFluentActions == null)
+            {
+                throw new ArgumentNullException(nameof(addFluentActions));
+            }
+
             var fluentActions = FluentActionCollection.DefineActions(configureFluentActions, addFluentActions);
 
             return app.UseFluentActions(fluentActions);
@@ -36,11 +46,21 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             this IApplicationBuilder app,
             FluentActionCollection fluentActions)
         {
+            if (fluentActions == null)
+            {
+                throw new ArgumentNullException(nameof(fluentActions));
+            }
+
             var controllerDefinitionBuilder = new FluentActionControllerDefinitionBuilder();
 
             var controllerDefinitions = fluentActions
                 .Select(fluentAction => controllerDefinitionBuilder.Build(fluentAction))
                 .ToList();
+
+            if (!controllerDefinitions.Any())
+            {
+                return app;
+            }
 
             var context = (FluentActionControllerFeatureProviderContext)app
                 .ApplicationServices

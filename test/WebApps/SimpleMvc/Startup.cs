@@ -62,7 +62,8 @@ namespace SimpleMvc
                     config.Append(action => action
                         .UsingResult()
                         .UsingResponse()
-                        .To(async (result, response) => {
+                        .To(async (result, response) =>
+                        {
                             await Task.Delay(1);
                             response.StatusCode = 418;
                             return result is string ?
