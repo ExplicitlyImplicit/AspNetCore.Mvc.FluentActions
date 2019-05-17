@@ -99,7 +99,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public override string ToString()
         {
-            return $"[{HttpMethod}]/{RouteTemplate ?? "?"}";
+            return $"[{HttpMethod}]{RouteTemplate ?? "?"}";
         }
 
         public void CommitHandlerDraft()
