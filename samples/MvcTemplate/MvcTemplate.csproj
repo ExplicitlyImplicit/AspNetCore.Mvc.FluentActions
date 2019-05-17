@@ -7,6 +7,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="ExplicitlyImpl.AspNetCore.Mvc.FluentActions" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>

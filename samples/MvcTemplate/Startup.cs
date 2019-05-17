@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MvcTemplate.Models;
 
 namespace MvcTemplate
 {
@@ -30,8 +30,10 @@ namespace MvcTemplate
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc()
+                .AddFluentActions()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,12 +51,30 @@ namespace MvcTemplate
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
+            app.UseFluentActions(actions =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                actions
+                    .RouteGet("/")
+                    .ToView("~/Views/Home/Index.cshtml");
+
+                actions
+                    .RouteGet("/Home/Privacy")
+                    .ToView("~/Views/Home/Privacy.cshtml");
+
+                actions
+                    .RouteGet("/Home/Error")
+                    .WithCustomAttribute<ResponseCacheAttribute>(
+                        new Type[0],
+                        new object[0],
+                        new string[] { "Duration", "Location", "NoStore" },
+                        new object[] { 0, ResponseCacheLocation.None, true }
+                    )
+                    .UsingHttpContext()
+                    .To(httpContext => new ErrorViewModel { RequestId = Activity.Current?.Id ?? httpContext.TraceIdentifier })
+                    .ToView("~/Views/Shared/Error.cshtml");
             });
+
+            app.UseMvc();
         }
     }
 }
