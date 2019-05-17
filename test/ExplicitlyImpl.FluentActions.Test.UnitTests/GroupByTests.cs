@@ -1,5 +1,4 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 

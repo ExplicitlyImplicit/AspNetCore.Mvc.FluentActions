@@ -221,6 +221,27 @@ namespace ExplicitlyImpl.FluentActions.Test.Utils
                                 $"Route templates do not match between action methods ({routeTemplate1} vs {routeTemplate2})."));
                         }
                     }
+                    else if (attributesForType1[attributeIndex] is ApiExplorerSettingsAttribute)
+                    {
+                        var apiExplorerSettings1 = (ApiExplorerSettingsAttribute)attributesForType1[attributeIndex];
+                        var apiExplorerSettings2 = (ApiExplorerSettingsAttribute)attributesForType2[attributeIndex];
+
+                        if (apiExplorerSettings1.GroupName != apiExplorerSettings2.GroupName)
+                        {
+                            comparisonResults.Add(new TypeFeatureComparisonResult(
+                                TypeComparisonFeature.HandlerActionMethod,
+                                false,
+                                $"ApiExplorerSettingsAttribute.GroupName does not match between action methods ({apiExplorerSettings1.GroupName} vs {apiExplorerSettings2.GroupName})."));
+                        }
+
+                        if (apiExplorerSettings1.IgnoreApi != apiExplorerSettings2.IgnoreApi)
+                        {
+                            comparisonResults.Add(new TypeFeatureComparisonResult(
+                                TypeComparisonFeature.HandlerActionMethod,
+                                false,
+                                $"ApiExplorerSettingsAttribute.IgnoreApi does not match between action methods ({apiExplorerSettings1.IgnoreApi} vs {apiExplorerSettings2.IgnoreApi})."));
+                        }
+                    }
                 }
             }
 

@@ -33,8 +33,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             Assert.Equal(builtControllerTypeInfo.Name, builtController.Name);
             Assert.Equal(fluentAction, builtController.FluentAction);
 
-            Assert.True(builtControllerTypeInfo.Name.StartsWith("FluentAction"));
-            Assert.True(builtControllerTypeInfo.Name.EndsWith("Controller"));
+            Assert.StartsWith("FluentAction", builtControllerTypeInfo.Name);
+            Assert.EndsWith("Controller", builtControllerTypeInfo.Name);
         }
 
         public static void BuildActionAndCompareToStaticAction(
