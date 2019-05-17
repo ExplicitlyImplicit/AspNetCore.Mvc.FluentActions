@@ -242,6 +242,39 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return WithCustomAttribute<AllowAnonymousAttribute>();
         }
 
+        public virtual FluentAction<TP, TR> ResponseCache(
+            int? duration = null,
+            ResponseCacheLocation? location = null,
+            bool? noStore = null,
+            string varyByHeader = null,
+            string[] varyByQueryKeys = null,
+            string cacheProfileName = null,
+            int? order = null,
+            bool? isReusable = null
+        )
+        {
+            var nonNullableArguments = new Dictionary<string, object>()
+                {
+                    { "Duration", duration },
+                    { "Location", location },
+                    { "NoStore", noStore },
+                    { "VaryByHeader", varyByHeader },
+                    { "VaryByQueryKeys", varyByQueryKeys },
+                    { "CacheProfileName", cacheProfileName },
+                    { "Order", order },
+                    { "IsReusable", isReusable }
+                }
+                .Where(pair => pair.Value != null)
+                .ToList();
+
+            return WithCustomAttribute<ResponseCacheAttribute>(
+                new Type[0],
+                new object[0],
+                nonNullableArguments.Select(p => p.Key).ToArray(),
+                nonNullableArguments.Select(p => p.Value).ToArray()
+            );
+        }
+
         public virtual FluentAction<TP, TR, TU1> Using<TU1>(FluentActionUsingDefinition usingDefinition)
         {
             return new FluentAction<TP, TR, TU1>(Definition, usingDefinition);

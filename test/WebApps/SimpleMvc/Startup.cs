@@ -207,6 +207,17 @@ namespace SimpleMvc
                         .UsingHttpContext()
                         .To(httpContext => new ErrorViewModel { RequestId = Activity.Current?.Id ?? httpContext.TraceIdentifier })
                         .ToView("~/Views/Shared/Error.cshtml");
+
+                    actions
+                        .RouteGet("/Home/Error2")
+                        .ResponseCache(
+                            duration: 0,
+                            location: ResponseCacheLocation.None,
+                            noStore: false
+                        )
+                        .UsingHttpContext()
+                        .To(httpContext => new ErrorViewModel { RequestId = Activity.Current?.Id ?? httpContext.TraceIdentifier })
+                        .ToView("~/Views/Shared/Error.cshtml");
                 }
             );
         }
