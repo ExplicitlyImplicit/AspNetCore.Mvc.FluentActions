@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using SimpleMvc.Models;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Diagnostics;
 
 namespace SimpleMvc
 {
@@ -193,6 +196,17 @@ namespace SimpleMvc
                         .RouteGet("/helloProp")
                         .UsingProperty<string>("HelloProp")
                         .To(helloProp => helloProp);
+
+                    actions
+                        .RouteGet("/Home/Error")
+                        .WithCustomAttribute<ResponseCacheAttribute>(
+                            new Type[0],
+                            new object[0],
+                            new string[] { "Duration", "Location", "NoStore" },
+                            new object[] { 0, ResponseCacheLocation.None, true })
+                        .UsingHttpContext()
+                        .To(httpContext => new ErrorViewModel { RequestId = Activity.Current?.Id ?? httpContext.TraceIdentifier })
+                        .ToView("~/Views/Shared/Error.cshtml");
                 }
             );
         }
