@@ -141,6 +141,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 fluentAction.Definition.GroupName = Config.GroupName;
             }
 
+            if (Config.IgnoreApi.HasValue && !fluentAction.Definition.IgnoreApi.HasValue)
+            {
+                fluentAction.Definition.IgnoreApi = Config.IgnoreApi;
+            }
+
             if (Config.ParentType != null && fluentAction.Definition.ParentType == null)
             {
                 fluentAction.Definition.ParentType = Config.ParentType;
@@ -226,6 +231,11 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public void GroupBy(string groupName)
         {
             Config.GroupName = groupName;
+        }
+
+        public void IgnoreApi(bool ignore = true)
+        {
+            Config.IgnoreApi = ignore;
         }
 
         public void InheritingFrom(Type parentType)
@@ -496,6 +506,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
     {
         public string GroupName { get; internal set; }
 
+        public bool? IgnoreApi { get; internal set; }
+
         public Type ParentType { get; internal set; }
 
         public Func<FluentActionDefinition, string> GetTitleFunc { get; internal set; }
@@ -520,6 +532,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return new FluentActionCollectionConfig
             {
                 GroupName = GroupName,
+                IgnoreApi = IgnoreApi,
                 ParentType = ParentType,
                 GetTitleFunc = GetTitleFunc,
                 GetDescriptionFunc = GetDescriptionFunc,

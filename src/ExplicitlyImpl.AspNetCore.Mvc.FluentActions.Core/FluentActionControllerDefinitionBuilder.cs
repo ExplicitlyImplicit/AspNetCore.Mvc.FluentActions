@@ -49,7 +49,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 var method = ((MethodCallExpression)handler.Expression.Body).Method;
                 var controllerTypeInfo = method.DeclaringType.GetTypeInfo();
 
-                if (!(typeof(Controller).IsAssignableFrom(controllerTypeInfo.UnderlyingSystemType)))
+                if (!typeof(Controller).IsAssignableFrom(controllerTypeInfo.UnderlyingSystemType))
                 {
                     throw new ArgumentException(
                         $"Method call for {fluentAction} must come from a controller.");
@@ -67,6 +67,35 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 };
             } else
             {
+                if (
+                    (
+                        fluentAction.Definition.GroupName != null || 
+                        fluentAction.Definition.IgnoreApi == true
+                    ) &&
+                    fluentAction.Definition.CustomAttributes.All(ca => ca.Type != typeof(ApiExplorerSettingsAttribute))
+                )
+                {
+                    var nonNullableProperties = new Dictionary<string, object>()
+                        {
+                            { "GroupName", fluentAction.Definition.GroupName },
+                            { "IgnoreApi", fluentAction.Definition.IgnoreApi },
+                        }
+                        .Where(pair => pair.Value != null)
+                        .ToList();
+
+                    var apiExplorerSettingsAttributeType = typeof(ApiExplorerSettingsAttribute);
+                    fluentAction.Definition.CustomAttributes.Add(new FluentActionCustomAttribute
+                    {
+                        Type = apiExplorerSettingsAttributeType,
+                        Constructor = apiExplorerSettingsAttributeType.GetConstructor(new Type[0]),
+                        ConstructorArgs = new object[0],
+                        NamedProperties = nonNullableProperties.Select(p => apiExplorerSettingsAttributeType.GetProperty(p.Key)).ToArray(),
+                        PropertyValues = nonNullableProperties.Select(p => p.Value).ToArray(),
+                        NamedFields = new FieldInfo[0],
+                        FieldValues = new object[0],
+                    });
+                }
+
                 try
                 {
                     var controllerTypeInfo = DefineControllerType(fluentAction.Definition, logger);

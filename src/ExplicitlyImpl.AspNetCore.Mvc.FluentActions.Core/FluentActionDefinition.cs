@@ -57,6 +57,8 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public string GroupName { get; internal set; }
 
+        public bool? IgnoreApi { get; internal set; }
+
         public Type ParentType { get; internal set; }
 
         public IList<FluentActionHandlerDefinition> Handlers { get; internal set; }

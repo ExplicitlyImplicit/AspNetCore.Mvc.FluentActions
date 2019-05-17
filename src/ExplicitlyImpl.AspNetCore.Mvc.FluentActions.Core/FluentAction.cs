@@ -54,6 +54,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return this;
         }
 
+        public virtual FluentAction<TP, TR> IgnoreApi(bool ignore = true)
+        {
+            Definition.IgnoreApi = ignore;
+            return this;
+        }
+
         public virtual FluentAction<TP, TR> WithTitle(string title)
         {
             Definition.Title = title;
