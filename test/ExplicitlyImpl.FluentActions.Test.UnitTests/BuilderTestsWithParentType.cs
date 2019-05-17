@@ -85,7 +85,7 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
 
             foreach (var action in actionCollection)
             {
-                Assert.Equal(action.Definition.ParentType, typeof(BaseController));
+                Assert.Equal(typeof(BaseController), action.Definition.ParentType);
             }
         }
     }
