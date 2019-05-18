@@ -17,7 +17,6 @@ namespace SimpleApi
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc();
             app.UseFluentActions(actions =>
             {
                 actions.RouteGet("/").To(() => "Hello World!");
@@ -25,6 +24,7 @@ namespace SimpleApi
                 actions.Add(UserActions.All);
                 actions.Add(NoteActions.All);
             });
+            app.UseMvc();
         }
     }
 }
