@@ -48,13 +48,6 @@ namespace SimpleMvc
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
-
             app.UseFluentActions(
                 config =>
                 {
@@ -221,6 +214,13 @@ namespace SimpleMvc
                         .ToView("~/Views/Shared/Error.cshtml");
                 }
             );
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
