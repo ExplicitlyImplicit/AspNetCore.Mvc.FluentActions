@@ -63,8 +63,8 @@ services.AddMvc()<b>.AddFluentActions();</b>
  .
  .
  .
-app.UseMvc(routes);
 <b>app.UseFluentActions(actions);</b>
+app.UseMvc(routes);
 </pre>
 
 There is also `UseFluentActions(config, actions)` to apply initial settings on all 
