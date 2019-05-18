@@ -62,7 +62,6 @@ namespace MvcWithSwagger
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc();
             app.UseFluentActions(actions =>
             {
                 actions
@@ -88,6 +87,8 @@ namespace MvcWithSwagger
                     )
                     .To(() => "Hello Starlord!");
             });
+
+            app.UseMvc();
 
             app.UseSwagger(config =>
             {
