@@ -104,6 +104,12 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 throw new ArgumentNullException(nameof(builder));
             }
 
+            // Stop if our feature provider has already been added (AddFluentActions has already been called)
+            if (builder.Services.Any(s => s.ServiceType == typeof(FluentActionControllerFeatureProviderContext)))
+            {
+                return builder;
+            }
+
             var context = new FluentActionControllerFeatureProviderContext();
             builder.Services.TryAddSingleton(context);
 

@@ -34,7 +34,8 @@ namespace MvcWithSwagger
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().AddFluentActions();
+            // Test multiple calls to AddFluentActions
+            services.AddMvc().AddFluentActions().AddFluentActions();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
