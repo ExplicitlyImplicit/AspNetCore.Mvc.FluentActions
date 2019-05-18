@@ -13,11 +13,11 @@ namespace HelloWorld
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMvc();
             app.UseFluentActions(actions =>
             {
                 actions.RouteGet("/").To(() => "Hello World!");
             });
+            app.UseMvc();
         }
     }
 }
