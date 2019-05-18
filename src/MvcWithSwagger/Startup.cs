@@ -77,6 +77,18 @@ namespace MvcWithSwagger
                 actions.Add(NoteActions.All);
             });
 
+            // Test multiple calls to UseFluentActions
+            app.UseFluentActions(actions =>
+            {
+                actions
+                    .RouteGet("/starlord")
+                    .WithCustomAttribute<SwaggerTagsAttribute>(
+                        new Type[] { typeof(string[]) },
+                        new object[] { new string[] { "Hello Starlord" } }
+                    )
+                    .To(() => "Hello Starlord!");
+            });
+
             app.UseSwagger(config =>
             {
                 config.Path = "/api/docs/api.json";

@@ -1,7 +1,6 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,7 +70,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 throw new Exception("Could not find a feature provider for fluent actions, did you remember to call app.AddMvc().AddFluentActions()?");
             }
 
-            context.ControllerDefinitions = controllerDefinitions;
+            if (context.ControllerDefinitions == null)
+            {
+                context.ControllerDefinitions = controllerDefinitions;
+            }
+            else
+            {
+                context.ControllerDefinitions = context.ControllerDefinitions.Concat(controllerDefinitions);
+            }
 
             var routes = new RouteBuilder(app)
             {
