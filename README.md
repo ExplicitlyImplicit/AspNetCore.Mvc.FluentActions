@@ -1186,7 +1186,36 @@ actions
 
 The group can be used for generating different kinds of documentation for your project.
 
+Using `GroupBy` will also add an `ApiExplorerSettings` attribute on the action with the `GroupName` property set.
+See the `ApiExplorerSettings` section below for more info (which also addresses `IgnoreApi`).
+
 Take a look at the `Config` parameter to group multiple actions all at once.
+
+### The `ApiExplorerSettings` attribute
+
+If `GroupBy` and/or `IgnoreApi` are used, an `ApiExplorerSettings` attribute is added to the resulting action.
+
+The following fluent action:
+
+```
+actions
+    .RouteGet("/Hello")
+    .GroupBy("Group1")
+    .IgnoreApi()
+    .To(() => "Hello!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/Hello")]
+[ApiExplorerSettings(GroupName = "Group1", IgnoreApi = true)]
+public ActionResult Action()
+{
+    return "Hello!");
+}
+```
 
 ### `Config` parameter
 
