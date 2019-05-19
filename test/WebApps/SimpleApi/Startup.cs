@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleApi
 {
@@ -9,7 +10,10 @@ namespace SimpleApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddFluentActions();
+            services
+                .AddMvc()
+                .AddFluentActions()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
