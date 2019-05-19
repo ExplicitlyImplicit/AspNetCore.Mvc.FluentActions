@@ -248,6 +248,18 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             return WithCustomAttribute<AllowAnonymousAttribute>();
         }
 
+        /// <summary>
+        /// Adds a ResponseCache attribute to the generated MVC action
+        /// </summary>
+        /// <param name="duration">Duration in seconds for which the response is cached. This sets "max-age" in "Cache-control" header.</param>
+        /// <param name="location">The location where the data from a particular URL must be cached.</param>
+        /// <param name="noStore">The value which determines whether the data should be stored or not. When set to true, it sets "Cache-control" header to "no-store". Ignores the "Location" parameter for values other than "None". Ignores the "duration" parameter.</param>
+        /// <param name="varyByHeader">The value for the Vary response header.</param>
+        /// <param name="varyByQueryKeys">The query keys to vary by.</param>
+        /// <param name="cacheProfileName">The value of the cache profile name.</param>
+        /// <param name="order"></param>
+        /// <param name="isReusable"></param>
+        /// <returns></returns>
         public virtual FluentAction<TP, TR> ResponseCache(
             int? duration = null,
             ResponseCacheLocation? location = null,
