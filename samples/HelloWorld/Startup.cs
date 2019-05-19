@@ -1,5 +1,6 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HelloWorld
@@ -8,7 +9,10 @@ namespace HelloWorld
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddFluentActions();
+            services
+                .AddMvc()
+                .AddFluentActions()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app)
