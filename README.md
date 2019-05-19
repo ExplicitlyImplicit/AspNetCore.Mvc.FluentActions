@@ -1043,6 +1043,33 @@ public ActionResult Action()
 }
 ```
 
+### Response Cache
+
+The following fluent action:
+
+```
+actions
+    .RouteGet("/Hello")
+    .ResponseCache(
+        duration: 0,
+        location: ResponseCacheLocation.None,
+        noStore: false
+    )
+    .To(() => "Hello!");
+```
+
+Is equivalent to the following action method in a controller:
+
+```
+[HttpGet]
+[Route("/Hello")]
+[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = false)]
+public ActionResult Action()
+{
+    return "Hello!");
+}
+```
+
 ### Custom Attributes
 
 Fluent actions support adding custom attributes:
