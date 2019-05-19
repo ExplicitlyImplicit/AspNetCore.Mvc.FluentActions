@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.0 (2019-05-19)
+
+- Updated core dependencies
+- Updated sample and test projects to .NET Core 2.2
+- `AddFluentActions` can now be called multiple times (subsequent calls will not do anything) 
+- `UseFluentActions` can now be called multiple times (all actions will be built and included) 
+- `UseFluentActions` are now recommended to call before `UseMvc` (since it does not work on .NET Core 2.2)
+- Added `ResponseCache` statement which adds a `ResponseCacheAttribute` to the action
+- Added `IgnoreApi` statement which adds an `ApiExplorerSettingsAttribute` to the action
+- The `GroupBy` statement now adds an `ApiExplorerSettingsAttribute` to the action
+
 ## 2.1.0 (2018-01-02)
 
 - Upgraded to netstandard2.0 

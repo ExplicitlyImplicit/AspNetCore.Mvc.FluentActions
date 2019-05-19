@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<Title>Fluent Actions for ASP.NET Core MVC</Title>
@@ -6,7 +6,7 @@
     <Summary>Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup.</Summary>
     <AssemblyTitle>Fluent Actions for ASP.NET Core MVC</AssemblyTitle>
     <NeutralLanguage>English (en-US)</NeutralLanguage>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.2.0</VersionPrefix>
     <Authors>https://github.com/ExplicitlyImplicit</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ExplicitlyImpl.AspNetCore.Mvc.FluentActions</AssemblyName>
