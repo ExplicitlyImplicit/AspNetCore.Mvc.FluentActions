@@ -4,9 +4,9 @@
     <Description>Contains core functionality of Fluent Actions for ASP.NET Core MVC.</Description>
     <AssemblyTitle>Core components of Fluent Actions for ASP.NET Core MVC</AssemblyTitle>
     <NeutralLanguage>English (en-US)</NeutralLanguage>
-    <VersionPrefix>2.2.0</VersionPrefix>
+    <VersionPrefix>3.0.0</VersionPrefix>
     <Authors>https://github.com/ExplicitlyImplicit</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core</AssemblyName>
     <PackageId>ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core</PackageId>
     <PackageTags>aspnetcoremvc</PackageTags>
@@ -22,10 +22,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.0" />
     <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

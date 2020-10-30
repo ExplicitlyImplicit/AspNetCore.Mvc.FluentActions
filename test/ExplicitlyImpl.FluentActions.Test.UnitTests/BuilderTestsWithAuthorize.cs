@@ -40,25 +40,25 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                 null);
         }
 
-        [Fact(DisplayName = "1 authorize (activeAuthenticationSchemes), returns string")]
-        public void FluentControllerBuilder_FluentActionWith1AuthorizeActiveAuthenticationSchemesReturnsString()
+        [Fact(DisplayName = "1 authorize (authenticationSchemes), returns string")]
+        public void FluentControllerBuilder_FluentActionWith1AuthorizeAuthenticationSchemesReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
-                    .Authorize(activeAuthenticationSchemes: "Scheme")
+                    .Authorize(authenticationSchemes: "Scheme")
                     .To(() => "hello"),
-                typeof(ControllerWith1AuthorizeActiveAuthenticationSchemesReturnsString),
+                typeof(ControllerWith1AuthorizeAuthenticationSchemesReturnsString),
                 null);
         }
 
-        [Fact(DisplayName = "1 authorize (policy - roles - activeAuthenticationSchemes), returns string")]
-        public void FluentControllerBuilder_FluentActionWith1AuthorizePolicyRolesActiveAuthenticationSchemesReturnsString()
+        [Fact(DisplayName = "1 authorize (policy - roles - authenticationSchemes), returns string")]
+        public void FluentControllerBuilder_FluentActionWith1AuthorizePolicyRolesAuthenticationSchemesReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .Authorize("CanSayHello", "Admin", "Scheme")
                     .To(() => "hello"),
-                typeof(ControllerWith1AuthorizePolicyRolesActiveAuthenticationSchemesReturnsString),
+                typeof(ControllerWith1AuthorizePolicyRolesAuthenticationSchemesReturnsString),
                 null);
         }
 

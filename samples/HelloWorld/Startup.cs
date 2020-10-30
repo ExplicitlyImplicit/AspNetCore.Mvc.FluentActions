@@ -1,6 +1,5 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HelloWorld
@@ -10,9 +9,8 @@ namespace HelloWorld
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMvc()
-                .AddFluentActions()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddMvc(config => config.EnableEndpointRouting = false)
+                .AddFluentActions();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -21,6 +19,7 @@ namespace HelloWorld
             {
                 actions.RouteGet("/").To(() => "Hello World!");
             });
+
             app.UseMvc();
         }
     }

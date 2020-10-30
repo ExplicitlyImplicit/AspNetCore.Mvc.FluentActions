@@ -114,12 +114,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
                 ilGenerator.Emit(OpCodes.Stfld, methodParameterField);
             }
 
-            // Store delegates to fields in StateMachine
-            foreach (var handler in StateMachineBuilder.States
+            var handlers = StateMachineBuilder.States
                 .SelectMany(state => state.Handlers)
-                .Where(handler => 
+                .Where(handler =>
                     handler.Definition.Type == FluentActionHandlerType.Func ||
-                    handler.Definition.Type == FluentActionHandlerType.Action))
+                    handler.Definition.Type == FluentActionHandlerType.Action);
+
+            // Store delegates to fields in StateMachine
+            foreach (var handler in handlers)
             {
                 var delegateKey = FluentActionDelegates.Add(handler.Definition.Delegate);
 

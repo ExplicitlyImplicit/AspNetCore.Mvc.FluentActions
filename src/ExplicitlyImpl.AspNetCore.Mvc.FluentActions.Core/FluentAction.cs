@@ -220,27 +220,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public virtual FluentAction<TP, TR> Authorize(
             string policy = null, 
             string roles = null, 
-            string activeAuthenticationSchemes = null, 
             string authenticationSchemes = null)
         {
             return WithCustomAttribute<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
-                new string[] { "Roles", "AuthenticationSchemes", "ActiveAuthenticationSchemes" },
-                new object[] { roles, authenticationSchemes, activeAuthenticationSchemes });
+                new string[] { "Roles", "AuthenticationSchemes" },
+                new object[] { roles, authenticationSchemes });
         }
 
         public virtual FluentAction<TP, TR> AuthorizeClass(
             string policy = null, 
             string roles = null, 
-            string activeAuthenticationSchemes = null,
             string authenticationSchemes = null)
         {
             return WithCustomAttributeOnClass<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
-                new string[] { "Roles", "AuthenticationSchemes", "ActiveAuthenticationSchemes" },
-                new object[] { roles, authenticationSchemes, activeAuthenticationSchemes });
+                new string[] { "Roles", "AuthenticationSchemes" },
+                new object[] { roles, authenticationSchemes });
         }
 
         public virtual FluentAction<TP, TR> AllowAnonymous()

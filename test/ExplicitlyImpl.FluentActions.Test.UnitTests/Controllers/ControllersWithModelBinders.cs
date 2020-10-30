@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
+﻿using ExplicitlyImpl.FluentActions.Test.Utils;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Core;
 using System.Threading.Tasks;
 
 namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers

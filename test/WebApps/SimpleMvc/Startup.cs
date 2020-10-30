@@ -8,11 +8,14 @@ using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using SimpleMvc.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using SimpleMvc.Models;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
 
 namespace SimpleMvc
 {
@@ -30,19 +33,21 @@ namespace SimpleMvc
         {
             services
                 .AddMvc()
-                .AddFluentActions()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddFluentActions();
+
+            services.AddAuthentication(o => {
+                o.DefaultScheme = "AuthScheme";
+            }).AddScheme<AuthHandlerOptions, AuthHandler>("AuthScheme", (options) => { });
 
             services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
@@ -50,6 +55,8 @@ namespace SimpleMvc
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthorization();
 
             app.UseFluentActions(
                 config =>
@@ -101,7 +108,7 @@ namespace SimpleMvc
 
                     actions
                         .Route("/helloWithAttributes", HttpMethod.Get)
-                        .WithCustomAttribute<AuthorizeAttribute>()
+                        .WithCustomAttribute<AuthorizeAttribute>(new Type[0], new object[0], new string[] { "AuthenticationSchemes" }, new object[] { "AuthScheme" })
                         .To(() => "Hello With Attributes!");
 
                     actions
@@ -124,6 +131,8 @@ namespace SimpleMvc
 
                     actions
                         .Route("/toError", HttpMethod.Get)
+                        .UsingHttpContext()
+                        .To((httpContext) => new ErrorViewModel { RequestId = Activity.Current?.Id ?? httpContext.TraceIdentifier })
                         .ToView("~/Views/Shared/Error.cshtml");
 
                     actions
@@ -218,12 +227,29 @@ namespace SimpleMvc
                 }
             );
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+    }
+
+    public class AuthHandlerOptions : AuthenticationSchemeOptions
+    {
+
+    }
+
+    public class AuthHandler : AuthenticationHandler<AuthHandlerOptions>
+    {
+        public AuthHandler(IOptionsMonitor<AuthHandlerOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        {
+        }
+
+        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        {
+            return Task.FromResult(AuthenticateResult.Fail("Access denied."));
         }
     }
 }

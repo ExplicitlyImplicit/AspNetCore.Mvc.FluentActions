@@ -395,7 +395,7 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 
                             EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::If [result.IsCompleted]: Goto finish;");
                             // If [result.IsCompleted]: Goto finish
-                            ilGenerator.Emit(OpCodes.Ldloca, localVariableForResult);
+                            ilGenerator.Emit(OpCodes.Ldloc, localVariableForResult);
                             ilGenerator.Emit(OpCodes.Call, resultType.GetProperty("IsCompleted").GetGetMethod());
                             ilGenerator.Emit(OpCodes.Brtrue, state.FinishLabel);
 
@@ -484,13 +484,13 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core.Builder
 
                             EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::If [result.IsCompleted]: Goto finish;");
                             // If [result.IsCompleted]: Goto finish
-                            ilGenerator.Emit(OpCodes.Ldloca, localVariableForResult);
+                            ilGenerator.Emit(OpCodes.Ldloc, localVariableForResult);
                             ilGenerator.Emit(OpCodes.Call, resultType.GetProperty("IsCompleted").GetGetMethod());
                             ilGenerator.Emit(OpCodes.Brtrue, state.FinishLabel);
 
                             // Else: AwaitUnsafeOnCompleted(ref Awaiter, ref self)
 
-                            EmitDebugLog(ilGenerator, $"S☺tate{stateIndex}::Handler::Else: AwaitUnsafeOnCompleted(ref Awaiter, ref self)");
+                            EmitDebugLog(ilGenerator, $"State{stateIndex}::Handler::Else: AwaitUnsafeOnCompleted(ref Awaiter, ref self)");
 
                             // Store executing instance ("this") in a local variable
                             ilGenerator.Emit(OpCodes.Ldarg_0);

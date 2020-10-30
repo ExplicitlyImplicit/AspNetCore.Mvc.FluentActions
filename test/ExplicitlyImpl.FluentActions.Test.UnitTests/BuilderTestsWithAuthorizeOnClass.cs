@@ -40,25 +40,25 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
                 null);
         }
 
-        [Fact(DisplayName = "1 authorize class (activeAuthenticationSchemes), returns string")]
-        public void FluentControllerBuilder_FluentActionWith1AuthorizeClassActiveAuthenticationSchemesReturnsString()
+        [Fact(DisplayName = "1 authorize class (authenticationSchemes), returns string")]
+        public void FluentControllerBuilder_FluentActionWith1AuthorizeClassAuthenticationSchemesReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
-                    .AuthorizeClass(activeAuthenticationSchemes: "Scheme")
+                    .AuthorizeClass(authenticationSchemes: "Scheme")
                     .To(() => "hello"),
-                typeof(ControllerWith1AuthorizeClassActiveAuthenticationSchemesReturnsString),
+                typeof(ControllerWith1AuthorizeClassAuthenticationSchemesReturnsString),
                 null);
         }
 
-        [Fact(DisplayName = "1 authorize class (policy - roles - activeAuthenticationSchemes), returns string")]
-        public void FluentControllerBuilder_FluentActionWith1AuthorizeClassPolicyRolesActiveAuthenticationSchemesReturnsString()
+        [Fact(DisplayName = "1 authorize class (policy - roles - authenticationSchemes), returns string")]
+        public void FluentControllerBuilder_FluentActionWith1AuthorizeClassPolicyRolesAuthenticationSchemesReturnsString()
         {
             BuilderTestUtils.BuildActionAndCompareToStaticActionWithResult(
                 new FluentAction("/route/url", HttpMethod.Get)
                     .AuthorizeClass("CanSayHello", "Admin", "Scheme")
                     .To(() => "hello"),
-                typeof(ControllerWith1AuthorizeClassPolicyRolesActiveAuthenticationSchemesReturnsString),
+                typeof(ControllerWith1AuthorizeClassPolicyRolesAuthenticationSchemesReturnsString),
                 null);
         }
 

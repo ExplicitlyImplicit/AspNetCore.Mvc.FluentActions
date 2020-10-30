@@ -465,27 +465,25 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         public void Authorize(
             string policy = null, 
             string roles = null, 
-            string activeAuthenticationSchemes = null,
             string authenticationSchemes = null)
         {
             WithCustomAttribute<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
-                new string[] { "Roles", "AuthenticationSchemes", "ActiveAuthenticationSchemes" },
-                new object[] { roles, authenticationSchemes, activeAuthenticationSchemes });
+                new string[] { "Roles", "AuthenticationSchemes" },
+                new object[] { roles, authenticationSchemes });
         }
 
         public void AuthorizeClass(
             string policy = null, 
             string roles = null, 
-            string activeAuthenticationSchemes = null,
             string authenticationSchemes = null)
         {
             WithCustomAttributeOnClass<AuthorizeAttribute>(
                 new Type[] { typeof(string) },
                 new object[] { policy },
-                new string[] { "Roles", "AuthenticationSchemes", "ActiveAuthenticationSchemes" },
-                new object[] { roles, authenticationSchemes, activeAuthenticationSchemes });
+                new string[] { "Roles", "AuthenticationSchemes" },
+                new object[] { roles, authenticationSchemes });
         }
 
         private static string GetResourceValue(Type resourceSourceType, string resourceName, CultureInfo culture, bool ignoreMissingValues = false)

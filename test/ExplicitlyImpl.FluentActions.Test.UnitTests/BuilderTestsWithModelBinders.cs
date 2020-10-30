@@ -1,6 +1,6 @@
 ﻿using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers;
-using Microsoft.AspNetCore.Mvc.Internal;
+using ExplicitlyImpl.FluentActions.Test.Utils;
 using System;
 using System.Threading.Tasks;
 using Xunit;

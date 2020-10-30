@@ -12,7 +12,7 @@ namespace MvcWithSwagger
                 config.GroupBy("Users");
                 config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
                 config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
-                config.WithCustomAttribute<SwaggerTagsAttribute>(
+                config.WithCustomAttribute<OpenApiTagsAttribute>(
                      new Type[] { typeof(string[]) },
                      new object[] { new string[] { "Users" } }
                  );

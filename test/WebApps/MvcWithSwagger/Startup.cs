@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSwag.Annotations;
-using NSwag.AspNetCore;
-using NSwag.SwaggerGeneration.Processors.Security;
 
 namespace MvcWithSwagger
 {
@@ -38,7 +32,7 @@ namespace MvcWithSwagger
                 .AddMvc()
                 .AddFluentActions()
                 .AddFluentActions() // Test multiple calls to AddFluentActions
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                ;
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
@@ -51,9 +45,9 @@ namespace MvcWithSwagger
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -64,12 +58,13 @@ namespace MvcWithSwagger
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseRouting();
 
             app.UseFluentActions(actions =>
             {
                 actions
                     .RouteGet("/")
-                    .WithCustomAttribute<SwaggerTagsAttribute>(
+                    .WithCustomAttribute<OpenApiTagsAttribute>(
                         new Type[] { typeof(string[]) },
                         new object[] { new string[] { "Hello World" } }
                     )
@@ -84,16 +79,21 @@ namespace MvcWithSwagger
             {
                 actions
                     .RouteGet("/starlord")
-                    .WithCustomAttribute<SwaggerTagsAttribute>(
+                    .WithCustomAttribute<OpenApiTagsAttribute>(
                         new Type[] { typeof(string[]) },
                         new object[] { new string[] { "Hello Starlord" } }
                     )
                     .To(() => "Hello Starlord!");
             });
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
 
-            app.UseSwagger(config =>
+            app.UseOpenApi(config =>
             {
                 config.Path = "/api/docs/api.json";
             });

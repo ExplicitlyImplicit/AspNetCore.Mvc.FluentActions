@@ -1,12 +1,12 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
 
 namespace ExplicitlyImpl.FluentActions.Test.Utils

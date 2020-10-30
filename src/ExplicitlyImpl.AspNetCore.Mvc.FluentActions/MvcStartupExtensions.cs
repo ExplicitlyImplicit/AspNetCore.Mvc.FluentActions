@@ -1,13 +1,10 @@
 ﻿// Licensed under the MIT License. See LICENSE file in the root of the solution for license information.
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Linq;
-
 namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 {
     public static class ApplicationBuilderExtensions
@@ -79,25 +76,23 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
                 context.ControllerDefinitions = context.ControllerDefinitions.Concat(controllerDefinitions);
             }
 
-            var routes = new RouteBuilder(app)
+            app.UseEndpoints(routes =>
             {
-                DefaultHandler = app.ApplicationServices.GetRequiredService<MvcRouteHandler>(),
-            };
+                foreach (var controllerDefinition in controllerDefinitions
+                    .Where(controllerDefinition => controllerDefinition.FluentAction.Definition.IsMapRoute))
+                {
+                    routes.MapControllerRoute(
+                        controllerDefinition.Id,
+                        controllerDefinition.RouteTemplate.WithoutLeading("/"),
+                        new
+                        {
+                            controller = controllerDefinition.Name.WithoutTrailing("Controller"),
+                            action = controllerDefinition.ActionName
+                        });
+                }
+            });
 
-            foreach (var controllerDefinition in controllerDefinitions
-                .Where(controllerDefinition => controllerDefinition.FluentAction.Definition.IsMapRoute))
-            {
-                routes.MapRoute(
-                    controllerDefinition.Id,
-                    controllerDefinition.RouteTemplate.WithoutLeading("/"),
-                    new
-                    {
-                        controller = controllerDefinition.Name.WithoutTrailing("Controller"),
-                        action = controllerDefinition.ActionName
-                    });
-            }
-
-            return app.UseRouter(routes.Build());
+            return app;
         }
     }
 

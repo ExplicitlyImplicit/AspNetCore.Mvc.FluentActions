@@ -37,8 +37,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
-    [Authorize(ActiveAuthenticationSchemes = "Scheme")]
-    public class ControllerWith1AuthorizeClassActiveAuthenticationSchemesReturnsString : Controller
+    [Authorize(AuthenticationSchemes = "Scheme")]
+    public class ControllerWith1AuthorizeClassAuthenticationSchemesReturnsString : Controller
     {
         [HttpGet]
         [Route("/route/url")]
@@ -48,8 +48,8 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
-    [Authorize(Policy = "CanSayHello", Roles = "Admin", ActiveAuthenticationSchemes = "Scheme")]
-    public class ControllerWith1AuthorizeClassPolicyRolesActiveAuthenticationSchemesReturnsString : Controller
+    [Authorize(Policy = "CanSayHello", Roles = "Admin", AuthenticationSchemes = "Scheme")]
+    public class ControllerWith1AuthorizeClassPolicyRolesAuthenticationSchemesReturnsString : Controller
     {
         [HttpGet]
         [Route("/route/url")]

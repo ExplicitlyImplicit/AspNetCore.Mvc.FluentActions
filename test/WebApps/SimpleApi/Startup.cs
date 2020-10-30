@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using ExplicitlyImpl.AspNetCore.Mvc.FluentActions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleApi
 {
@@ -12,15 +10,16 @@ namespace SimpleApi
         {
             services
                 .AddMvc()
-                .AddFluentActions()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddFluentActions();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<INoteService, NoteService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
+            app.UseRouting();
+
             app.UseFluentActions(actions =>
             {
                 actions.RouteGet("/").To(() => "Hello World!");
@@ -28,7 +27,13 @@ namespace SimpleApi
                 actions.Add(UserActions.All);
                 actions.Add(NoteActions.All);
             });
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

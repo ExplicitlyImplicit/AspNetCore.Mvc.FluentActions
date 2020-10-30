@@ -37,22 +37,22 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
         }
     }
 
-    public class ControllerWith1AuthorizeActiveAuthenticationSchemesReturnsString : Controller
+    public class ControllerWith1AuthorizeAuthenticationSchemesReturnsString : Controller
     {
         [HttpGet]
         [Route("/route/url")]
-        [Authorize(ActiveAuthenticationSchemes = "Scheme")]
+        [Authorize(AuthenticationSchemes = "Scheme")]
         public string HandlerAction()
         {
             return "hello";
         }
     }
 
-    public class ControllerWith1AuthorizePolicyRolesActiveAuthenticationSchemesReturnsString : Controller
+    public class ControllerWith1AuthorizePolicyRolesAuthenticationSchemesReturnsString : Controller
     {
         [HttpGet]
         [Route("/route/url")]
-        [Authorize(Policy = "CanSayHello", Roles = "Admin", ActiveAuthenticationSchemes = "Scheme")]
+        [Authorize(Policy = "CanSayHello", Roles = "Admin", AuthenticationSchemes = "Scheme")]
         public string HandlerAction()
         {
             return "hello";

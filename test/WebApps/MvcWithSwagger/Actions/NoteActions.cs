@@ -10,7 +10,7 @@ namespace MvcWithSwagger
             config => 
             {
                 config.GroupBy("Notes");
-                config.WithCustomAttribute<SwaggerTagsAttribute>(
+                config.WithCustomAttribute<OpenApiTagsAttribute>(
                      new Type[] { typeof(string[]) },
                      new object[] { new string[] { "Notes" } }
                  );
