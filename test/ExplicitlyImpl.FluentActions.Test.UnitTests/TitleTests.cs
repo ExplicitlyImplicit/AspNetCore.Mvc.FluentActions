@@ -31,12 +31,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionCollectionWithTitle()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
+                actions =>
                 {
-                    config.SetTitle(action => action.Id);
-                },
-                actions => 
-                {
+                    actions.Configure(config =>
+                    {
+                        config.SetTitle(action => action.Id);
+                    });
+
                     actions
                         .RouteGet("/users", "ListUsers")
                         .UsingService<IUserService>()

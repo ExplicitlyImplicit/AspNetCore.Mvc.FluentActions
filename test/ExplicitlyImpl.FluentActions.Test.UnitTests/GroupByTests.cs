@@ -30,12 +30,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionCollectionWithGroupBy()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
+                actions =>
                 {
-                    config.GroupBy("CustomGroupName");
-                }, 
-                actions => 
-                {
+                    actions.Configure(config =>
+                    {
+                        config.GroupBy("CustomGroupName");
+                    });
+
                     actions
                         .RouteGet("/users", "ListUsers")
                         .UsingService<IUserService>()

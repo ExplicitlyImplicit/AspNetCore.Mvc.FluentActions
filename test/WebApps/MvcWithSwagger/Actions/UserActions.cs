@@ -7,18 +7,19 @@ namespace MvcWithSwagger
     public static class UserActions
     {
         public static FluentActionCollection All => FluentActionCollection.DefineActions(
-            config =>
-            {
-                config.GroupBy("Users");
-                config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
-                config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
-                config.WithCustomAttribute<OpenApiTagsAttribute>(
-                     new Type[] { typeof(string[]) },
-                     new object[] { new string[] { "Users" } }
-                 );
-            },
             actions =>
             {
+                actions.Configure(config =>
+                {
+                    config.GroupBy("Users");
+                    config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
+                    config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
+                    config.WithCustomAttribute<OpenApiTagsAttribute>(
+                         new Type[] { typeof(string[]) },
+                         new object[] { new string[] { "Users" } }
+                     );
+                });
+
                 actions
                     .RouteGet("/users", "ListUsers")
                     .UsingService<IUserService>()

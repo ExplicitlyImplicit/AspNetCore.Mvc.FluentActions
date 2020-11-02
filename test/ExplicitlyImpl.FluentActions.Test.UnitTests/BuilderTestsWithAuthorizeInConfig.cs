@@ -11,12 +11,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWith1AuthorizeInConfig()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
-                {
-                    config.Authorize();
-                },
                 actions =>
                 {
+                    actions.Configure(config =>
+                    {
+                        config.Authorize();
+                    });
+
                     actions
                         .RouteGet("/users", "ListUsers")
                         .WithCustomAttribute<MySecondCustomAttribute>()

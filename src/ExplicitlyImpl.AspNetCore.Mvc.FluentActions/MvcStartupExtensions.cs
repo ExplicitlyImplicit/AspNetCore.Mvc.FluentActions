@@ -25,21 +25,6 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
 
         public static IApplicationBuilder UseFluentActions(
             this IApplicationBuilder app,
-            Action<FluentActionCollectionConfigurator> configureFluentActions,
-            Action<FluentActionCollection> addFluentActions)
-        {
-            if (addFluentActions == null)
-            {
-                throw new ArgumentNullException(nameof(addFluentActions));
-            }
-
-            var fluentActions = FluentActionCollection.DefineActions(configureFluentActions, addFluentActions);
-
-            return app.UseFluentActions(fluentActions);
-        }
-
-        public static IApplicationBuilder UseFluentActions(
-            this IApplicationBuilder app,
             FluentActionCollection fluentActions)
         {
             if (fluentActions == null)

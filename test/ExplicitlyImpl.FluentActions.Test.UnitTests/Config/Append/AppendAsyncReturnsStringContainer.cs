@@ -13,15 +13,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentActionCollection_DefineActions_Config_AppendAsync_ReturnsStringContainer()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
+                actions =>
                 {
-                    config.Append(action => action
-                        .UsingResult()
-                        .To(async result => { await Task.Delay(1); return new StringContainer { Value = result.ToString() }; })
-                    );
-                },
-                actions => 
-                {
+                    actions.Configure(config =>
+                    {
+                        config.Append(action => action
+                            .UsingResult()
+                            .To(async result => { await Task.Delay(1); return new StringContainer { Value = result.ToString() }; })
+                        );
+                    });
+
                     actions
                         .RouteGet("/hello")
                         .UsingQueryStringParameter<string>("name")

@@ -24,11 +24,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         [Fact(DisplayName = "1 parent (from config), returns string")]
         public void FluentControllerBuilder_FluentActionUsingParentFromConfigReturnsString()
         {
-            var collection = FluentActionCollection.DefineActions(config => 
+            var collection = FluentActionCollection.DefineActions(actions =>
             {
-                config.InheritingFrom<BaseController>();
-            }, actions => 
-            {
+                actions.Configure(config =>
+                {
+                    config.InheritingFrom<BaseController>();
+                });
+
                 actions.RouteGet("/route/url")
                     .UsingParent<BaseController>()
                     .To(parent => parent.Hello());

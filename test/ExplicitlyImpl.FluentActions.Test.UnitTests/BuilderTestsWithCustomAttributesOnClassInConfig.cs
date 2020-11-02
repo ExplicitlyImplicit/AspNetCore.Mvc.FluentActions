@@ -11,12 +11,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithCustomAttributesOnClassInConfig()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
-                {
-                    config.WithCustomAttributeOnClass<MyCustomAttribute>();
-                },
                 actions =>
                 {
+                    actions.Configure(config =>
+                    {
+                        config.WithCustomAttributeOnClass<MyCustomAttribute>();
+                    });
+
                     actions
                         .RouteGet("/users", "ListUsers")
                         .WithCustomAttributeOnClass<MySecondCustomAttribute>()

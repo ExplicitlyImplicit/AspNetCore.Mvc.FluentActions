@@ -5,14 +5,15 @@ namespace SimpleApi
     public static class UserActions
     {
         public static FluentActionCollection All => FluentActionCollection.DefineActions(
-            config =>
-            {
-                config.GroupBy("UserActions");
-                config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
-                config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
-            },
             actions =>
             {
+                actions.Configure(config =>
+                {
+                    config.GroupBy("UserActions");
+                    config.SetTitleFromResource(typeof(Localization.Actions), action => $"{action.Id}_Title");
+                    config.SetDescriptionFromResource(typeof(Localization.Actions), action => $"{action.Id}_Description");
+                });
+
                 actions
                     .RouteGet("/users", "ListUsers")
                     .UsingService<IUserService>()

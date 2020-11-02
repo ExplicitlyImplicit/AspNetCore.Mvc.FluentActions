@@ -21,12 +21,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionWithParentTypeInConfigReturnsString()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
-                {
-                    config.InheritingFrom(typeof(BaseController));
-                },
                 actions =>
                 {
+                    actions.Configure(config =>
+                    {
+                        config.InheritingFrom(typeof(BaseController));
+                    });
+
                     actions.Add(
                         new FluentAction("/route/url", HttpMethod.Get)
                             .InheritingFrom<BaseController>()
@@ -45,12 +46,13 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentControllerBuilder_FluentActionCollectionWithParentTypeInConfig()
         {
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
-                {
-                    config.InheritingFrom<BaseController>();
-                },
                 actions =>
                 {
+                    actions.Configure(config =>
+                    {
+                        config.InheritingFrom<BaseController>();
+                    });
+
                     actions
                         .RouteGet("/users", "ListUsers")
                         .UsingService<IUserService>()

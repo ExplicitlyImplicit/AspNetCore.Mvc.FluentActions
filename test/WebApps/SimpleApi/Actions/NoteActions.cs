@@ -5,12 +5,13 @@ namespace SimpleApi
     public static class NoteActions
     {
         public static FluentActionCollection All => FluentActionCollection.DefineActions(
-            config => 
-            {
-                config.GroupBy("NoteActions");
-            },
             actions =>
             {
+                actions.Configure(config =>
+                {
+                    config.GroupBy("NoteActions");
+                });
+
                 actions
                     .Route("/notes", HttpMethod.Get)
                     .UsingService<INoteService>()

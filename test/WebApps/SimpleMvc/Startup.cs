@@ -59,24 +59,25 @@ namespace SimpleMvc
             app.UseAuthorization();
 
             app.UseFluentActions(
-                config =>
-                {
-                    config.InheritingFrom<HelloWorldController>();
-                    config.Append(action => action
-                        .UsingResult()
-                        .UsingResponse()
-                        .To(async (result, response) =>
-                        {
-                            await Task.Delay(1);
-                            response.StatusCode = 418;
-                            return result is string ?
-                                $">> {result}" :
-                                result;
-                        })
-                    );
-                },
                 actions =>
                 {
+                    actions.Configure(config =>
+                    {
+                        config.InheritingFrom<HelloWorldController>();
+                        config.Append(action => action
+                            .UsingResult()
+                            .UsingResponse()
+                            .To(async (result, response) =>
+                            {
+                                await Task.Delay(1);
+                                response.StatusCode = 418;
+                                return result is string ?
+                                    $">> {result}" :
+                                    result;
+                            })
+                        );
+                    });
+
                     actions
                         .Route("/helloWorld", HttpMethod.Get)
                         .To(() => "Hello World!");

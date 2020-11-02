@@ -1,4 +1,5 @@
 # [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions)
+
 Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup.
 
 Usage example:
@@ -21,8 +22,8 @@ public string Action()
 }
 ```
 
-Fluent actions do not limit regular use of ASP.NET Core MVC so you can gradually introduce fluent actions to your 
-existing project and only use fluent actions for a subset of your applications functionality. 
+Fluent actions do not limit regular use of ASP.NET Core MVC so you can gradually introduce fluent actions to your
+existing project and only use fluent actions for a subset of your applications functionality.
 
 This project does not have any third-party dependencies.
 
@@ -67,24 +68,23 @@ services.AddMvc()<b>.AddFluentActions();</b>
 app.UseMvc(routes);
 </pre>
 
-There is also `UseFluentActions(config, actions)` to apply initial settings on all 
-of the fluent actions you define, take a look at the `Config` parameter further down for more info. 
+Take a look at the `Configure` method further down to apply settings on multiple actions.
 
 ## How To Use
 
 Fluent actions are added inside the `Startup.cs` file in the `UseFluentActions` statement:
 
 ```
-app.UseFluentActions(actions => 
+app.UseFluentActions(actions =>
 {
     actions.RouteGet("/helloWorld").To(() => "Hello World!");
 });
 ```
 
-The fluent action definitions can be placed in one or many other files though: 
+The fluent action definitions can be placed in one or many other files though:
 
 ```
-app.UseFluentActions(actions => 
+app.UseFluentActions(actions =>
 {
     actions.RouteGet("/helloWorld").To(() => "Hello World!");
     actions.Add(FluentActions.UserActions);
@@ -101,7 +101,7 @@ public static FluentActionCollection UserActions => FluentActionCollection.Defin
         .RouteGet("/users")
         .UsingService<IUserService>()
         .To(userService => userService.List());
-    
+
     actions
         .RouteGet("/users/{userId}")
         .UsingService<IUserService>()
@@ -119,9 +119,9 @@ actions
 ```
 
 - The first statement `RouteGet` defines the routing, any **GET** requests to **/helloWorld** will be handled by this action.
-- The second statement `To` defines what will happen when someone makes a **GET** request to this url. In this case, a plain text "Hello World!" will be returned by the web app. 
+- The second statement `To` defines what will happen when someone makes a **GET** request to this url. In this case, a plain text "Hello World!" will be returned by the web app.
 
-How do we know how the web app writes our output to the HTTP response? The code 
+How do we know how the web app writes our output to the HTTP response? The code
 above is equivalent to an action method in a controller looking like this:
 
 ```
@@ -133,14 +133,14 @@ public string HelloWorldAction()
 }
 ```
 
-Fluent actions are only wrapping the tools that makes up the framework .NET MVC. 
-We can still use MVC tools and concepts to implement our web app. 
+Fluent actions are only wrapping the tools that makes up the framework .NET MVC.
+We can still use MVC tools and concepts to implement our web app.
 
 ### `Using` Statements
 
-If you need to define any kind of input for your action, use a `Using` statement. 
-Each `Using` statement will become a parameter to your delegate in the `To` 
-statement (in the same order as you call them). 
+If you need to define any kind of input for your action, use a `Using` statement.
+Each `Using` statement will become a parameter to your delegate in the `To`
+statement (in the same order as you call them).
 
 ```
 actions
@@ -186,6 +186,7 @@ public string GetUserAction([FromServices]IUserService userService, [FromRoute]i
 ```
 
 #### List of `using` Statements
+
 Take a look at [Model Binding in ASP.NET Core MVC](https://docs.asp.net/en/latest/mvc/models/model-binding.html#customize-model-binding-behavior-with-attributes) for a better understanding of how the equivalent code of most of these `using` statements work.
 
 - UsingBody
@@ -410,7 +411,7 @@ public string Action([FromForm]MyModel myModel)
 
 #### UsingParent
 
-If there exists a sub-class to Controller, called HelloController, that has a method 
+If there exists a sub-class to Controller, called HelloController, that has a method
 called `Hello`, then this fluent action:
 
 ```
@@ -424,24 +425,15 @@ actions
 Is equivalent to the following fluent action in the following controller:
 
 ```
-public class FluentActionController : HelloController 
+public class FluentActionController : HelloController
 {
     [HttpGet]
     [Route("/hello")]
     public string Action()
     {
         return Hello();
-    }    
+    }
 }
-```
-
-If the parent type is set in the config, the following statement can be used instead:
-
-```
-actions
-    .RouteGet("/hello")
-    .UsingParent<HelloController>()
-    .To(parent => parent.Hello());
 ```
 
 #### UsingProperty
@@ -755,7 +747,7 @@ public ActionResult Action([FromServices]IUserService userService)
 
 You can also skip the `To` statement and only use a `Using` statement with the `ToView` statement to
 pipe input directly to a view (if multiple `Using` statements are used, only the last one will be piped
-to the view). 
+to the view).
 
 ### `ToPartialView`
 
@@ -783,7 +775,7 @@ public ActionResult Action([FromServices]IUserService userService)
 
 You can also skip the `To` statement and only use a `Using` statement with the `ToPartialView` statement to
 pipe input directly to a partial view (if multiple `Using` statements are used, only the last one will be piped
-to the partial view). 
+to the partial view).
 
 ### `ToViewComponent`
 
@@ -833,12 +825,12 @@ public ActionResult Action([FromServices]IUserService userService)
 
 You can also skip the `To` statement and only use a `Using` statement with the `ToViewComponent` statement to
 pipe input directly to a view component(if multiple `Using` statements are used, only the last one will be piped
-to the view component). 
+to the view component).
 
 #### `Do` Statement
 
-If you want to perform some logic but are not interested in outputting a result, 
-you can use a `Do` statement. A `Do` statement must be accompanied by something 
+If you want to perform some logic but are not interested in outputting a result,
+you can use a `Do` statement. A `Do` statement must be accompanied by something
 that does not need an input such as `ToView`, `ToPartialView` or `ToViewComponent`.
 
 The following fluent action:
@@ -863,7 +855,7 @@ public ViewResult Action()
 }
 ```
 
-### Routing to an MVC Controller 
+### Routing to an MVC Controller
 
 You can also use fluent actions for routing only:
 
@@ -875,10 +867,10 @@ actions
     .ToMvcAction((name, controller) => controller.Hello(name));
 ```
 
-This will only add a route to the specified MVC controller and action - it will not create any 
+This will only add a route to the specified MVC controller and action - it will not create any
 additional controllers or actions.
 
-Note that the lambda expression in the `ToMvcAction` statement must be a single method call to a 
+Note that the lambda expression in the `ToMvcAction` statement must be a single method call to a
 controller method.
 
 ### Code Block in `To`
@@ -890,7 +882,7 @@ actions
     .RouteGet("/users")
     .UsingService<IUserService>()
     .UsingQueryStringParameter<int>("userId")
-    .To((userService, userId) => 
+    .To((userService, userId) =>
     {
       var user = userService.GetById(userId);
       return $"Hello {user.Name}!";
@@ -911,7 +903,7 @@ actions
 The above fluent action is equivalent to the following action method in a controller:
 
 ```
-public class FluentActionController : MyBaseController 
+public class FluentActionController : MyBaseController
 {
     [HttpGet]
     [Route("/hello")]
@@ -922,7 +914,7 @@ public class FluentActionController : MyBaseController
 }
 ```
 
-Take a look at the `Config` parameter to set a parent type for multiple actions.
+Take a look at the `Configure` method to set a parent type for multiple actions.
 
 ### Asynchronous Delegates
 
@@ -949,8 +941,8 @@ actions
     .To((name, users) => $"Hello {name}! We got {users.Count} users!");
 ```
 
-Why would you pipe `To` statements? Well, we are currently using some extension 
-methods on top of our explicitly defined actions that are specific to our project 
+Why would you pipe `To` statements? Well, we are currently using some extension
+methods on top of our explicitly defined actions that are specific to our project
 business logic. Those extensions can be implemented using this concept.
 
 ### Validate Anti-Forgery Token
@@ -999,12 +991,11 @@ public ActionResult Action()
 }
 ```
 
-The `Authorize` statement has optional parameters for policy, roles and 
+The `Authorize` statement has optional parameters for policy, roles and
 activeAuthenticationSchemes.
 
-The `Authorize` statement can also be added in the `Config` parameter
+The `Authorize` statement can also be added in the `Configure` method
 which can be used to apply `Authorize` to multiple actions at once.
-
 
 ### AuthorizeClass
 
@@ -1017,7 +1008,7 @@ actions
     .To(() => "You must be logged in first!");
 ```
 
-The `AuthorizeClass` statement can also be added in the `Config` parameter
+The `AuthorizeClass` statement can also be added in the `Configure` method
 which can be used to apply `Authorize` to multiple actions classes at once.
 
 ### AllowAnonymous
@@ -1105,7 +1096,7 @@ WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, PropertyInfo[] n
 WithAttribute<T>(ConstructorInfo con, object[] constructorArgs, PropertyInfo[] namedProperties, object[] propertyValues, FieldInfo[] namedFields, object[] fieldValues)
 ```
 
-The `WithAttribute` statement can also be added in the `Config` parameter
+The `WithAttribute` statement can also be added in the `Configure` method
 which can be used to add custom attributes to multiple actions at once.
 
 ### Custom Attributes on Class
@@ -1121,12 +1112,12 @@ actions
 
 With the same syntax as `WithAttribute` described above.
 
-The `WithAttributeOnClass` statement can also be added in the `Config` parameter
+The `WithAttributeOnClass` statement can also be added in the `Configure` method
 which can be used to add custom attributes to multiple actions classes at once.
 
 ### Id of Fluent Action
 
-You can set an id of a fluent action using an optional parameter of any of the `Route` 
+You can set an id of a fluent action using an optional parameter of any of the `Route`
 statements. Example:
 
 ```
@@ -1136,8 +1127,8 @@ actions
     .To(userService => userService.List());
 ```
 
-This may increase the maintainability of your project as it might be easier 
-to understand and debug your fluent actions. It can also be used for generating 
+This may increase the maintainability of your project as it might be easier
+to understand and debug your fluent actions. It can also be used for generating
 different kinds of documentation for your project.
 
 ### Title of Fluent Action
@@ -1154,7 +1145,7 @@ actions
 
 The title can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Config` parameter to set title of multiple actions.
+Take a look at the `Configure` method to set title of multiple actions.
 
 ### Description of Fluent Action
 
@@ -1170,7 +1161,7 @@ actions
 
 The description can be used for generating different kinds of documentation for your project.
 
-Take a look at the `Config` parameter to set description of multiple actions.
+Take a look at the `Configure` method to set description of multiple actions.
 
 ### Grouping Fluent Actions
 
@@ -1189,7 +1180,7 @@ The group can be used for generating different kinds of documentation for your p
 Using `GroupBy` will also add an `ApiExplorerSettings` attribute on the action with the `GroupName` property set.
 See the `ApiExplorerSettings` section below for more info (which also addresses `IgnoreApi`).
 
-Take a look at the `Config` parameter to group multiple actions all at once.
+Take a look at the `Configure` method to group multiple actions all at once.
 
 ### The `ApiExplorerSettings` attribute
 
@@ -1217,27 +1208,28 @@ public ActionResult Action()
 }
 ```
 
-### `Config` parameter
+### `Configure` method
 
-The `Config` parameter is an optional parameter that can be used to apply settings among multiple actions.
+The `Configure` method is used to apply settings on multiple actions.
+The resulting config is applied to all subsequently defined fluent actions.
 
 ```
-app.UseFluentActions(
-    config => 
+app.UseFluentActions(actions =>
+{
+    actions.Configure(config =>
     {
         config.InheritingFrom<BaseController>();
-    }, 
-    actions =>
-    {
-        actions.RouteGet("/").To(() => "Hello World!");
-        actions.RouteGet("/bye").To(() => "Bye bye!");
-    }
-);
+    });
+
+    actions.RouteGet("/").To(() => "Hello World!");
+    actions.RouteGet("/bye").To(() => "Bye bye!");
+});
 ```
 
-Above config will add the parent type to the actions defined in the second parameter. 
+Above resulting config will add the parent type `BaseController` to the actions `/` and `/bye`.
+Calling the `Configure` method a second time will overwrite the current config but will not overwrite previously defined fluent actions.
 
-The following settings are available with the `Config` parameter:
+The following settings are available in the `Configure` method:
 
 - Append
 - GroupBy
@@ -1253,26 +1245,25 @@ The following settings are available with the `Config` parameter:
 
 The `Append` statement is explained below.
 
-#### `Append` in `Config`
+#### `Append` in `Configure`
 
-The `Append` statement can be used to add functionality to the end of all fluent actions 
+The `Append` statement can be used to add functionality to the end of all fluent actions
 inside the collection.
 
 ```
-app.UseFluentActions(
-    config => 
+app.UseFluentActions(actions =>
+{
+    actions.Configure(config =>
     {
         config.Append(action => action
             .UsingResult()
             .To(result => result.ToUpper())
         );
-    }, 
-    actions =>
-    {
-        actions.RouteGet("/").To(() => "Hello World!");
-        actions.RouteGet("/bye").To(() => "Bye bye!");
-    }
-);
+    });
+
+    actions.RouteGet("/").To(() => "Hello World!");
+    actions.RouteGet("/bye").To(() => "Bye bye!");
+});
 ```
 
 The above actions will return "HELLO WORLD!" and "BYE BYE!".

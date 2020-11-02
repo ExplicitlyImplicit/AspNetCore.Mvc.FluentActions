@@ -7,16 +7,17 @@ namespace MvcWithSwagger
     public static class NoteActions
     {
         public static FluentActionCollection All => FluentActionCollection.DefineActions(
-            config => 
-            {
-                config.GroupBy("Notes");
-                config.WithCustomAttribute<OpenApiTagsAttribute>(
-                     new Type[] { typeof(string[]) },
-                     new object[] { new string[] { "Notes" } }
-                 );
-            },
             actions =>
             {
+                actions.Configure(config =>
+                {
+                    config.GroupBy("Notes");
+                    config.WithCustomAttribute<OpenApiTagsAttribute>(
+                        new Type[] { typeof(string[]) },
+                        new object[] { new string[] { "Notes" } }
+                    );
+                });
+
                 actions
                     .Route("/notes", HttpMethod.Get)
                     .UsingService<INoteService>()

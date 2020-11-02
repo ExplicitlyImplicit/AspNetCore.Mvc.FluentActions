@@ -13,15 +13,16 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         public void FluentActionCollection_DefineActions_Config_NestedAppend_ReturnsHashContainer()
         {
             var innerActionCollection = FluentActionCollection.DefineActions(
-                config =>
+                actions =>
                 {
-                    config.Append(action => action
-                        .UsingResult()
-                        .To(result => new StringContainer { Value = result.ToString() })
-                    );
-                },
-                actions => 
-                {
+                    actions.Configure(config =>
+                    {
+                        config.Append(action => action
+                            .UsingResult()
+                            .To(result => new StringContainer { Value = result.ToString() })
+                        );
+                    });
+
                     actions
                         .RouteGet("/hello")
                         .UsingQueryStringParameter<string>("name")
@@ -63,17 +64,18 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
             );
 
             var actionCollection = FluentActionCollection.DefineActions(
-                config =>
-                {
-                    config.Append(action => action
-                        .WithCustomAttribute<NestedAppendCustomAttribute>(new Type[] { typeof(string) }, new object[] { "AttrValue" })
-                        .UsingResult()
-                        .UsingQueryStringParameter<string>("additional")
-                        .To((result, additional) => new HashContainer { Value = result.GetHashCode(), Additional = additional })
-                    );
-                },
                 actions =>
                 {
+                    actions.Configure(config =>
+                    {
+                        config.Append(action => action
+                            .WithCustomAttribute<NestedAppendCustomAttribute>(new Type[] { typeof(string) }, new object[] { "AttrValue" })
+                            .UsingResult()
+                            .UsingQueryStringParameter<string>("additional")
+                            .To((result, additional) => new HashContainer { Value = result.GetHashCode(), Additional = additional })
+                        );
+                    });
+
                     actions.Add(innerActionCollection);
                 }
             );

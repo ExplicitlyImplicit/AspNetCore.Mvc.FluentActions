@@ -25,6 +25,19 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
         }
 
         /// <summary>
+        /// Defines settings that will be applied to all subsequently defined fluent actions.
+        /// Calling this method a second time will overwrite the current config but will not overwrite previously 
+        /// defined fluent actions.
+        /// </summary>
+        /// <param name="configureFluentActions">Action that will define the config of future fluent actions</param>
+        public void Configure(Action<FluentActionCollectionConfigurator> configureFluentActions)
+        {
+            var configurator = new FluentActionCollectionConfigurator(new FluentActionCollectionConfig());
+            configureFluentActions(configurator);
+            Config = configurator.Config;
+        }
+
+        /// <summary>
         /// Creates and adds a fluent action to this collection.
         /// </summary>
         /// <param name="id">Optional unique Id (between all fluent actions) for better debuggability and/or meta
@@ -192,25 +205,14 @@ namespace ExplicitlyImpl.AspNetCore.Mvc.FluentActions
             );
         }
 
-        public static FluentActionCollection DefineActions(
-            Action<FluentActionCollectionConfigurator> configureFluentActions, 
-            Action<FluentActionCollection> addFluentActions)
+        public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
         {
-            var configurator = new FluentActionCollectionConfigurator(new FluentActionCollectionConfig());
-            configureFluentActions(configurator);
-            var config = configurator.Config;
-
-            var actionCollection = new FluentActionCollection(config);
+            var actionCollection = new FluentActionCollection(new FluentActionCollectionConfig());
             addFluentActions(actionCollection);
 
             actionCollection.PostConfigureActions();
 
             return actionCollection;
-        }
-
-        public static FluentActionCollection DefineActions(Action<FluentActionCollection> addFluentActions)
-        {
-            return DefineActions(config => { }, addFluentActions);
         }
     }
 
