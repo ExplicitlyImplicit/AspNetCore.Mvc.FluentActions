@@ -1,4 +1,4 @@
-# [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions)
+# [Fluent Actions for ASP.NET Core MVC](https://www.nuget.org/packages/ExplicitlyImpl.AspNetCore.Mvc.FluentActions) ![Fluent Actions on Nuget](https://img.shields.io/nuget/v/ExplicitlyImpl.AspNetCore.Mvc.FluentActions)
 
 Fluent actions are abstractions of regular MVC actions that are converted into MVC actions during startup.
 
