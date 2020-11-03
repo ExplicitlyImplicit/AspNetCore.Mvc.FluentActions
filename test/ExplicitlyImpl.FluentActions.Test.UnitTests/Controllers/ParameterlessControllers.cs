@@ -110,6 +110,11 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests.Controllers
                 ((ExampleClassWithoutUsings)obj).IntField == IntField &&
                 ((ExampleClassWithoutUsings)obj).StringProperty == StringProperty;
         }
+
+        public override int GetHashCode()
+        {
+            return $"{StringField}-{IntField}-{StringProperty}".GetHashCode();
+        }
     }
 
     public class ParameterlessControllerReturnsObject : Controller

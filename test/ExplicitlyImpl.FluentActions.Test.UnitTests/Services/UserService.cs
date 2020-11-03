@@ -14,6 +14,11 @@ namespace ExplicitlyImpl.FluentActions.Test.UnitTests
         {
             return obj is UserItem && ((UserItem)obj).Id == Id && ((UserItem)obj).Name == Name;
         }
+
+        public override int GetHashCode()
+        {
+            return $"{Id}-{Name}".GetHashCode();
+        }
     }
 
     public interface IUserService
