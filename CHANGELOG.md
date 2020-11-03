@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.0 (2020-11-XX)
+## 3.0.0 (2020-11-03)
 
 - Upgraded to .NET Core 3.1
 - Changed the way a common config is applied to multiple actions (the Configure action)
