@@ -30,9 +30,7 @@ namespace MvcTemplate
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services
-                .AddMvc(config => config.EnableEndpointRouting = false)
-                .AddFluentActions();
+            services.AddMvc().AddFluentActions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +47,7 @@ namespace MvcTemplate
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseRouting();
 
             app.UseFluentActions(actions =>
             {
@@ -73,7 +72,12 @@ namespace MvcTemplate
                     .ToView("~/Views/Shared/Error.cshtml");
             });
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

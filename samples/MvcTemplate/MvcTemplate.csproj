@@ -6,7 +6,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="ExplicitlyImpl.AspNetCore.Mvc.FluentActions" Version="2.2.0" />
+    <PackageReference Include="ExplicitlyImpl.AspNetCore.Mvc.FluentActions" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

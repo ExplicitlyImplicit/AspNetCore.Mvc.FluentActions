@@ -8,19 +8,24 @@ namespace HelloWorld
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddMvc(config => config.EnableEndpointRouting = false)
-                .AddFluentActions();
+            services.AddMvc().AddFluentActions();
         }
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseRouting();
+
             app.UseFluentActions(actions =>
             {
                 actions.RouteGet("/").To(() => "Hello World!");
             });
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
