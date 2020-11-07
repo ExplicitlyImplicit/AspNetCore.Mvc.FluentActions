@@ -11,7 +11,7 @@
     <PackageId>ExplicitlyImpl.AspNetCore.Mvc.FluentActions.Core</PackageId>
     <PackageTags>aspnetcoremvc</PackageTags>
     <PackageProjectUrl>https://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/ExplicitlyImplicit/AspNetCore.Mvc.FluentActions</RepositoryUrl>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
